@@ -1,0 +1,123 @@
+C51 COMPILER V9.52.0.0   EPROM                                                             07/31/2018 14:17:15 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE EPROM
+OBJECT MODULE PLACED IN Eprom.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE Source\Eprom.c BROWSE INCDIR(.\Include) DEBUG OBJECTEXTEND PRINT(.\Epro
+                    -m.lst) TABS(2) OBJECT(Eprom.obj)
+
+line level    source
+
+   1          /**********************************************************************
+   2            *
+   3            * @FunctionName Eprom.c
+   4            *
+   5          ***********************************************************************/
+   6          #include "Eprom.h"
+   7          
+   8          
+   9          /* @Const Variables */
+  10          volatile _Uint8 code DataAPROM[128] _at_ 0x0200;
+  11          
+  12          
+  13          /* @Gloable variables */
+  14          _TypeStructAP   APData;
+  15          
+  16          
+  17          /*****************************************************************************
+  18            *
+  19            * @FunctionName Byte_Write_To_APROM
+  20            * @Output       None
+  21            * @Input        None
+  22            *
+  23          ****/
+  24          void Byte_Write_To_APROM(void)
+  25          {
+  26   1        /* Disable the Interrupt */
+  27   1        IE &= ~BIT7;
+  28   1        
+  29   1        /* Read CONFIG1' value */
+  30   1        TA      = 0xAA;
+  31   1        TA      = 0x55;
+  32   1        CHPCON  |= BIT0;      // IAPEN = 1
+  33   1        
+  34   1        TA      = 0xAA;
+  35   1        TA      = 0x55;
+  36   1        IAPUEN  |= BIT0;      //APUEN = 1
+  37   1        
+  38   1        IAPCN   = APROM_ERASE;
+  39   1        IAPAH   = 0x02;
+  40   1        IAPAL   = 0x00;
+  41   1        IAPFD   = 0xFF;
+  42   1        TA      = 0xAA;
+  43   1        TA      = 0x55;
+  44   1        IAPTRG  |= BIT0;
+  45   1      
+  46   1        
+  47   1        /* Write mode value to 0x0200 */
+  48   1        IAPCN   = APROM_WRITE;
+  49   1        IAPAH   = 0x02;
+  50   1        IAPAL   = 0x00;
+  51   1        IAPFD   = APData.Mode;  
+  52   1        TA      = 0xAA;
+  53   1        TA      = 0x55;
+  54   1        IAPTRG  |= BIT0;      // Start IAP
+C51 COMPILER V9.52.0.0   EPROM                                                             07/31/2018 14:17:15 PAGE 2   
+
+  55   1        
+  56   1        /* Write color value to 0x0201 */
+  57   1        IAPCN   = APROM_WRITE;
+  58   1        IAPAH   = 0x02;
+  59   1        IAPAL   = 0x01;
+  60   1        IAPFD   = APData.Color; 
+  61   1        TA      = 0xAA;
+  62   1        TA      = 0x55;
+  63   1        IAPTRG  |= BIT0;      // Start IAP
+  64   1        
+  65   1        
+  66   1        /* Write count down hour to 0x0202 */
+  67   1        IAPCN   = APROM_WRITE;
+  68   1        IAPAH   = 0x02;
+  69   1        IAPAL   = 0x02;
+  70   1        IAPFD   = APData.CntDwnHour;  
+  71   1        TA      = 0xAA;
+  72   1        TA      = 0x55;
+  73   1        IAPTRG  |= BIT0;      // Start IAP
+  74   1        
+  75   1        
+  76   1        TA      = 0xAA;
+  77   1        TA      = 0x55;
+  78   1        IAPUEN  &= ~BIT0;
+  79   1        
+  80   1        TA      = 0xAA;
+  81   1        TA      = 0x55;
+  82   1        CHPCON  &= ~BIT0;
+  83   1        
+  84   1        /* Enable Interrupt */
+  85   1        IE |= BIT7;
+  86   1      }
+  87          
+  88          
+  89          /********************************************************
+  90            *
+  91            * @FunctionName Byte_Read_From_APROM
+  92            *
+  93          *********************************************************/
+  94          _Uint8 Byte_Read_From_APROM(_TypeEnumEprom AddBuf)
+  95          {
+  96   1        return(DataAPROM[AddBuf]);
+  97   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    133    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

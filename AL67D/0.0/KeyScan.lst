@@ -1,0 +1,76 @@
+C51 COMPILER V9.52.0.0   KEYSCAN                                                           03/19/2018 13:49:41 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE KEYSCAN
+OBJECT MODULE PLACED IN KeyScan.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE PrivateSrc\KeyScan.c BROWSE INCDIR(.\PrivateInc;.\PublicInc) DEBUG OBJE
+                    -CTEXTEND PRINT(.\KeyScan.lst) OBJECT(KeyScan.obj)
+
+line level    source
+
+   1          /****************************************************************
+   2                  *
+   3                  * key_scan.c
+   4                  *
+   5          *****/
+   6          #include "Key_Scan.h"
+   7          
+   8          /* gloable variables----------------------------------------------------------*/
+   9          idata _TypeEnumKey              KeyStatus;
+  10          
+  11          
+  12          idata _Uint8            KeyTime;
+  13          idata _Flag                 KeyLongFlag;
+  14          
+  15          
+  16          /**
+  17                  * @Function Name                Key_Scan
+  18                  * @Parameters                   None
+  19                  * @Return                               None
+  20                  */
+  21          void Key_Scan(void)
+  22          {
+  23   1              if (PORT_KEY == 0)
+  24   1              {
+  25   2                      KeyTime++;
+  26   2                      if (KeyTime > 75)
+  27   2                      {
+  28   3                              KeyTime = 0;
+  29   3                              if (KeyLongFlag == FALSE)
+  30   3                              {
+  31   4                                      KeyLongFlag = TRUE;
+  32   4                                      KeyStatus       = KEY_LONG;
+  33   4                              }
+  34   3                      }
+  35   2              }
+  36   1              
+  37   1              
+  38   1              else
+  39   1              {
+  40   2                      if (KeyLongFlag == FALSE && KeyTime > 0)
+  41   2                      {
+  42   3                              KeyStatus       = KEY_SHORT;
+  43   3                      }
+  44   2                      
+  45   2                      KeyLongFlag     = FALSE;
+  46   2                      KeyTime         = 0;
+  47   2              }
+  48   1              
+  49   1              
+  50   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     47    ----
+C51 COMPILER V9.52.0.0   KEYSCAN                                                           03/19/2018 13:49:41 PAGE 2   
+
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =      3    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

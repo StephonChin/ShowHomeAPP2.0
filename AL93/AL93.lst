@@ -1,0 +1,89 @@
+C51 COMPILER V9.52.0.0   AL93                                                              07/31/2018 14:17:14 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE AL93
+OBJECT MODULE PLACED IN AL93.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE Source\AL93.c BROWSE INCDIR(.\Include) DEBUG OBJECTEXTEND PRINT(.\AL93.
+                    -lst) TABS(2) OBJECT(AL93.obj)
+
+line level    source
+
+   1          /*************************************************************************************************
+   2            *
+   3            * @ProjectName  AL93
+   4            * @KeyWords     CSR1010, RGBW, Motor, APP, Show Lights
+   5            * @Author       DS.Chin
+   6            * @Date         2017.03.07
+   7            * @Description  Three RGB leds and three white leds are used in this project.It is controled
+   8            *               by APP through CSR1010.
+   9            *               This project is modified many times
+  10            *               Used Nuton's mcu named N76E885(TSSOP20)
+  11            *               
+  12          **************************************************************************************************/
+  13          #include "AL93.h"
+  14          
+  15          
+  16          
+  17          /************************************************************************
+  18            *
+  19            * @FunctionName main
+  20            * @Date         2017.03.07
+  21            * @Author       DS.Chin
+  22            * @Output       None
+  23            * @Input        None
+  24            *
+  25          *****/
+  26          void main(void)
+  27          {
+  28   1        /* Configuration of MCU */
+  29   1        MCU_Config();
+  30   1        
+  31   1        /* Read the mode, color and count down hour from APROM at 0x4000 */
+  32   1        User_Init();
+  33   1        
+  34   1        /* Csr1010 Init | Send device type */
+  35   1        Csr1010_Init();
+  36   1        
+  37   1        while (1)
+  38   1        {
+  39   2          /* scan every 10ms */
+  40   2          if (TF2 == SET)
+  41   2          {
+  42   3            TF2 = RESET;
+  43   3            
+  44   3            /* Process the receive data from CSR1010 */
+  45   3            Csr1010_Rcv_Data();
+  46   3            
+  47   3            /* Send data to CSR1010 */
+  48   3            Csr1010_Snd_Data();
+  49   3            
+  50   3            /* Data Process */
+  51   3            Data_Process();
+  52   3            
+  53   3            /* Timer*/
+  54   3            Count_Down_Control();
+C51 COMPILER V9.52.0.0   AL93                                                              07/31/2018 14:17:14 PAGE 2   
+
+  55   3            
+  56   3            /* Motor */
+  57   3            Motor_Control();
+  58   3            
+  59   3            /* Led Display */
+  60   3            Led_Display_Control();
+  61   3          }
+  62   2        }
+  63   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     34    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

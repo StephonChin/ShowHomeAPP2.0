@@ -1,0 +1,490 @@
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 14:17:15 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE DATA_PROCESS
+OBJECT MODULE PLACED IN Data_Process.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE Source\Data_Process.c BROWSE INCDIR(.\Include) DEBUG OBJECTEXTEND PRINT
+                    -(.\Data_Process.lst) TABS(2) OBJECT(Data_Process.obj)
+
+line level    source
+
+   1          /*************************************************************
+   2            *
+   3            * @FileName Data_Process
+   4            *
+   5          **************************************************************/
+   6          #include "Data_Process.h"
+   7          
+   8          
+   9          
+  10          /************************************************************
+  11            *
+  12            * @FunctionName User_Init
+  13            *
+  14          *************************************************************/
+  15          void User_Init(void)
+  16          {
+  17   1        /* Restore the mode value , color value and count down hour from APROM */
+  18   1        LedData.ModeBuf       = Byte_Read_From_APROM(APROM_MODE);
+  19   1        LedData.Color         = Byte_Read_From_APROM(APROM_COLOR);
+  20   1        TimerData.CntDwnHour  = Byte_Read_From_APROM(APROM_TIMER);
+  21   1        APData.Mode           = LedData.ModeBuf;
+  22   1        APData.Color          = LedData.Color;
+  23   1        APData.CntDwnHour     = TimerData.CntDwnHour;
+  24   1        
+  25   1        /* Check the mode */
+  26   1        if ((LedData.ModeBuf > 0x8) || (LedData.ModeBuf == 0x0))    
+  27   1        {
+  28   2          LedData.ModeBuf = 0x8;
+  29   2          APData.Mode     = 0x8;
+  30   2          Byte_Write_To_APROM();          // if the mode value isn't valid
+  31   2        }
+  32   1        LedData.Mode        = LedData.ModeBuf;
+  33   1        LedData.InitFlag    = TRUE;
+  34   1        if (LedData.ModeBuf == 0x8)   LedData.CircleInitFlag  = TRUE; 
+  35   1        
+  36   1        
+  37   1        /* Check the color */
+  38   1        if (LedData.Color == 0x0 || LedData.Color > 0xF)
+  39   1        {
+  40   2          LedData.Color = 0x7;
+  41   2          APData.Color  = 0x7;
+  42   2          Byte_Write_To_APROM();
+  43   2        }
+  44   1        Color_Value_Get(LedData.Color);
+  45   1        
+  46   1        
+  47   1        /* Check the count down hour*/
+  48   1        if ((TimerData.CntDwnHour > 0x8) || (TimerData.CntDwnHour % 2 != 0))
+  49   1        {
+  50   2          TimerData.CntDwnHour    = 0x0;
+  51   2          APData.CntDwnHour       = 0x0;
+  52   2          Byte_Write_To_APROM();
+  53   2        }
+  54   1        TimerData.InitFlag    = TRUE;
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 14:17:15 PAGE 2   
+
+  55   1      }
+  56          
+  57          
+  58          /************************************************************
+  59            *
+  60            * @FunctionName Data_Process
+  61            *
+  62          ****/
+  63          void Data_Process(void)
+  64          {
+  65   1        /* Timer Process */
+  66   1        Count_Down_Process();
+  67   1        
+  68   1        /* CSR1010 Process */
+  69   1        CSR1010_Process();
+  70   1      }
+  71          
+  72          
+  73          
+  74          /************************************************************
+  75            *
+  76            * @FunctonName  Count_Down_Process
+  77            *
+  78          *****/
+  79          static void Count_Down_Process(void)
+  80          {
+  81   1        /* When TimerData.Status equals TIM_IDLE, exit this function */
+  82   1        if (TimerData.Status == TIM_IDLE) return;
+  83   1        
+  84   1        /* Open */
+  85   1        if (TimerData.Status == TIM_OPEN) 
+  86   1        {
+  87   2          TimerData.Status  = TIM_IDLE;
+  88   2          LedData.Mode      = LedData.ModeBuf;
+  89   2          LedData.InitFlag  = TRUE;
+  90   2          return;
+  91   2        }
+  92   1        
+  93   1        /* Close */
+  94   1        if (TimerData.Status == TIM_CLOSE)
+  95   1        {
+  96   2          TimerData.Status  = TIM_IDLE;
+  97   2          LedData.Mode      = 0x0;
+  98   2          LedData.InitFlag  = TRUE;
+  99   2          return;
+ 100   2        }
+ 101   1      }
+ 102          
+ 103          
+ 104          
+ 105          /************************************************************
+ 106            *
+ 107            * @FunctonName  CSR1010_Process
+ 108            *
+ 109          *****/
+ 110          static void CSR1010_Process(void)
+ 111          {
+ 112   1        static  _Flag     BtInitFlag  = FALSE;        // CSR1010 initialize flag
+ 113   1        static  _Uint8    CmdFlagNum  = 0xFF;         // Rcv command flag
+ 114   1                _Uint8    TempCnt     = 0;
+ 115   1        
+ 116   1        
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 14:17:15 PAGE 3   
+
+ 117   1        
+ 118   1        
+ 119   1        /* When RcvDoneFlag equals FALSE, there's no data received from CSR1010 
+ 120   1           Then, exit function */
+ 121   1        if (RcvDoneFlag == FALSE)     
+ 122   1        {   
+ 123   2          return;
+ 124   2        }
+ 125   1        
+ 126   1        
+ 127   1        
+ 128   1        
+ 129   1        
+ 130   1        /* When RcvDoneFlag equals TRUE, CSR1010 has send data to MCU.Under this
+ 131   1           condition, process the data */
+ 132   1        RcvDoneFlag = FALSE;              // clear receive flag
+ 133   1        
+ 134   1        
+ 135   1        
+ 136   1        
+ 137   1        
+ 138   1        
+ 139   1        /*+++ CSR1010 initialization is complete  +++*/
+ 140   1        if ((RcvData.DataBuf[0] == 0xF0) && (BtInitFlag == FALSE))    
+ 141   1        {
+ 142   2          SndData.SndStatus = SND_TYPE;   // type send
+ 143   2          return;
+ 144   2        }
+ 145   1        
+ 146   1        
+ 147   1        
+ 148   1        
+ 149   1        
+ 150   1        /*+++Check the command flag number, if reply ,then exit ++++*/
+ 151   1        if (CmdFlagNum == (RcvData.DataBuf[0] & 0xF0))
+ 152   1        {
+ 153   2          return;
+ 154   2        }
+ 155   1        CmdFlagNum  = RcvData.DataBuf[0] & 0xF0;      // if not equal, replaced
+ 156   1        
+ 157   1        
+ 158   1        
+ 159   1        
+ 160   1        
+ 161   1        /*+++ When received the below command, MCU will reply x1 00 00 00 00 00 00 00 to CSR1010
+ 162   1              in order to declare itselft
+ 163   1        */
+ 164   1        if ((RcvData.DataBuf[0] & 0x0F) == 0x1)
+ 165   1        {
+ 166   2          SndData.SndStatus   = SND_NORMAL;
+ 167   2          SndData.DataBuf[0]  = RcvData.DataBuf[0];
+ 168   2          for (TempCnt = 1; TempCnt < 8; TempCnt++)     
+ 169   2          {
+ 170   3            SndData.DataBuf[TempCnt]  = 0x0;
+ 171   3          }
+ 172   2          return;
+ 173   2        }
+ 174   1        
+ 175   1        
+ 176   1        
+ 177   1        
+ 178   1        /*+++ Status command , reply AL93's mode, color, count down hour' value+++*/
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 14:17:15 PAGE 4   
+
+ 179   1        if ((RcvData.DataBuf[0] & 0xF) == 0x2)
+ 180   1        {
+ 181   2          SndData.SndStatus   = SND_NORMAL;
+ 182   2          SndData.DataBuf[0]  = RcvData.DataBuf[0];
+ 183   2          SndData.DataBuf[1]  = LedData.ModeBuf;
+ 184   2          SndData.DataBuf[2]  = LedData.Color;
+ 185   2          SndData.DataBuf[3]  = TimerData.CntDwnHour;
+ 186   2          if (LedData.Mode == 0x0)    SndData.DataBuf[4]  = 0x0;
+ 187   2          else                        SndData.DataBuf[4]  = 0x1;
+ 188   2          for (TempCnt = 5; TempCnt < 8; TempCnt++)   
+ 189   2          {
+ 190   3            SndData.DataBuf[TempCnt]  = 0x0;
+ 191   3          }
+ 192   2          return;
+ 193   2        }
+ 194   1        
+ 195   1        
+ 196   1        
+ 197   1        
+ 198   1        /*<--Online command, when received the command 0xE, reply to APP as same as received-->*/
+ 199   1        if ((RcvData.DataBuf[0] & 0xF) == 0xE)
+ 200   1        {
+ 201   2          SndData.SndStatus   = SND_NORMAL;
+ 202   2          SndData.DataBuf[0]  = RcvData.DataBuf[0];
+ 203   2          for (TempCnt = 1; TempCnt < 8; TempCnt++)   RcvData.DataBuf[TempCnt]  = 0;
+ 204   2          return;
+ 205   2        }
+ 206   1        
+ 207   1        
+ 208   1        
+ 209   1        
+ 210   1        /*+++ The below command set the projector's mode+++ */
+ 211   1        if ((RcvData.DataBuf[0] & 0x0F) == 0x3)
+ 212   1        {
+ 213   2          // turn off
+ 214   2          if (RcvData.DataBuf[1] == 0x0)
+ 215   2          {
+ 216   3            LedData.Mode      = 0x0;
+ 217   3            LedData.InitFlag  = TRUE;
+ 218   3          }
+ 219   2          
+ 220   2          // turn on
+ 221   2          else if (RcvData.DataBuf[1] == 0xFF)
+ 222   2          {
+ 223   3            LedData.Mode      = LedData.ModeBuf;
+ 224   3            LedData.InitFlag  = TRUE;
+ 225   3          }
+ 226   2          
+ 227   2          // normal
+ 228   2          else
+ 229   2          {
+ 230   3            // overflow
+ 231   3            if (RcvData.DataBuf[1] > 0x8)
+ 232   3            {
+ 233   4              RcvData.DataBuf[1]  = 0x8;
+ 234   4            }
+ 235   3            
+ 236   3            LedData.ModeBuf   = RcvData.DataBuf[1];
+ 237   3            LedData.Mode      = LedData.ModeBuf;
+ 238   3            LedData.InitFlag  = TRUE;
+ 239   3            if (LedData.ModeBuf == 0x8)   LedData.CircleInitFlag  = TRUE; 
+ 240   3            APData.Mode       = LedData.ModeBuf;
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 14:17:15 PAGE 5   
+
+ 241   3            Byte_Write_To_APROM();
+ 242   3          }
+ 243   2          
+ 244   2          return;
+ 245   2        }
+ 246   1        
+ 247   1        
+ 248   1        
+ 249   1        
+ 250   1        /*+++ The below command set the projector's color+++ */
+ 251   1        if ((RcvData.DataBuf[0] & 0x0F) == 0x4)
+ 252   1        {
+ 253   2          // when the data
+ 254   2          if (RcvData.DataBuf[1] == 0x0 || RcvData.DataBuf[1] > 0xF)
+ 255   2          {
+ 256   3            return;
+ 257   3          }
+ 258   2          LedData.Color = RcvData.DataBuf[1];
+ 259   2          APData.Color  = LedData.Color;
+ 260   2          Color_Value_Get(LedData.Color);
+ 261   2          LedData.InitFlag  = TRUE;
+ 262   2          if (LedData.ModeBuf == 0x8)   LedData.CircleInitFlag  = TRUE; 
+ 263   2          Byte_Write_To_APROM();
+ 264   2          
+ 265   2          return;
+ 266   2        }
+ 267   1        
+ 268   1        
+ 269   1        /*+++ The below command set the projector's count down hour +++*/
+ 270   1        if ((RcvData.DataBuf[0] & 0x0F) == 0x5)
+ 271   1        {
+ 272   2          // when the data is error ,exit
+ 273   2          if ((RcvData.DataBuf[2] > 8) || (RcvData.DataBuf[2] % 2 != 0))
+ 274   2          {
+ 275   3            return;
+ 276   3          }
+ 277   2          
+ 278   2          LedData.WarningFlag   = TRUE;
+ 279   2          LedData.InitFlag      = TRUE;
+ 280   2          
+ 281   2          TimerData.CntDwnHour  = RcvData.DataBuf[2];
+ 282   2          TimerData.InitFlag    = TRUE;
+ 283   2          APData.CntDwnHour     = TimerData.CntDwnHour;
+ 284   2          Byte_Write_To_APROM();
+ 285   2        }
+ 286   1      }
+ 287          
+ 288          
+ 289          
+ 290          /**************************************************************
+ 291            *
+ 292            * @FunctionName   Color_Value_Get
+ 293            *
+ 294          *****/
+ 295          static void Color_Value_Get(_Uint8  ColorValBuf)
+ 296          {
+ 297   1        _Uint8 TempCnt = 0;
+ 298   1        
+ 299   1        for (TempCnt = 0; TempCnt < 6; TempCnt++)
+ 300   1        {
+ 301   2          Color[TempCnt] = 0;
+ 302   2        }
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 14:17:15 PAGE 6   
+
+ 303   1        
+ 304   1        switch (ColorValBuf)
+ 305   1        {
+ 306   2          case 0x1:
+ 307   2            Color[0] = &RedDuty[0];
+ 308   2            Color[2] = &RedDuty[1];
+ 309   2            Color[4] = &RedDuty[2];
+ 310   2           break;
+ 311   2            
+ 312   2           /* green */
+ 313   2           case 0x2:
+ 314   2            Color[0] = &GreenDuty[0];
+ 315   2            Color[2] = &GreenDuty[1];
+ 316   2            Color[4] = &GreenDuty[2];
+ 317   2           break;
+ 318   2           
+ 319   2           /* RRRGGG*/
+ 320   2          case 0x3:
+ 321   2            Color[0] = &RedDuty[0];
+ 322   2            Color[1] = &GreenDuty[0];
+ 323   2            Color[2] = &RedDuty[1];
+ 324   2            Color[3] = &GreenDuty[1];
+ 325   2            Color[4] = &RedDuty[2];
+ 326   2            Color[5] = &GreenDuty[2];
+ 327   2          break;
+ 328   2                      
+ 329   2           /* blue */
+ 330   2           case 4:
+ 331   2            Color[0] = &BlueDuty[0];
+ 332   2            Color[2] = &BlueDuty[1];
+ 333   2            Color[4] = &BlueDuty[2];
+ 334   2           break;
+ 335   2           
+ 336   2           
+ 337   2          /* RRRBBB*/
+ 338   2          case 0x5:
+ 339   2            Color[0] = &RedDuty[0];
+ 340   2            Color[1] = &BlueDuty[0];
+ 341   2            Color[2] = &RedDuty[1];
+ 342   2            Color[3] = &BlueDuty[1];
+ 343   2            Color[4] = &RedDuty[2];
+ 344   2            Color[5] = &BlueDuty[2];
+ 345   2          break;
+ 346   2          
+ 347   2          /* GGGBBB*/
+ 348   2          case 0x6:
+ 349   2            Color[0] = &GreenDuty[0];
+ 350   2            Color[1] = &BlueDuty[0];
+ 351   2            Color[2] = &GreenDuty[1];
+ 352   2            Color[3] = &BlueDuty[1];
+ 353   2            Color[4] = &GreenDuty[2];
+ 354   2            Color[5] = &BlueDuty[2];
+ 355   2          break;
+ 356   2          
+ 357   2          /* RRGGBB */
+ 358   2          case 0x7:
+ 359   2            Color[0] = &RedDuty[0];
+ 360   2            Color[1] = &BlueDuty[0];
+ 361   2            Color[2] = &RedDuty[1];
+ 362   2            Color[3] = &GreenDuty[1];
+ 363   2            Color[4] = &GreenDuty[2];
+ 364   2            Color[5] = &BlueDuty[2];
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 14:17:15 PAGE 7   
+
+ 365   2          break;
+ 366   2          
+ 367   2                      
+ 368   2           /* white */
+ 369   2           case 8:
+ 370   2            Color[0] = &WhiteDuty[0];
+ 371   2            Color[2] = &WhiteDuty[1];
+ 372   2            Color[4] = &WhiteDuty[2];
+ 373   2           break;
+ 374   2           
+ 375   2           
+ 376   2           /* RRRWWW */
+ 377   2          case 0x9:
+ 378   2            Color[0] = &RedDuty[0];
+ 379   2            Color[1] = &WhiteDuty[0];
+ 380   2            Color[2] = &RedDuty[1];
+ 381   2            Color[3] = &WhiteDuty[1];
+ 382   2            Color[4] = &RedDuty[2];
+ 383   2            Color[5] = &WhiteDuty[2];
+ 384   2          break;
+ 385   2           
+ 386   2          /* GGGWWW */
+ 387   2          case 0xA:
+ 388   2            Color[0] = &GreenDuty[0];
+ 389   2            Color[1] = &WhiteDuty[0];
+ 390   2            Color[2] = &GreenDuty[1];
+ 391   2            Color[3] = &WhiteDuty[1];
+ 392   2            Color[4] = &GreenDuty[2];
+ 393   2            Color[5] = &WhiteDuty[2];
+ 394   2          break;
+ 395   2          
+ 396   2          /* RRGGWW */
+ 397   2          case 0xB:
+ 398   2            Color[0] = &RedDuty[0];
+ 399   2            Color[1] = &WhiteDuty[0];
+ 400   2            Color[2] = &RedDuty[1];
+ 401   2            Color[3] = &GreenDuty[1];
+ 402   2            Color[4] = &GreenDuty[2];
+ 403   2            Color[5] = &WhiteDuty[2];
+ 404   2          break;
+ 405   2          
+ 406   2          
+ 407   2          /* BBBWWW */
+ 408   2          case 0xC:
+ 409   2            Color[0] = &BlueDuty[0];
+ 410   2            Color[1] = &WhiteDuty[0];
+ 411   2            Color[2] = &BlueDuty[1];
+ 412   2            Color[3] = &WhiteDuty[1];
+ 413   2            Color[4] = &BlueDuty[2];
+ 414   2            Color[5] = &WhiteDuty[2];
+ 415   2          break;
+ 416   2          
+ 417   2          
+ 418   2          /* RRBBWW */
+ 419   2          case 0xD:
+ 420   2            Color[0] = &RedDuty[0];
+ 421   2            Color[1] = &WhiteDuty[0];
+ 422   2            Color[2] = &RedDuty[1];
+ 423   2            Color[3] = &BlueDuty[1];
+ 424   2            Color[4] = &BlueDuty[2];
+ 425   2            Color[5] = &WhiteDuty[2];
+ 426   2          break;
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 14:17:15 PAGE 8   
+
+ 427   2          
+ 428   2          /* GGBBWW */
+ 429   2          case 0xE:
+ 430   2            Color[0] = &BlueDuty[0];
+ 431   2            Color[1] = &WhiteDuty[0];
+ 432   2            Color[2] = &BlueDuty[1];
+ 433   2            Color[3] = &GreenDuty[1];
+ 434   2            Color[4] = &GreenDuty[2];
+ 435   2            Color[5] = &WhiteDuty[2];
+ 436   2          break;
+ 437   2          
+ 438   2          
+ 439   2          /* RGBWW */
+ 440   2          case 0xF:
+ 441   2            Color[0] = &RedDuty[0];
+ 442   2            Color[1] = &WhiteDuty[0];
+ 443   2            Color[2] = &GreenDuty[1];
+ 444   2            Color[3] = &WhiteDuty[1];
+ 445   2            Color[4] = &BlueDuty[2];
+ 446   2            Color[5] = &WhiteDuty[2];
+ 447   2          break; 
+ 448   2      
+ 449   2        } //set color
+ 450   1      }
+ 451          
+ 452          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1170    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

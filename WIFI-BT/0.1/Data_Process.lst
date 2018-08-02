@@ -1,0 +1,399 @@
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 11:28:13 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE DATA_PROCESS
+OBJECT MODULE PLACED IN Data_Process.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE UserAPP\Data_Process.c BROWSE INCDIR(.\UserAPP) DEBUG OBJECTEXTEND PRIN
+                    -T(.\Data_Process.lst) TABS(2) OBJECT(Data_Process.obj)
+
+line level    source
+
+   1          /********************************************************************
+   2            *
+   3            * FILE NAME      Data_Process.c
+   4            *
+   5          *********************************************************************/
+   6          #include "Data_Process.h"
+   7          
+   8          _Uint8        NormalMode;
+   9          _Uint8        ShowMode;
+  10          _Uint8        NormalColor;
+  11          _Uint8        ShowColor;
+  12          
+  13          
+  14          EN_ERR_NUM   ErrNum;
+  15          
+  16          _Uint8        FlagChkTime;
+  17          _Flag         FlagChkFlag;
+  18          
+  19          _Sint16       RndSeed;
+  20          
+  21          
+  22          /********************************************************************
+  23            *
+  24            * FunctionName    User_Data_Init
+  25            *
+  26          *********************************************************************/
+  27          void User_Data_Init(void)
+  28          {
+  29   1        NormalMode    = Byte_Read_From_APROM(APROM_NORMAL_MODE);
+  30   1        NormalColor   = Byte_Read_From_APROM(APROM_NORMAL_COLOR);
+  31   1        ShowMode      = Byte_Read_From_APROM(APROM_SHOW_MODE);
+  32   1        ShowColor     = Byte_Read_From_APROM(APROM_SHOW_COLOR);
+  33   1        
+  34   1        if (NormalMode > NORMAL_MODE_MAX){
+  35   2          NormalMode = 1;
+  36   2          FlashSaveFlag = TRUE;
+  37   2        }
+  38   1        
+  39   1        if (NormalColor > NORMAL_COLOR_MAX){
+  40   2          NormalColor = 0;
+  41   2          FlashSaveFlag = TRUE;
+  42   2        }
+  43   1        
+  44   1        if (ShowMode > SHOW_MODE_MAX){
+  45   2          ShowMode = 1;
+  46   2          FlashSaveFlag = TRUE;
+  47   2        }
+  48   1        
+  49   1        if (ShowColor > SHOW_COLOR_MAX){
+  50   2          NormalMode = 1;
+  51   2          FlashSaveFlag = TRUE;
+  52   2        }
+  53   1      }
+  54          
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 11:28:13 PAGE 2   
+
+  55          
+  56          
+  57          /********************************************************************
+  58            *
+  59            * FunctionName    Data_Process
+  60            *
+  61          *********************************************************************/
+  62          void Data_Process(void)
+  63          {
+  64   1        RndSeed += 199;
+  65   1        Key_Process();
+  66   1        
+  67   1        CSR1010_Process();
+  68   1        
+  69   1        Wifi_Process();
+  70   1      }
+  71          
+  72          
+  73          //-------------------------------------------------------------------
+  74          // FunctionName     Key_Process
+  75          //-------------------------------------------------------------------
+  76          static void Key_Process(void)
+  77          {
+  78   1        if (KeyStatus == KEY_1_SHORT)
+  79   1        {
+  80   2          
+  81   2        }
+  82   1        else if (KeyStatus == KEY_2_SHORT)
+  83   1        {
+  84   2          
+  85   2        }
+  86   1        else
+  87   1        {
+  88   2          KeyStatus = KEY_IDLE;
+  89   2        }
+  90   1      }
+  91          
+  92          
+  93          //-------------------------------------------------------------------
+  94          // FunctionName     CSR1010_Process
+  95          //-------------------------------------------------------------------
+  96          static void CSR1010_Process(void)
+  97          {
+  98   1        static  _Uint8      TypeReplyTime;
+  99   1        static  _Flag       BtInitFlag;               //bluetooth intialization' flag
+ 100   1        static  _Uint8      FlagBuffer  = 0xFF;
+ 101   1        
+ 102   1        /* Initialize the CSR1010's broadcast name after 3 seconds*/
+ 103   1        if (BtInitFlag == FALSE)
+ 104   1        {
+ 105   2          //----------------------------------------------------------------------
+ 106   2          // if device haven't received command FD F0 FE within 1 second after power on,
+ 107   2          // send the type to CSR1010
+ 108   2          //-----------------------------------------------------------------------
+ 109   2          TypeReplyTime++;
+ 110   2          if (TypeReplyTime >= 150)
+ 111   2          {
+ 112   3            BtInitFlag          = TRUE;              
+ 113   3            SndData[1].SndStatus    = SND_TYPE;
+ 114   3          }
+ 115   2        }
+ 116   1          
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 11:28:13 PAGE 3   
+
+ 117   1        //-----------------------------------------------------------------------
+ 118   1        // if the device haven't received any command within 300ms,
+ 119   1        // clear the flagstatus
+ 120   1        //-----------------------------------------------------------------------
+ 121   1        if (FlagChkFlag)
+ 122   1        {
+ 123   2          FlagChkTime++;
+ 124   2          if (FlagChkTime >= 15)
+ 125   2          {
+ 126   3            FlagChkTime   = 0;
+ 127   3            FlagBuffer    = 0xFF;
+ 128   3            FlagChkFlag   = FALSE;
+ 129   3          }
+ 130   2        }
+ 131   1        
+ 132   1      
+ 133   1        
+ 134   1        /* Check the received flag, when it is false, return */
+ 135   1        if (RcvFlag[1] == FALSE)    return;
+ 136   1        
+ 137   1        
+ 138   1        /* Received the command from CSR1010
+ 139   1         * Clear the received flag        
+ 140   1         */
+ 141   1        RcvFlag[1]      = FALSE;
+ 142   1        FlagChkFlag   = TRUE;
+ 143   1        FlagChkTime   = 0;
+ 144   1        BtRcvDataFlag = TRUE;
+ 145   1        
+ 146   1        
+ 147   1        /* CSR1010 Initialize         */
+ 148   1        if (BtInitFlag == FALSE)
+ 149   1        {
+ 150   2          if (RcvData[1].DataBuf[0] == 0xF0)
+ 151   2          {
+ 152   3            BtInitFlag = TRUE;
+ 153   3            SndData[1].SndStatus    = SND_TYPE;
+ 154   3            return;
+ 155   3          }
+ 156   2        }
+ 157   1        
+ 158   1        
+ 159   1        
+ 160   1        
+ 161   1      }
+ 162          
+ 163          //-------------------------------------------------------------------
+ 164          // FunctionName     Wifi_Process
+ 165          //-------------------------------------------------------------------
+ 166          static void Wifi_Process(void)
+ 167          {
+ 168   1        static _Uint8   FlagByte = 0x1;
+ 169   1        _Flag           FlagChgFlag = FALSE;
+ 170   1        UART_Cmd_T      CmdBuffer;
+ 171   1        _Uint8          LengthBuffer;
+ 172   1        _Uint8          InfoBuffer;
+ 173   1        _Flag           ErrFlag;
+ 174   1        
+ 175   1        if (RcvFlag[0] == FALSE)    return;
+ 176   1        RcvFlag[0] = FALSE;
+ 177   1        
+ 178   1        CmdBuffer     = RcvData[0].DataBuf[1];
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 11:28:13 PAGE 4   
+
+ 179   1        LengthBuffer  = RcvData[0].DataBuf[3];
+ 180   1        InfoBuffer    = RcvData[0].DataBuf[4];
+ 181   1        
+ 182   1        if (LengthBuffer > 0)
+ 183   1        {
+ 184   2          switch (CmdBuffer)
+ 185   2          {
+ 186   3            //Setting specific color or theme
+ 187   3            case CMD_THEME_SET:{
+ 188   4              //Error check
+ 189   4              if (InfoBuffer > NORMAL_COLOR_MAX){
+ 190   5                ErrNum = ERR_COLOR_RANGE;
+ 191   5                break;
+ 192   5              }
+ 193   4              
+ 194   4              if (NormalMode > 0x8){
+ 195   5                NormalMode = 0x1;
+ 196   5              }
+ 197   4      
+ 198   4              //Change the color
+ 199   4              NormalColor = InfoBuffer;
+ 200   4              
+ 201   4              SndData[1].SndStatus  = SND_BROADCAST;
+ 202   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 203   4              SndData[1].DataBuf[1] = 0x00;
+ 204   4              SndData[1].DataBuf[2] = 0xFF;
+ 205   4              SndData[1].DataBuf[3] = 0xFF;
+ 206   4              SndData[1].DataBuf[4] = 0x03  | (FlagByte << 4);
+ 207   4              SndData[1].DataBuf[5] = NormalMode;
+ 208   4              SndData[1].DataBuf[6] = NormalColor;
+ 209   4              SndData[1].DataBuf[7] = 0;
+ 210   4              SndData[1].DataBuf[8] = 0;
+ 211   4              SndData[1].DataBuf[9] = 0;
+ 212   4              
+ 213   4              FlagChgFlag = TRUE;
+ 214   4              FlashSaveFlag = TRUE;
+ 215   4            } break;
+ 216   3            
+ 217   3            
+ 218   3            
+ 219   3            //Setting specific mode
+ 220   3            case CMD_NORMAL_MODE:{
+ 221   4              //Error check
+ 222   4              if (InfoBuffer > NORMAL_MODE_MAX){
+ 223   5                ErrNum = ERR_MODE_RANGE;
+ 224   5                break;
+ 225   5              }
+ 226   4              
+ 227   4              //Setting mode
+ 228   4              NormalMode = InfoBuffer + 1;
+ 229   4              
+ 230   4              SndData[1].SndStatus  = SND_BROADCAST;
+ 231   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 232   4              SndData[1].DataBuf[1] = 0x00;
+ 233   4              SndData[1].DataBuf[2] = 0xFF;
+ 234   4              SndData[1].DataBuf[3] = 0xFF;
+ 235   4              SndData[1].DataBuf[4] = 0x03  | (FlagByte << 4);
+ 236   4              SndData[1].DataBuf[5] = NormalMode;
+ 237   4              SndData[1].DataBuf[6] = NormalColor;
+ 238   4              SndData[1].DataBuf[7] = 0;
+ 239   4              SndData[1].DataBuf[8] = 0;
+ 240   4              SndData[1].DataBuf[9] = 0;
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 11:28:13 PAGE 5   
+
+ 241   4              
+ 242   4              FlagChgFlag = TRUE;
+ 243   4              FlashSaveFlag = TRUE;
+ 244   4            } break;
+ 245   3            
+ 246   3            
+ 247   3            //Show
+ 248   3            case CMD_SHOW_MODE:{
+ 249   4              //Error check
+ 250   4              if (InfoBuffer > SHOW_COLOR_MAX){
+ 251   5                ErrNum = ERR_SHOW_RANGE;
+ 252   5                break;
+ 253   5              }
+ 254   4              
+ 255   4              //Random one mode
+ 256   4              srand(RndSeed);
+ 257   4              ShowMode = ((_Uint8)rand()) % 3 + 1;
+ 258   4              
+ 259   4              //Setting show mode
+ 260   4              ShowColor = InfoBuffer;
+ 261   4              
+ 262   4              SndData[1].SndStatus  = SND_BROADCAST;
+ 263   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 264   4              SndData[1].DataBuf[1] = 0x00;
+ 265   4              SndData[1].DataBuf[2] = 0xFF;
+ 266   4              SndData[1].DataBuf[3] = 0xFF;
+ 267   4              SndData[1].DataBuf[4] = 0x0A  | (FlagByte << 4);
+ 268   4              SndData[1].DataBuf[5] = ShowMode;
+ 269   4              SndData[1].DataBuf[6] = ShowColor;
+ 270   4              SndData[1].DataBuf[7] = 0;
+ 271   4              SndData[1].DataBuf[8] = 0;
+ 272   4              SndData[1].DataBuf[9] = 0;
+ 273   4              
+ 274   4              FlagChgFlag = TRUE;
+ 275   4              FlashSaveFlag = TRUE;
+ 276   4            } break;
+ 277   3              
+ 278   3            
+ 279   3            // Setting timer
+ 280   3            case CMD_TIMER_SET:{
+ 281   4              //Err check
+ 282   4      //        if (InfoBuffer > 8 || (InfoBuffer % 2 == 1)){
+ 283   4      //          ErrNum = ERR_TIMER_INVALID;
+ 284   4      //          break;
+ 285   4      //        }
+ 286   4      
+ 287   4              SndData[1].SndStatus  = SND_BROADCAST;
+ 288   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 289   4              SndData[1].DataBuf[1] = 0x00;
+ 290   4              SndData[1].DataBuf[2] = 0xFF;
+ 291   4              SndData[1].DataBuf[3] = 0xFF;
+ 292   4              SndData[1].DataBuf[4] = 0x05 | (FlagByte << 4);
+ 293   4              SndData[1].DataBuf[5] = InfoBuffer;
+ 294   4              SndData[1].DataBuf[6] = 0x0;
+ 295   4              SndData[1].DataBuf[7] = 0;
+ 296   4              SndData[1].DataBuf[8] = 0;
+ 297   4              SndData[1].DataBuf[9] = 0;
+ 298   4              
+ 299   4              FlagChgFlag = TRUE;
+ 300   4              FlashSaveFlag = TRUE;
+ 301   4            } break;
+ 302   3            
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 11:28:13 PAGE 6   
+
+ 303   3            // Error
+ 304   3            default:
+ 305   3            {
+ 306   4              ErrFlag = TRUE;
+ 307   4            } break;
+ 308   3          }
+ 309   2        }
+ 310   1        
+ 311   1        else
+ 312   1        {
+ 313   2          // Turn Off
+ 314   2          if (CmdBuffer == CMD_SOCKET_OFF){
+ 315   3            SndData[1].SndStatus  = SND_BROADCAST;
+ 316   3            SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 317   3            SndData[1].DataBuf[1] = 0x00;
+ 318   3            SndData[1].DataBuf[2] = 0xFF;
+ 319   3            SndData[1].DataBuf[3] = 0xFF;
+ 320   3            SndData[1].DataBuf[4] = 0x03 | (FlagByte << 4);
+ 321   3            SndData[1].DataBuf[5] = 0x0;
+ 322   3            SndData[1].DataBuf[6] = 0x0;
+ 323   3            SndData[1].DataBuf[7] = 0;
+ 324   3            SndData[1].DataBuf[8] = 0;
+ 325   3            SndData[1].DataBuf[9] = 0;
+ 326   3            
+ 327   3            FlagChgFlag = TRUE;
+ 328   3          }
+ 329   2          
+ 330   2          // Turn On
+ 331   2          else if (CmdBuffer == CMD_SOCKET_ON){
+ 332   3            SndData[1].SndStatus  = SND_BROADCAST;
+ 333   3            SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 334   3            SndData[1].DataBuf[1] = 0x00;
+ 335   3            SndData[1].DataBuf[2] = 0xFF;
+ 336   3            SndData[1].DataBuf[3] = 0xFF;
+ 337   3            SndData[1].DataBuf[4] = 0x03 | (FlagByte << 4);
+ 338   3            SndData[1].DataBuf[5] = 0xFF;
+ 339   3            SndData[1].DataBuf[6] = 0x0;
+ 340   3            SndData[1].DataBuf[7] = 0;
+ 341   3            SndData[1].DataBuf[8] = 0;
+ 342   3            SndData[1].DataBuf[9] = 0;
+ 343   3            
+ 344   3            FlagChgFlag = TRUE;
+ 345   3          }
+ 346   2          
+ 347   2          // Error
+ 348   2          else
+ 349   2          {
+ 350   3            ErrNum = ERR_CMD_INVALID;
+ 351   3          }
+ 352   2        }
+ 353   1        
+ 354   1        
+ 355   1        // Error occur
+ 356   1        if (FlagChgFlag)
+ 357   1        {
+ 358   2          FlagByte++;
+ 359   2          if (FlagByte > 16)  FlagByte = 1;
+ 360   2        }
+ 361   1      }
+ 362          
+ 363          
+
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      07/31/2018 11:28:13 PAGE 7   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    537    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     13       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

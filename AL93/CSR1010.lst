@@ -1,0 +1,292 @@
+C51 COMPILER V9.52.0.0   CSR1010                                                           07/31/2018 14:17:14 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE CSR1010
+OBJECT MODULE PLACED IN CSR1010.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE Source\CSR1010.c BROWSE INCDIR(.\Include) DEBUG OBJECTEXTEND PRINT(.\CS
+                    -R1010.lst) TABS(2) OBJECT(CSR1010.obj)
+
+line level    source
+
+   1          /*************************************************************************
+   2            *
+   3            * @FileName   Csr1010.c
+   4            * @Date       2017.03.10
+   5            * @Author     DS.Chin
+   6            * @Description
+   7            *             | Communicate to CSR1010
+   8            *             | Receive data from APP
+   9            *             | Send dato to APP
+  10            *
+  11          ***************************************************************************/
+  12          #include "Csr1010.h"
+  13          
+  14          
+  15          
+  16          /* <-------------Gloable Variables-------------------> */
+  17          _TypeStructRcv  RcvData;
+  18          _TypeStructSnd  SndData;
+  19          _Flag           RcvDoneFlag;
+  20          
+  21          
+  22          /* <-------------File Variables----------------------> */
+  23          _Uint8  RcvBuffer[RCV_BYTE_MAX];
+  24          enum
+  25          {
+  26            RCV_IDLE,
+  27            RCV_STT,
+  28            RCV_END,
+  29            RCV_ERR
+  30          }RcvByteStatus;
+  31          
+  32          
+  33          
+  34          /*********************************************************
+  35            *
+  36            * @FunctionName Csr1010_Init
+  37            *
+  38          *****/
+  39          void Csr1010_Init(void)
+  40          {
+  41   1        SndData.SndByteDoneFlag = FALSE;
+  42   1      }
+  43          
+  44          
+  45          /**********************************************************
+  46            *
+  47            * @FunctionName Uart_Interrupt
+  48            *
+  49          ****/
+  50          void Uart_Interrupt(void) interrupt 15
+  51          {
+  52   1        /* When receive interrupt flag been set */
+  53   1        if (RI_1)
+  54   1        {
+C51 COMPILER V9.52.0.0   CSR1010                                                           07/31/2018 14:17:14 PAGE 2   
+
+  55   2          RI_1 = RESET;
+  56   2          Csr1010_Rcv_Byte();
+  57   2        }
+  58   1        
+  59   1        /* When send interrput flag been set */
+  60   1        if (TI_1)
+  61   1        {
+  62   2          TI_1 = RESET;
+  63   2          SndData.SndByteDoneFlag = FALSE;
+  64   2        }
+  65   1        
+  66   1        return;
+  67   1      }
+  68          
+  69          
+  70          
+  71          
+  72          
+  73          
+  74          /***********************************************************
+  75            *
+  76            * @FunctionName Csr1010_Rcv_Byte
+  77            *
+  78          ****/
+  79          static void Csr1010_Rcv_Byte(void)
+  80          {
+  81   1        static _Uint8   ByteCnt;
+  82   1               _Uint8   RcvBufferTemp = 0;
+  83   1        
+  84   1        
+  85   1        // move receive data to RcvBuffer
+  86   1        RcvBufferTemp = SBUF_1;
+  87   1        
+  88   1        // start to receive data when receive status is idle
+  89   1        if (RcvByteStatus == RCV_IDLE)
+  90   1        {
+  91   2          if (RcvBufferTemp == 0xFD)
+  92   2          {
+  93   3            RcvByteStatus   = RCV_STT;
+  94   3            ByteCnt = 0;
+  95   3          }
+  96   2        }
+  97   1        
+  98   1        // receive the data 
+  99   1        else if (RcvByteStatus == RCV_STT)
+ 100   1        {
+ 101   2          if (RcvBufferTemp == 0xFE)      RcvByteStatus           = RCV_END;                  /* Rcv End */
+ 102   2          else if (ByteCnt >= 6)          RcvByteStatus           = RCV_ERR;                  /* Rcv Err */   
+ 103   2          else                            RcvBuffer[ByteCnt++]    = RcvBufferTemp;            /* Rcving */ 
+ 104   2        }
+ 105   1      }
+ 106          
+ 107          
+ 108          
+ 109          
+ 110          
+ 111          
+ 112          
+ 113          /************************************************************
+ 114            *
+ 115            * @FunctionName Csr1010_Rcv_Data
+ 116            *
+C51 COMPILER V9.52.0.0   CSR1010                                                           07/31/2018 14:17:14 PAGE 3   
+
+ 117          ****/
+ 118          void Csr1010_Rcv_Data(void)
+ 119          {
+ 120   1        static _Uint8   RcvSttHoldTime;   
+ 121   1               _Uint8   TempCnt = 0;
+ 122   1        
+ 123   1        
+ 124   1        /* Exit when receive status is idle or working */
+ 125   1        if (RcvByteStatus == RCV_IDLE)
+ 126   1        {
+ 127   2          RcvSttHoldTime = 0;
+ 128   2          return;
+ 129   2        }
+ 130   1        
+ 131   1        
+ 132   1        /* Hold time after received, if timer > 1second, received err, then clear the data */
+ 133   1        if (RcvByteStatus == RCV_STT)
+ 134   1        {
+ 135   2          RcvSttHoldTime++;
+ 136   2          if (RcvSttHoldTime > 100)
+ 137   2          {
+ 138   3            RcvSttHoldTime  = 0;
+ 139   3            RcvByteStatus   = RCV_IDLE;
+ 140   3          }
+ 141   2          return;
+ 142   2        }
+ 143   1        
+ 144   1        
+ 145   1        /* received error */
+ 146   1        if (RcvByteStatus == RCV_ERR)
+ 147   1        {
+ 148   2          for (TempCnt = 0; TempCnt < 6; TempCnt++)   RcvBuffer[TempCnt]  = 0;      // clear the buffer
+ 149   2          RcvByteStatus = RCV_IDLE;                                                 // clear the status
+ 150   2          return;
+ 151   2        }
+ 152   1        
+ 153   1        
+ 154   1        /* received success */
+ 155   1        if (RcvByteStatus == RCV_END)
+ 156   1        {
+ 157   2          RcvDoneFlag = TRUE;
+ 158   2          for (TempCnt = 0; TempCnt < 6; TempCnt++)                 // move the buffer to rcvdata
+ 159   2          {
+ 160   3            RcvData.DataBuf[TempCnt]  = RcvBuffer[TempCnt];
+ 161   3            RcvBuffer[TempCnt]        = 0;
+ 162   3          }
+ 163   2          RcvByteStatus = RCV_IDLE;                                 // clear status
+ 164   2        }
+ 165   1      }
+ 166          
+ 167          
+ 168          
+ 169          
+ 170          
+ 171          
+ 172          
+ 173          
+ 174          
+ 175          
+ 176          /***********************************************************
+ 177            *
+ 178            * @FunctionName Csr1010_Snd_Data
+C51 COMPILER V9.52.0.0   CSR1010                                                           07/31/2018 14:17:14 PAGE 4   
+
+ 179            *
+ 180          *****/
+ 181          void Csr1010_Snd_Data(void)
+ 182          {
+ 183   1        _Uint8  TempCnt = 0;
+ 184   1        
+ 185   1        /* when snd data is idle , exit */
+ 186   1        if (SndData.SndStatus == SND_IDLE)
+ 187   1        {
+ 188   2          SndData.SndByteDoneFlag   = FALSE;
+ 189   2          SndData.SndCnt            = 0;
+ 190   2          SndData.InitFlag          = TRUE;
+ 191   2          SndData.TimeDelay         = 0;
+ 192   2          return;
+ 193   2        }
+ 194   1        
+ 195   1        /* type send LA1 */
+ 196   1        if (SndData.SndStatus == SND_TYPE)
+ 197   1        {
+ 198   2          // Send type command "LA1"
+ 199   2          Csr1010_Snd_Byte(0xFC);
+ 200   2          Csr1010_Snd_Byte('L');
+ 201   2          Csr1010_Snd_Byte('A');
+ 202   2          Csr1010_Snd_Byte('1');
+ 203   2          Csr1010_Snd_Byte(0xFE);
+ 204   2          
+ 205   2          // Send power on command after type command sent completed
+ 206   2          SndData.SndStatus = SND_NORMAL; 
+ 207   2          SndData.InitFlag  = TRUE;
+ 208   2          SndData.SndCnt    = 0;
+ 209   2          SndData.TimeDelay = 0;
+ 210   2          for (TempCnt = 0; TempCnt < 8; TempCnt++)   SndData.DataBuf[TempCnt] = 0;
+ 211   2          SndData.DataBuf[0]  = 0x1;
+ 212   2          return;
+ 213   2        }
+ 214   1        
+ 215   1        
+ 216   1        /* Send normally */
+ 217   1        if (SndData.SndStatus == SND_NORMAL)
+ 218   1        {
+ 219   2          if (SndData.InitFlag == TRUE)
+ 220   2          {
+ 221   3            SndData.InitFlag  = FALSE;
+ 222   3            Csr1010_Snd_Byte(0xFD);
+ 223   3            for (TempCnt = 0; TempCnt < 8; TempCnt++)   Csr1010_Snd_Byte(SndData.DataBuf[TempCnt]);
+ 224   3            Csr1010_Snd_Byte(0xFE);
+ 225   3          }
+ 226   2          else
+ 227   2          {
+ 228   3            SndData.SndCnt++;
+ 229   3            if (SndData.SndCnt >= 2)
+ 230   3            {
+ 231   4              SndData.SndCnt = 0;
+ 232   4              SndData.SndStatus = SND_IDLE;
+ 233   4            }
+ 234   3            else
+ 235   3            {
+ 236   4              SndData.TimeDelay++;
+ 237   4              if (SndData.TimeDelay >= 10)
+ 238   4              {
+ 239   5                SndData.TimeDelay = 0;
+ 240   5                SndData.InitFlag  = TRUE;
+C51 COMPILER V9.52.0.0   CSR1010                                                           07/31/2018 14:17:14 PAGE 5   
+
+ 241   5              }
+ 242   4            }
+ 243   3          }
+ 244   2        }
+ 245   1      }
+ 246          
+ 247          
+ 248          
+ 249          /******************************************************
+ 250            *
+ 251            * @Function Name  Csr1010_Snd_Byte
+ 252            *
+ 253          ****/
+ 254          static void Csr1010_Snd_Byte(_Uint8 SndBuf)
+ 255          {
+ 256   1        while (SndData.SndByteDoneFlag);
+ 257   1        SBUF_1 = SndBuf;
+ 258   1        SndData.SndByteDoneFlag = TRUE;
+ 259   1      }
+ 260          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    372    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     34       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

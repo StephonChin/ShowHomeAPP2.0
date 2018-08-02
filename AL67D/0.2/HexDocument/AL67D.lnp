@@ -1,0 +1,15 @@
+".\HexDocument\STARTUP.obj",
+".\HexDocument\AL67D.obj",
+".\HexDocument\KeyScan.obj",
+".\HexDocument\Led_Display.obj",
+".\HexDocument\MCU_Config.obj",
+".\HexDocument\Motor.obj",
+".\HexDocument\Ntc_Msr.obj",
+".\HexDocument\CSR1010.obj",
+".\HexDocument\Data_Process.obj",
+".\HexDocument\Flash_Prgrm.obj",
+".\HexDocument\Led_Class.obj",
+".\HexDocument\Timer_Ctrl.obj",
+".\HexDocument\BT_Control.obj" 
+TO ".\HexDocument\AL67D" 
+PRINT(".\AL67D.m51") RAMSIZE(256) 

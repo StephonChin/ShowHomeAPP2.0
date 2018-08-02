@@ -1,0 +1,15 @@
+..\hexdocuments\wdt.o: ..\FwLib\src\wdt.c
+..\hexdocuments\wdt.o: ..\Public\PublicInc\Mini58Series.h
+..\hexdocuments\wdt.o: C:\Keil\ARM\PACK\ARM\CMSIS\5.2.0\CMSIS\Include\core_cm0.h
+..\hexdocuments\wdt.o: C:\Keil\ARM\ARM\ARMCC\Bin\..\include\stdint.h
+..\hexdocuments\wdt.o: C:\Keil\ARM\PACK\ARM\CMSIS\5.2.0\CMSIS\Include\cmsis_version.h
+..\hexdocuments\wdt.o: C:\Keil\ARM\PACK\ARM\CMSIS\5.2.0\CMSIS\Include\cmsis_compiler.h
+..\hexdocuments\wdt.o: C:\Keil\ARM\PACK\ARM\CMSIS\5.2.0\CMSIS\Include\cmsis_armcc.h
+..\hexdocuments\wdt.o: C:\Keil\ARM\PACK\Nuvoton\NuMicro_DFP\1.1.0\Device\Mini58\Include\system_Mini58Series.h
+..\hexdocuments\wdt.o: ..\FwLib\inc\sys.h
+..\hexdocuments\wdt.o: ..\FwLib\inc\clk.h
+..\hexdocuments\wdt.o: ..\FwLib\inc\fmc.h
+..\hexdocuments\wdt.o: ..\FwLib\inc\gpio.h
+..\hexdocuments\wdt.o: ..\FwLib\inc\pwm.h
+..\hexdocuments\wdt.o: ..\FwLib\inc\timer.h
+..\hexdocuments\wdt.o: ..\FwLib\inc\uart.h

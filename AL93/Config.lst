@@ -1,0 +1,202 @@
+C51 COMPILER V9.52.0.0   CONFIG                                                            07/31/2018 14:17:14 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE CONFIG
+OBJECT MODULE PLACED IN Config.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE Source\Config.c BROWSE INCDIR(.\Include) DEBUG OBJECTEXTEND PRINT(.\Con
+                    -fig.lst) TABS(2) OBJECT(Config.obj)
+
+line level    source
+
+   1          /********************************************************************************
+   2            *
+   3            * @FileName Config.c
+   4            * 
+   5          *********************************************************************************/
+   6          #include "Config.h"
+   7          
+   8          
+   9          
+  10          /**************************************************************
+  11            *
+  12            * @FunctionName MCU_Config
+  13            * @Output       None
+  14            * @Input        None
+  15            *
+  16          ****/
+  17          void MCU_Config(void)
+  18          {
+  19   1        /* Disable Interrupt */
+  20   1        IE &= ~BIT7;
+  21   1        
+  22   1        /* Clock Initialize */
+  23   1        CLK_Init();
+  24   1        
+  25   1        /* General I/O Initialize */
+  26   1        GPIO_Init();
+  27   1        
+  28   1        /* Timer Initialize */
+  29   1        TIM_Init();
+  30   1        
+  31   1        /* UART Initialize */
+  32   1        UART_Init();
+  33   1        
+  34   1        /* Enable Interrupt */
+  35   1        IE |= BIT7;
+  36   1      }
+  37          
+  38          
+  39          /****************************************************************
+  40            *
+  41            * @FunctionName CLK_Init
+  42            * @Output       None
+  43            * @Input        None
+  44            *
+  45          ****/
+  46          static void CLK_Init(void)
+  47          {
+  48   1        _Uint16 ClkChgTime = 10000;
+  49   1        
+  50   1        TA    = 0xAA;
+  51   1        TA    = 0x55;
+  52   1        CKEN  |= BIT7;          // change clock to HXT
+  53   1        
+  54   1        
+C51 COMPILER V9.52.0.0   CONFIG                                                            07/31/2018 14:17:14 PAGE 2   
+
+  55   1        while ( !(CKSWT & 0x80) && (ClkChgTime != 0))         ClkChgTime--;   /* Wait HXT stable */
+  56   1        
+  57   1        /* HXT open successfully */
+  58   1        if (ClkChgTime > 0)  
+  59   1        {
+  60   2          TA    = 0xAA;
+  61   2          TA    = 0x55;
+  62   2          CKSWT = 0x2;        // switch source to HXT
+  63   2          
+  64   2          TA    = 0xAA;
+  65   2          TA    = 0x55;
+  66   2          CKEN &= ~BIT5;      // Close HIRC
+  67   2        }
+  68   1        
+  69   1        /* HXT open faily */
+  70   1        else
+  71   1        {
+  72   2          TA    = 0xAA;
+  73   2          TA    = 0x55;
+  74   2          CKSWT &= ~(BIT1 | BIT0);  
+  75   2        }
+  76   1      }
+  77          
+  78          
+  79          /**************************************************************
+  80            *
+  81            * @FunctionName GPIO_Init
+  82            * @Output       None
+  83            * @Input        None
+  84            *
+  85          ****/
+  86          static void GPIO_Init(void)
+  87          {
+  88   1        _Uint8  Temp = 0;
+  89   1        
+  90   1        /* P00 ~ P07 P-P output */
+  91   1        P0M1  = 0x00;
+  92   1        P0M2  = 0xFF;
+  93   1        P0    = 0xFF;
+  94   1        
+  95   1        /* P20 P21 P22 P23 P26 P-P output */
+  96   1        P2M1  &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT6);
+  97   1        P2M2  |= (BIT0 | BIT1 | BIT2 | BIT3 | BIT6);
+  98   1        P2    |= (BIT0 | BIT1 | BIT2 | BIT6);
+  99   1        P2    |= BIT3; 
+ 100   1      }
+ 101          
+ 102          
+ 103          
+ 104          /******************************************
+ 105            *
+ 106            * @FunctionName TIM_Init
+ 107            * @Output       None
+ 108            * @Input        None
+ 109            *
+ 110          ****/
+ 111          static void TIM_Init(void)
+ 112          {
+ 113   1        /* TIMER 0 */
+ 114   1        TMOD = 0x2;
+ 115   1        CKCON |= BIT3;
+ 116   1        TL0 = 56;
+C51 COMPILER V9.52.0.0   CONFIG                                                            07/31/2018 14:17:14 PAGE 3   
+
+ 117   1        TH0 = 56;
+ 118   1        ET0  = 1;
+ 119   1        TCON |= BIT4;
+ 120   1        
+ 121   1        
+ 122   1        
+ 123   1        /* TIMER 2 */
+ 124   1        T2CON   = 0x0;
+ 125   1        T2MOD   = 0xA0;
+ 126   1        RCMP2L  = 0xEF;
+ 127   1        RCMP2H  = 0xD8;       // 10ms
+ 128   1        TR2   = 1;
+ 129   1      }
+ 130          
+ 131          
+ 132          
+ 133          /******************************************
+ 134            *
+ 135            * @FunctionName UART_Init
+ 136            * @Output       None
+ 137            * @Input        None
+ 138            *
+ 139          ****/
+ 140          static void UART_Init(void)
+ 141          {
+ 142   1        /* P24 Rxd, P25 Txd*/
+ 143   1        P2M1  &= ~(BIT4 | BIT5);
+ 144   1        P2M2  &= ~(BIT4 | BIT5);
+ 145   1        P2    |= (BIT4 | BIT5);     // P24 = 1, P25 = 1
+ 146   1        
+ 147   1        /* Set Uart */
+ 148   1        SCON_1 = 0x50;    // work at mode 1
+ 149   1        T3CON |= BIT7;
+ 150   1        T3CON &= ~BIT6;
+ 151   1        
+ 152   1        /* Bond Rate 9600 */
+ 153   1        T3CON &= ~(BIT0 | BIT1 | BIT2);
+ 154   1        RH3   = 0xFF;
+ 155   1        RL3   = 0x98;               // Rate = 16M / (16 * (0xffff - 0xff98))  = 16M / (16 * 104) = 9600;
+ 156   1        T3CON |= BIT3;
+ 157   1        
+ 158   1        EIP1  |= BIT0;
+ 159   1        EIPH1 |= BIT0;
+ 160   1        
+ 161   1      
+ 162   1        /* Rcv Interrupt Enable */
+ 163   1        EIE1 |= BIT0;
+ 164   1      }
+ 165          
+ 166          
+ 167          
+ 168          
+ 169          
+ 170          
+ 171          
+ 172          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    182    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V9.52.0.0   CONFIG                                                            07/31/2018 14:17:14 PAGE 4   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

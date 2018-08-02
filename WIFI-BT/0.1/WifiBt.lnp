@@ -1,0 +1,10 @@
+"STARTUP.obj",
+"Config.obj",
+"Data_Process.obj",
+"Key_Scan.obj",
+"USART.obj",
+"WifiBt.obj",
+"BT_Control.obj",
+"Flash_Prgm.obj" 
+TO "WifiBt" 
+RAMSIZE(256) 

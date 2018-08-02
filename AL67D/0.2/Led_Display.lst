@@ -1,0 +1,2042 @@
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE LED_DISPLAY
+OBJECT MODULE PLACED IN .\HexDocument\Led_Display.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE PrivateSrc\Led_Display.c BROWSE INCDIR(.\PrivateInc;.\PublicInc) DEBUG 
+                    -OBJECTEXTEND PRINT(.\Led_Display.lst) TABS(2) OBJECT(.\HexDocument\Led_Display.obj)
+
+line level    source
+
+   1          /************************************************************
+   2            *
+   3            * @File Name      LedDisplay.c
+   4            * @Description    This file contains prototyped function for controllng the 
+   5            *                 Led mode
+   6            *
+   7          *******************************************************************************/
+   8          
+   9          /* Includes-------------------------------------------------------------------*/
+  10          #include "Led_Display.h"
+  11          
+  12          /* Global Variables ----------------------------------------------------------*/
+  13          _Type_Display         DisplayData;
+  14          _Uint8              ColorData[8][3];          // color data
+  15          
+  16          
+  17          /* File Variables ------------------------------------------------------------*/
+  18          idata _Uint8          TempCnt;
+  19          idata _Uint8          TempLed;
+  20          idata _Uint8          TempColor;
+  21          idata _Uint8          LedCnt;
+  22          idata _Uint8          TempR;
+  23          idata _Uint8          TempG;
+  24          idata _Uint8          TempB;
+  25          idata _Uint8          FadeR;
+  26          idata _Uint8          FadeG;
+  27          idata _Uint8          FadeB;
+  28          idata _Uint8              ModeTime[3];
+  29          idata _Uint8              ModeStep[3];
+  30          idata _Uint8              HoldTime[3];
+  31          idata _Uint8              ModeColor[3];
+  32          idata _Uint8              ModeLed[3];
+  33          idata _Uint8              SpeedTime;
+  34          idata _Uint16             RndSeed;
+  35          idata _Uint16             ModeMicroSec;
+  36          idata _Uint8              ShowMode;
+  37          idata _Flag               ShowInit;
+  38          idata _Uint16             TimeLine;
+  39          
+  40          
+  41          /**********************************************************
+  42            *
+  43            * Function: Led_Display
+  44            * Author: Annncle.Chin
+  45            * Date: 2016.04.18
+  46            * Description: to select Circle or normal mode
+  47            *
+  48          ********/
+  49          void Led_Display(void)
+  50          {
+  51   1        switch (DisplayData.Mode)
+  52   1        {
+  53   2          case 0x0:     All_Off();              break;
+  54   2          case 0x1:     Steady();             break;
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 2   
+
+  55   2          case 0x2:     Flash(FALSE);           break;
+  56   2          case 0x3:     Fade(FALSE);            break;
+  57   2          
+  58   2          case 0xB:     Show_1();             break;
+  59   2          case 0xC:     Show_2();             break;
+  60   2          case 0xD:     Show_3();             break;
+  61   2          
+  62   2          case 0xFB:        Blue_Flash();                   break;
+  63   2          case 0xFD:        Green_Flash();                    break;
+  64   2          case 0xFF:        Red_Flash();                    break;
+  65   2          default:      
+  66   2          {
+  67   3                                  DisplayData.ModeBuf = 0x1;
+  68   3                                  DisplayData.Mode  = 0x1;
+  69   3          } break;
+  70   2        }
+  71   1      }
+  72          
+  73          
+  74          /**
+  75            * FunctionName  Blue_Flash
+  76            */
+  77          static void Blue_Flash(void)
+  78          {
+  79   1        if (DisplayData.InitFlag == TRUE)
+  80   1        {
+  81   2          DisplayData.InitFlag = FALSE;
+  82   2          TempR = 0;
+  83   2          TempG = 0;
+  84   2          TempB = 0;
+  85   2          DutyR = TempR;
+  86   2          DutyG = TempG;
+  87   2          DutyB = TempB;
+  88   2          SpeedTime = 0;
+  89   2          ModeStep[0] = 0;
+  90   2          
+  91   2          return;
+  92   2        }
+  93   1        
+  94   1        /* Speed Control */
+  95   1        if (SpeedTime < 4)
+  96   1        {
+  97   2          SpeedTime++;
+  98   2          return;
+  99   2        }
+ 100   1        SpeedTime = 0;
+ 101   1        
+ 102   1        /* Flash Three Times */
+ 103   1        if (ModeStep[0] % 2 == 0)   TempB = 255;
+ 104   1        else              TempB = 0;
+ 105   1      
+ 106   1        /* Restore the mode */
+ 107   1        ModeStep[0]++;
+ 108   1        if (ModeStep[0] > 5)
+ 109   1        {
+ 110   2          DisplayData.Mode    = DisplayData.ModeBuf;
+ 111   2          DisplayData.InitFlag  = TRUE;
+ 112   2        }
+ 113   1        
+ 114   1        /* Led Data Update */
+ 115   1        DutyR = TempR;
+ 116   1        DutyG = TempG;
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 3   
+
+ 117   1        DutyB = TempB;
+ 118   1      }
+ 119          
+ 120          /**
+ 121            * FunctionName  Green_Flash
+ 122            */
+ 123          static void Green_Flash(void)
+ 124          {
+ 125   1        if (DisplayData.InitFlag == TRUE)
+ 126   1        {
+ 127   2          DisplayData.InitFlag = FALSE;
+ 128   2          TempR = 0;
+ 129   2          TempG = 0;
+ 130   2          TempB = 0;
+ 131   2          DutyR = TempR;
+ 132   2          DutyG = TempG;
+ 133   2          DutyB = TempB;
+ 134   2          SpeedTime = 0;
+ 135   2          ModeStep[0] = 0;
+ 136   2          
+ 137   2          return;
+ 138   2        }
+ 139   1        
+ 140   1        /* Speed Control */
+ 141   1        if (SpeedTime < 4)
+ 142   1        {
+ 143   2          SpeedTime++;
+ 144   2          return;
+ 145   2        }
+ 146   1        SpeedTime = 0;
+ 147   1        
+ 148   1        /* Flash Three Times */
+ 149   1        if (ModeStep[0] % 2 == 0)   TempG = 255;
+ 150   1        else              TempG = 0;
+ 151   1      
+ 152   1        /* Restore the mode */
+ 153   1        ModeStep[0]++;
+ 154   1        if (ModeStep[0] > 5)
+ 155   1        {
+ 156   2          DisplayData.Mode    = DisplayData.ModeBuf;
+ 157   2          DisplayData.InitFlag  = TRUE;
+ 158   2        }
+ 159   1        
+ 160   1        /* Led Data Update */
+ 161   1        DutyR = TempR;
+ 162   1        DutyG = TempG;
+ 163   1        DutyB = TempB;
+ 164   1      }
+ 165          
+ 166          
+ 167          /**
+ 168            * FunctionName  Red_Flash
+ 169            */
+ 170          static void Red_Flash(void)
+ 171          {
+ 172   1        if (DisplayData.InitFlag == TRUE)
+ 173   1        {
+ 174   2          DisplayData.InitFlag = FALSE;
+ 175   2          TempR = 0;
+ 176   2          TempG = 0;
+ 177   2          TempB = 0;
+ 178   2          DutyR = TempR;
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 4   
+
+ 179   2          DutyG = TempG;
+ 180   2          DutyB = TempB;
+ 181   2          SpeedTime = 0;
+ 182   2          ModeStep[0] = 0;
+ 183   2          
+ 184   2          return;
+ 185   2        }
+ 186   1        
+ 187   1        /* Speed Control */
+ 188   1        if (SpeedTime < 4)
+ 189   1        {
+ 190   2          SpeedTime++;
+ 191   2          return;
+ 192   2        }
+ 193   1        SpeedTime = 0;
+ 194   1        
+ 195   1        /* Flash Three Times */
+ 196   1        if (ModeStep[0] % 2 == 0)   TempR = 255;
+ 197   1        else              TempR = 0;
+ 198   1      
+ 199   1        /* Restore the mode */
+ 200   1        ModeStep[0]++;
+ 201   1        if (ModeStep[0] > 5)
+ 202   1        {
+ 203   2          DisplayData.Mode    = DisplayData.ModeBuf;
+ 204   2          DisplayData.InitFlag  = TRUE;
+ 205   2        }
+ 206   1        
+ 207   1        /* Led Data Update */
+ 208   1        DutyR = TempR;
+ 209   1        DutyG = TempG;
+ 210   1        DutyB = TempB;
+ 211   1      }
+ 212          
+ 213          /************************************************************
+ 214            * 
+ 215            * All_Off
+ 216            *
+ 217          *****/
+ 218          static void All_Off(void)
+ 219          {
+ 220   1        if (DisplayData.InitFlag == TRUE)
+ 221   1        {
+ 222   2          DisplayData.InitFlag  = FALSE;
+ 223   2          DutyR   = 0;
+ 224   2          DutyG   = 0;
+ 225   2          DutyB   = 0;
+ 226   2        }
+ 227   1      }
+ 228          
+ 229          /************************************************************
+ 230            * 
+ 231            * Steady
+ 232            *
+ 233          *****/
+ 234          static void Steady(void)
+ 235          {
+ 236   1        if (DisplayData.InitFlag == TRUE)
+ 237   1        {
+ 238   2          DisplayData.InitFlag  = FALSE;
+ 239   2          DutyR   = ColorData[0][R];
+ 240   2          DutyG   = ColorData[0][G];
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 5   
+
+ 241   2          DutyB   = ColorData[0][B];
+ 242   2        }
+ 243   1      }
+ 244          
+ 245          
+ 246          
+ 247          /**
+ 248            * FunctionName  Flash_Init
+ 249            */
+ 250          static void Flash_Init(void)
+ 251          {
+ 252   1        DutyR   = 0;
+ 253   1        DutyG   = 0;
+ 254   1        DutyB   = 0;
+ 255   1        ModeTime[0] = 100;
+ 256   1        ModeTime[1] = 100;
+ 257   1        ModeTime[2] = 100;
+ 258   1      }
+ 259          
+ 260          /**
+ 261            * FunctionName  Fade_Init
+ 262            */
+ 263          static void Fade_Init(void)
+ 264          {
+ 265   1        DutyR   = 0;
+ 266   1        DutyG   = 0;
+ 267   1        DutyB   = 0;
+ 268   1        ModeTime[0] = 0;
+ 269   1        ModeTime[1] = 0;
+ 270   1        ModeTime[2] = 0;
+ 271   1        ModeStep[0] = 0;
+ 272   1        ModeStep[1] = 0;
+ 273   1        ModeStep[2] = 0;
+ 274   1      }
+ 275          
+ 276          /************************************************************
+ 277            * 
+ 278            * Flash
+ 279            *
+ 280          *****/
+ 281          static void Flash(_Flag AllFlag)
+ 282          {
+ 283   1        if (DisplayData.InitFlag == TRUE)
+ 284   1        {
+ 285   2          DisplayData.InitFlag  = FALSE;
+ 286   2      
+ 287   2          Flash_Init();
+ 288   2          return;
+ 289   2        }
+ 290   1        
+ 291   1        if (ColorData[0][R] == 100 || AllFlag == TRUE)
+ 292   1        {
+ 293   2          ModeTime[0]++;
+ 294   2          if (ModeTime[0] == 93)
+ 295   2          { 
+ 296   3            DutyR = 0;
+ 297   3          }
+ 298   2          else if (ModeTime[0] == 103)
+ 299   2          {
+ 300   3            DutyR = DUTY_MAX;
+ 301   3            ModeTime[0] = 0;
+ 302   3          }
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 6   
+
+ 303   2        }
+ 304   1      
+ 305   1        if (ColorData[0][G] == 100 || AllFlag == TRUE)
+ 306   1        {
+ 307   2          ModeTime[1]++;
+ 308   2          if (ModeTime[1] == 103)
+ 309   2          { 
+ 310   3            DutyG = 0;
+ 311   3          }
+ 312   2          else if (ModeTime[1] == 119)
+ 313   2          {
+ 314   3            DutyG = DUTY_MAX;
+ 315   3            ModeTime[1] = 0;
+ 316   3          }
+ 317   2        }
+ 318   1        
+ 319   1        if (ColorData[0][B] == 100 || AllFlag == TRUE)
+ 320   1        {
+ 321   2          ModeTime[2]++;
+ 322   2          if (ModeTime[2] == 119) 
+ 323   2          {
+ 324   3            DutyB = 0;
+ 325   3          }
+ 326   2          else if (ModeTime[2] == 133)
+ 327   2          {
+ 328   3            DutyB = DUTY_MAX;
+ 329   3            ModeTime[2] = 0;
+ 330   3          }
+ 331   2        }
+ 332   1      }
+ 333          
+ 334          
+ 335          
+ 336          /**
+ 337            * FunctionName    Fade
+ 338            */
+ 339          static void Fade(_Flag AllFlag)
+ 340          {
+ 341   1        if (DisplayData.InitFlag == TRUE)
+ 342   1        {
+ 343   2          DisplayData.InitFlag  = FALSE;
+ 344   2          
+ 345   2          Fade_Init();
+ 346   2          return;
+ 347   2        }
+ 348   1        
+ 349   1        
+ 350   1        if (ColorData[0][R] == 100 || AllFlag == TRUE)
+ 351   1        {
+ 352   2          ModeTime[0]++;
+ 353   2          if (ModeTime[0] >= 3)
+ 354   2          { 
+ 355   3            ModeTime[0] = 0;
+ 356   3            switch (ModeStep[0])
+ 357   3            {
+ 358   4              case 0:
+ 359   4              {
+ 360   5                      if (DutyR < DUTY_MAX)   DutyR++;
+ 361   5                      else                    ModeStep[0]++;
+ 362   5              } break;
+ 363   4              
+ 364   4              default:
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 7   
+
+ 365   4              {
+ 366   5                    if (DutyR > DUTY_MIN)   DutyR--;
+ 367   5                    else                    ModeStep[0] = 0;
+ 368   5              } break;
+ 369   4            }
+ 370   3          }
+ 371   2        }
+ 372   1        
+ 373   1        if (ColorData[0][G] == 100 || AllFlag == TRUE)  
+ 374   1        {
+ 375   2          ModeTime[1]++;
+ 376   2          if (ModeTime[1] >= 4)
+ 377   2          { 
+ 378   3            ModeTime[1] = 0;
+ 379   3            switch (ModeStep[1])
+ 380   3            {
+ 381   4              case 0:
+ 382   4              {
+ 383   5                      if (DutyG < DUTY_MAX)   DutyG++;
+ 384   5                      else                    ModeStep[1]++;
+ 385   5              } break;
+ 386   4              
+ 387   4              default:
+ 388   4              {
+ 389   5                    if (DutyG> DUTY_MIN)    DutyG--;
+ 390   5                    else                    ModeStep[1] = 0;
+ 391   5              } break;
+ 392   4            }
+ 393   3          }
+ 394   2        }
+ 395   1      
+ 396   1        
+ 397   1        if (ColorData[0][B] == 100 || AllFlag == TRUE)
+ 398   1        {
+ 399   2          ModeTime[2]++;
+ 400   2          if (ModeTime[2] >= 5)
+ 401   2          { 
+ 402   3            ModeTime[2] = 0;
+ 403   3            switch (ModeStep[2])
+ 404   3            {
+ 405   4              case 0:
+ 406   4              {
+ 407   5                      if (DutyB < DUTY_MAX)   DutyB++;
+ 408   5                      else                    ModeStep[2]++;
+ 409   5              } break;
+ 410   4              
+ 411   4              default:
+ 412   4              {
+ 413   5                    if (DutyB > DUTY_MIN)   DutyB--;
+ 414   5                    else                    ModeStep[2] = 0;
+ 415   5              } break;
+ 416   4            }
+ 417   3          }
+ 418   2        }
+ 419   1      
+ 420   1      }
+ 421          
+ 422          
+ 423          
+ 424          
+ 425          
+ 426          
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 8   
+
+ 427          
+ 428          /**
+ 429            * FunctionName  Show_1
+ 430            */
+ 431          static void Show_1(void)
+ 432          {
+ 433   1        /* Initalize */
+ 434   1        if (DisplayData.InitFlag == TRUE)
+ 435   1        {
+ 436   2          DisplayData.InitFlag = FALSE;
+ 437   2          ShowMode = 0;
+ 438   2          
+ 439   2          TimeLine = 0;
+ 440   2          if (MotorData.Mode == 0)
+ 441   2          {
+ 442   3            MotorData.Mode      = 1;
+ 443   3            MotorData.InitFlag    = TRUE;
+ 444   3          }
+ 445   2          DutyR = 0;
+ 446   2          DutyG = 0;
+ 447   2          DutyB = 0;
+ 448   2        }
+ 449   1        
+ 450   1        
+ 451   1        //music start
+ 452   1        else
+ 453   1        {
+ 454   2            TimeLine++;
+ 455   2            if (TimeLine == 1)                  {ShowMode = 1;      ShowInit = TRUE;  }
+ 456   2            else if (TimeLine == 460)           {ShowMode = 2;      ShowInit = TRUE;  }
+ 457   2            else if (TimeLine == 2560)          {ShowMode = 3;      ShowInit = TRUE;  }
+ 458   2            else if (TimeLine == 3460)          {ShowMode = 4;      ShowInit = TRUE;  }
+ 459   2            else if (TimeLine == 4500)          
+ 460   2            {
+ 461   3              TimeLine = 0;     
+ 462   3              DisplayData.InitFlag = TRUE; 
+ 463   3            }
+ 464   2      
+ 465   2          
+ 466   2          
+ 467   2          /* Mode Control */
+ 468   2          switch (ShowMode)
+ 469   2          {
+ 470   3            case 0:
+ 471   3              All_Off();
+ 472   3            break;
+ 473   3            
+ 474   3            case 1:
+ 475   3              Show_1_1();
+ 476   3            break;
+ 477   3            
+ 478   3            case 2:
+ 479   3              Show_1_2();
+ 480   3            break;
+ 481   3            
+ 482   3            case 3:
+ 483   3              Show_1_3();
+ 484   3            break;
+ 485   3            
+ 486   3            case 4:
+ 487   3              Show_1_4();
+ 488   3            break;
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 9   
+
+ 489   3          }
+ 490   2        }
+ 491   1      }
+ 492          
+ 493          /**
+ 494            * FunctionName    Show_1_1
+ 495            */
+ 496          static void Show_1_1(void)
+ 497          {
+ 498   1        /* Initialize */
+ 499   1        if (ShowInit == TRUE)
+ 500   1        {
+ 501   2          ShowInit = FALSE;
+ 502   2      
+ 503   2          ModeMicroSec  = 0;
+ 504   2          Flash_Init();
+ 505   2          return;
+ 506   2        }
+ 507   1        
+ 508   1        /* -----------------Mode Start ---------------*/
+ 509   1        if (ModeMicroSec < 4950)
+ 510   1        {
+ 511   2          Flash(TRUE);;
+ 512   2        }
+ 513   1        
+ 514   1        else
+ 515   1        {
+ 516   2          DutyR = 0;
+ 517   2          DutyG = 0;
+ 518   2          DutyB = 0;
+ 519   2        }
+ 520   1        
+ 521   1        //=============================================================
+ 522   1        // time control
+ 523   1        ModeMicroSec++;
+ 524   1      }
+ 525          
+ 526          /**
+ 527            * FunctionName    Show_1_2
+ 528            */
+ 529          static void Show_1_2(void)
+ 530          {
+ 531   1        /* Initialize */
+ 532   1        if (ShowInit == TRUE)
+ 533   1        {
+ 534   2          ShowInit = FALSE;
+ 535   2          
+ 536   2          Fade_Init();
+ 537   2          
+ 538   2          ModeMicroSec  = 0;
+ 539   2          return;
+ 540   2        }
+ 541   1        
+ 542   1        /* Mode Start */
+ 543   1        if (ModeMicroSec < 1500)
+ 544   1        {
+ 545   2          Fade(TRUE);
+ 546   2        }
+ 547   1        
+ 548   1        else if (ModeMicroSec == 1500)
+ 549   1        {
+ 550   2          Flash_Init();
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 10  
+
+ 551   2        }
+ 552   1        else if (ModeMicroSec < 3000)
+ 553   1        {
+ 554   2          Flash(TRUE);;
+ 555   2        }
+ 556   1        
+ 557   1        else if (ModeMicroSec == 3000)
+ 558   1        {
+ 559   2          SpeedTime = 0;
+ 560   2          TempColor = 0;
+ 561   2        }
+ 562   1        else if (ModeMicroSec < 4500)
+ 563   1        {
+ 564   2          SpeedTime++;
+ 565   2          if (SpeedTime > 50)
+ 566   2          {
+ 567   3            SpeedTime = 0;
+ 568   3            DutyR = ColorData[TempColor][R];
+ 569   3            DutyG = ColorData[TempColor][G];
+ 570   3            DutyB = ColorData[TempColor][B];
+ 571   3            TempColor++;
+ 572   3            if (TempColor >= 7)   TempColor = 0;
+ 573   3          }
+ 574   2        }
+ 575   1        
+ 576   1        else if (ModeMicroSec == 4500)
+ 577   1        {
+ 578   2          Flash_Init();
+ 579   2        }
+ 580   1        else if (ModeMicroSec < 5000)
+ 581   1        {
+ 582   2          Flash(TRUE);;
+ 583   2        }
+ 584   1        else
+ 585   1        {
+ 586   2          TempR = 0;
+ 587   2          TempB = 0;
+ 588   2          TempG = 0;
+ 589   2        }
+ 590   1        
+ 591   1        ModeMicroSec++;
+ 592   1      }
+ 593          
+ 594          /**
+ 595            * FunctionName    Show_1_3
+ 596            */
+ 597          static void Show_1_3(void)
+ 598          {
+ 599   1        if (ShowInit == TRUE)
+ 600   1        {
+ 601   2          ShowInit = FALSE;
+ 602   2          
+ 603   2          ModeMicroSec = 0;
+ 604   2          
+ 605   2          Flash_Init();
+ 606   2          return;
+ 607   2        }
+ 608   1        
+ 609   1        if (ModeMicroSec < 4450)
+ 610   1        {
+ 611   2          Flash(TRUE);;
+ 612   2        }
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 11  
+
+ 613   1        
+ 614   1        else
+ 615   1        {
+ 616   2          DutyR = 0;
+ 617   2          DutyG = 0;
+ 618   2          DutyB = 0;
+ 619   2        }
+ 620   1        
+ 621   1        ModeMicroSec++;
+ 622   1      }
+ 623          
+ 624          /**
+ 625            * FunctionName    Show_1_4
+ 626            */
+ 627          static void Show_1_4(void)
+ 628          {
+ 629   1        /* Initialize */
+ 630   1        if (ShowInit == TRUE)
+ 631   1        {
+ 632   2          ShowInit = FALSE;
+ 633   2          
+ 634   2          Fade_Init();
+ 635   2          
+ 636   2          ModeMicroSec = 0;
+ 637   2          return;
+ 638   2        }
+ 639   1        
+ 640   1        
+ 641   1        if (ModeMicroSec < 1000)
+ 642   1        {
+ 643   2          Fade(TRUE);
+ 644   2        }
+ 645   1        
+ 646   1        else if (ModeMicroSec == 1000)
+ 647   1        {
+ 648   2          ModeTime[0] = 0;
+ 649   2          TempColor   = 0;
+ 650   2        }
+ 651   1        else if (ModeMicroSec < 1500)
+ 652   1        {
+ 653   2          ModeTime[0]++;
+ 654   2          if (ModeTime[0] > 200)
+ 655   2          {
+ 656   3            ModeTime[0] = 0;
+ 657   3            
+ 658   3            DutyR = ColorData[TempColor][R];
+ 659   3            DutyG = ColorData[TempColor][G];
+ 660   3            DutyB = ColorData[TempColor][B];
+ 661   3      
+ 662   3            TempColor++;
+ 663   3            if (TempColor >= 7)
+ 664   3            {
+ 665   4              TempColor = 0;
+ 666   4            }
+ 667   3          }
+ 668   2        }
+ 669   1        
+ 670   1        else
+ 671   1        {
+ 672   2          ModeTime[0]++;
+ 673   2          if (ModeTime[0] >= 30)
+ 674   2          {
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 12  
+
+ 675   3            ModeTime[0] = 0;
+ 676   3            
+ 677   3            DutyR = ColorData[TempColor][R];
+ 678   3            DutyG = ColorData[TempColor][G];
+ 679   3            DutyB = ColorData[TempColor][B];
+ 680   3      
+ 681   3            TempColor++;
+ 682   3            if (TempColor >= 7)
+ 683   3            {
+ 684   4              TempColor = 0;
+ 685   4            }
+ 686   3          }
+ 687   2        }
+ 688   1        
+ 689   1        ModeMicroSec++;
+ 690   1      }
+ 691          
+ 692          
+ 693          
+ 694          
+ 695          
+ 696          
+ 697          
+ 698          
+ 699          
+ 700          
+ 701          
+ 702          
+ 703          
+ 704          
+ 705          
+ 706          
+ 707          
+ 708          
+ 709          /***********************************************************************************************
+ 710           * Music_One
+ 711           */
+ 712          void Show_2(void)
+ 713          {
+ 714   1        // intialize
+ 715   1        if (DisplayData.InitFlag == TRUE)
+ 716   1        {
+ 717   2          DisplayData.InitFlag = FALSE;
+ 718   2          ShowMode = 0;
+ 719   2          //clear time parameters
+ 720   2          TimeLine = 0;
+ 721   2          if (MotorData.Mode == 0)
+ 722   2          {
+ 723   3            MotorData.Mode      = 1;
+ 724   3            MotorData.InitFlag    = TRUE;
+ 725   3          }
+ 726   2        }
+ 727   1        
+ 728   1        
+ 729   1        //music start
+ 730   1        else
+ 731   1        {
+ 732   2            TimeLine++;
+ 733   2            if (TimeLine == 1)                  {ShowMode = 1;      ShowInit = TRUE;  }
+ 734   2            else if (TimeLine == 1640)          {ShowMode = 2;      ShowInit = TRUE;  }
+ 735   2            else if (TimeLine == 3410)          {ShowMode = 3;      ShowInit = TRUE;  }
+ 736   2            else if (TimeLine == 3950)          {ShowMode = 4;      ShowInit = TRUE;  }
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 13  
+
+ 737   2            else if (TimeLine == 5010)          {ShowMode = 4;      ShowInit = TRUE;  }
+ 738   2            else if (TimeLine == 7000)          
+ 739   2            {
+ 740   3              TimeLine = 0;     
+ 741   3              DisplayData.InitFlag = TRUE; 
+ 742   3            }
+ 743   2          
+ 744   2      
+ 745   2          /* Mode Control */
+ 746   2          switch (ShowMode)
+ 747   2          {
+ 748   3            case 0:
+ 749   3              All_Off();
+ 750   3            break;
+ 751   3            
+ 752   3            case 1:
+ 753   3              Show_2_1();
+ 754   3            break;
+ 755   3            
+ 756   3            case 2:
+ 757   3              Show_2_2();
+ 758   3            break;
+ 759   3            
+ 760   3            case 3:
+ 761   3              Show_2_3();
+ 762   3            break;
+ 763   3            
+ 764   3            case 4:
+ 765   3              Show_2_4();
+ 766   3            break;
+ 767   3          }
+ 768   2          
+ 769   2        } // else --- music start
+ 770   1      }
+ 771          
+ 772          
+ 773          /*********************************************************************************************************
+             -*******
+ 774           * Prelude
+ 775           */
+ 776          static void Show_2_1(void)
+ 777          {
+ 778   1          /* Initialize*/
+ 779   1          if (ShowInit == TRUE)
+ 780   1          {
+ 781   2          /* clear flag */
+ 782   2            ShowInit = FALSE;
+ 783   2          
+ 784   2          /* turn off */
+ 785   2            DutyR   = 0;
+ 786   2            DutyG   = 0;
+ 787   2            DutyB   = 0;
+ 788   2          
+ 789   2          /* clear parameters */
+ 790   2            ModeMicroSec  = 0;
+ 791   2            ModeTime[0]   = 0;
+ 792   2          
+ 793   2          
+ 794   2          /* get the fade value */
+ 795   2            FadeR   = ColorData[0][R] / FADE_LEVEL;
+ 796   2            FadeG   = ColorData[0][G] / FADE_LEVEL;
+ 797   2            FadeB   = ColorData[0][B] / FADE_LEVEL;
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 14  
+
+ 798   2          }
+ 799   1      
+ 800   1          /* mode start */
+ 801   1          else
+ 802   1          {
+ 803   2            ModeTime[0]++;
+ 804   2            if ( ModeTime[0] >  20)
+ 805   2            {
+ 806   3              ModeTime[0] = 0;
+ 807   3            
+ 808   3              if (  (DutyR < ColorData[0][R])
+ 809   3              ||  (DutyG < ColorData[0][G])
+ 810   3              ||  (DutyB < ColorData[0][B])
+ 811   3              )
+ 812   3              {
+ 813   4                DutyR   += FadeR;
+ 814   4                DutyG   += FadeG;
+ 815   4                DutyB   += FadeB;
+ 816   4              }
+ 817   3            }
+ 818   2          }
+ 819   1      }
+ 820          
+ 821          
+ 822          
+ 823          /*********************************************************************************************************
+             -*********
+ 824           * Interlude
+ 825           */
+ 826          static void Show_2_2(void)
+ 827          {
+ 828   1        /* Initialize */
+ 829   1        if (ShowInit == TRUE)
+ 830   1        {
+ 831   2          ShowInit = FALSE;
+ 832   2            
+ 833   2          ModeStep[0]   = 0;
+ 834   2          ModeTime[0]   = 0;
+ 835   2          ModeColor[0]  = 0;
+ 836   2          
+ 837   2          ModeMicroSec = 0;
+ 838   2          
+ 839   2          FadeR   = ColorData[0][R] / FADE_LEVEL;
+ 840   2          FadeG   = ColorData[0][G] / FADE_LEVEL;
+ 841   2          FadeB   = ColorData[0][B] / FADE_LEVEL;
+ 842   2        }
+ 843   1      
+ 844   1        /* 模式开始 */
+ 845   1        else
+ 846   1        {
+ 847   2          //=============================================================
+ 848   2          // fade in
+ 849   2          if ( ModeMicroSec < 200)
+ 850   2          {
+ 851   3            ModeTime[0]++;
+ 852   3            if ( ModeTime[0] >  20)
+ 853   3            {
+ 854   4              ModeTime[0] = 0;
+ 855   4        
+ 856   4              if (  (DutyR < ColorData[0][R])
+ 857   4                ||  (DutyG < ColorData[0][G])
+ 858   4                ||  (DutyB < ColorData[0][B])
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 15  
+
+ 859   4                )
+ 860   4              {
+ 861   5                DutyR   += FadeR;
+ 862   5                DutyG   += FadeG;
+ 863   5                DutyB   += FadeB;
+ 864   5              }
+ 865   4            }
+ 866   3          }
+ 867   2      
+ 868   2          //==============================================================
+ 869   2          // instead
+ 870   2          else if (ModeMicroSec == 200)
+ 871   2          {
+ 872   3            ModeTime[0] = 0;
+ 873   3            LedCnt      = 0;
+ 874   3            TempColor   = 0;
+ 875   3            HoldTime[0] = 0;
+ 876   3          }
+ 877   2          else
+ 878   2          if (ModeMicroSec < 2200)
+ 879   2          {
+ 880   3            ModeTime[0]++;
+ 881   3            if (ModeTime[0] > 10) 
+ 882   3            {
+ 883   4              ModeTime[0] = 0;
+ 884   4              HoldTime[0]++;
+ 885   4              if (HoldTime[0] == 1)
+ 886   4              {
+ 887   5                DutyR = ColorData[TempColor][R];
+ 888   5                DutyG = ColorData[TempColor][G];
+ 889   5                DutyB = ColorData[TempColor][B];
+ 890   5              }
+ 891   4              else if (HoldTime[0] > 50)
+ 892   4              {
+ 893   5                HoldTime[0] = 0;
+ 894   5                TempColor++;
+ 895   5                if (TempColor >= 7) TempColor = 0;
+ 896   5              } 
+ 897   4            }
+ 898   3          }
+ 899   2      
+ 900   2      
+ 901   2          //============================================================
+ 902   2          // fade out
+ 903   2          else
+ 904   2          if (ModeMicroSec == 2200)
+ 905   2          {
+ 906   3            ModeTime[0] = 0;
+ 907   3            DutyR   = ColorData[TempColor][R];
+ 908   3            DutyG   = ColorData[TempColor][G];
+ 909   3            DutyB   = ColorData[TempColor][B];
+ 910   3            
+ 911   3            FadeR   = DutyR / FADE_LEVEL;
+ 912   3            FadeG   = DutyG / FADE_LEVEL;
+ 913   3            FadeB   = DutyB / FADE_LEVEL;
+ 914   3          }
+ 915   2          else
+ 916   2          {
+ 917   3            ModeTime[0]++;
+ 918   3            if (ModeTime[0] > 3)
+ 919   3            {
+ 920   4              ModeTime[0] = 0;
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 16  
+
+ 921   4      
+ 922   4              if (  (DutyB > 0)
+ 923   4                ||  (DutyR > 0)
+ 924   4                ||  (DutyG > 0)
+ 925   4                )
+ 926   4              {
+ 927   5                DutyR   -= FadeR;
+ 928   5                DutyG -= FadeG;
+ 929   5                DutyB -= FadeB;
+ 930   5              }
+ 931   4            }
+ 932   3          }
+ 933   2      
+ 934   2          //=============================================================
+ 935   2          // time control
+ 936   2          ModeMicroSec++;
+ 937   2        } /* 模式结束  */
+ 938   1      }
+ 939          
+ 940          
+ 941          
+ 942          
+ 943          /*********************************************************************************************************
+             -*********
+ 944           * Climax
+ 945           */
+ 946          static void Show_2_3(void)
+ 947          {
+ 948   1        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 949   1        // initialize
+ 950   1        if (ShowInit == TRUE)
+ 951   1        {
+ 952   2          //clear flag
+ 953   2          ShowInit = FALSE;
+ 954   2      
+ 955   2          //parameters
+ 956   2          ModeMicroSec  = 0;
+ 957   2          ModeTime[0]   = 0;
+ 958   2          ModeStep[0]   = 0;
+ 959   2          ModeColor[0]  = 0;
+ 960   2      
+ 961   2          FadeR   = ColorData[0][R] / FADE_LEVEL;
+ 962   2          FadeG   = ColorData[0][G] / FADE_LEVEL;
+ 963   2          FadeB   = ColorData[0][B] / FADE_LEVEL;
+ 964   2        } // if --- initialize
+ 965   1      
+ 966   1      
+ 967   1      
+ 968   1        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 969   1        // mode start
+ 970   1        else
+ 971   1        {
+ 972   2          //=============================================================
+ 973   2          // PART - I
+ 974   2          if (ModeMicroSec < 500)
+ 975   2          {
+ 976   3            //all change to white
+ 977   3            if (ModeMicroSec  > 449)
+ 978   3            {
+ 979   4                DutyR = ColorData[6][R];
+ 980   4                DutyG = ColorData[6][G];
+ 981   4                DutyB = ColorData[6][B];
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 17  
+
+ 982   4            } // PART - 1
+ 983   3      
+ 984   3            else
+ 985   3            {
+ 986   4              // color change  one
+ 987   4              if ( (ModeMicroSec % 40) == 0)
+ 988   4              {
+ 989   5                DutyR   = ColorData[ModeColor[0]][R];
+ 990   5                DutyG = ColorData[ModeColor[0]][G];
+ 991   5                DutyB = ColorData[ModeColor[0]][B];
+ 992   5      
+ 993   5                ModeColor[0]++;
+ 994   5                if (ModeColor[0] >= 7)
+ 995   5                {
+ 996   6                  ModeColor[0] = 0;
+ 997   6                }
+ 998   5              }
+ 999   4            }
+1000   3          }
+1001   2      
+1002   2          //==================================================================================
+1003   2          // PART - II
+1004   2          else
+1005   2          if (ModeMicroSec < 1500)
+1006   2          {
+1007   3            Flash(TRUE);;
+1008   3          }
+1009   2      
+1010   2      
+1011   2      
+1012   2          //========================================================================================
+1013   2          // PART - III
+1014   2          // shining initialize
+1015   2          else
+1016   2          if (ModeMicroSec == 1500)
+1017   2          {
+1018   3            ModeStep[0] = 0;
+1019   3            ModeTime[0] = 0;
+1020   3      
+1021   3            FadeR   = ColorData[6][R] / FADE_LEVEL;
+1022   3            FadeG   = ColorData[6][G] / FADE_LEVEL;
+1023   3            FadeB   = ColorData[6][B] / FADE_LEVEL;
+1024   3          }
+1025   2      
+1026   2          //shining
+1027   2          else
+1028   2          if (ModeMicroSec < 3800)
+1029   2          {
+1030   3            switch (ModeStep[0])
+1031   3                  {
+1032   4                      case 0:
+1033   4                      case 2:
+1034   4                      case 4:
+1035   4                      case 6:
+1036   4                      case 8:
+1037   4                      {
+1038   5                          DutyR   += FadeR;
+1039   5                          DutyG   += FadeG;
+1040   5                          DutyB   += FadeB;
+1041   5      
+1042   5                          if (  (DutyR == (FadeR * 50)) 
+1043   5                                && (DutyG == (FadeG * 50)) 
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 18  
+
+1044   5                                && (DutyB == (FadeB * 50)) 
+1045   5                              )
+1046   5                          {
+1047   6                              ModeStep[0]++;
+1048   6                              srand(RndSeed);
+1049   6                              TempR = (_Uint8)(rand() % 20) + 5;
+1050   6                          }
+1051   5                      } break;
+1052   4      
+1053   4                      case 1:
+1054   4                      case 3:
+1055   4                      case 5:
+1056   4                      case 7:
+1057   4                      {
+1058   5                          DutyR   -= FadeR;
+1059   5                          DutyG   -= FadeG;
+1060   5                          DutyB   -= FadeB;
+1061   5      
+1062   5                          if (    (DutyR == (FadeR * TempR)) 
+1063   5                               && (DutyG == (FadeG * TempR)) 
+1064   5                               && (DutyB == (FadeB * TempR)) 
+1065   5                             )
+1066   5                          {
+1067   6                              ModeStep[0]++;
+1068   6                          }
+1069   5                      } break;
+1070   4      
+1071   4                      case 9:
+1072   4                      {
+1073   5                          DutyR   -= FadeR;
+1074   5                          DutyG   -= FadeG;
+1075   5                          DutyB   -= FadeB;
+1076   5      
+1077   5                          if (      (DutyR == (FadeR * 0)) 
+1078   5                                &&  (DutyG == (FadeG * 0)) 
+1079   5                                &&  (DutyB == (FadeB * 0)) 
+1080   5                              )
+1081   5                          {
+1082   6                              ModeStep[0] = 0;
+1083   6                          }
+1084   5                      } break;
+1085   4                  }
+1086   3          }
+1087   2      
+1088   2          //=============================================================
+1089   2          // last - fade out
+1090   2          else
+1091   2          if ( ModeMicroSec < 4100)
+1092   2          {
+1093   3            ModeTime[0]++;
+1094   3            if (ModeTime[0] > 4)
+1095   3            {
+1096   4              ModeTime[0] = 0;
+1097   4      
+1098   4              if ( DutyR > 0)   DutyR   -= FadeR;
+1099   4              if ( DutyG > 0)   DutyR   -= FadeG;
+1100   4              if ( DutyB > 0)   DutyR   -= FadeB;
+1101   4            }
+1102   3          }
+1103   2      
+1104   2      
+1105   2          //=============================================================
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 19  
+
+1106   2          // time control
+1107   2          ModeMicroSec++;
+1108   2        } /* 模式退出 */
+1109   1      } 
+1110          
+1111          
+1112          
+1113          /*********************************************************************************************************
+             -*********
+1114           * Coda
+1115           */
+1116          static void Show_2_4(void)
+1117          {
+1118   1        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1119   1        // initialize
+1120   1        if (ShowInit == TRUE)
+1121   1        {
+1122   2          //clear flag
+1123   2          ShowInit = FALSE;
+1124   2      
+1125   2      
+1126   2          // led initialize
+1127   2          DutyR   = 0;
+1128   2          DutyG = 0;
+1129   2          DutyB = 0;
+1130   2      
+1131   2          FadeR = ColorData[0][R] / FADE_LEVEL;
+1132   2          FadeG = ColorData[0][G] / FADE_LEVEL;
+1133   2          FadeB = ColorData[0][B] / FADE_LEVEL;
+1134   2      
+1135   2          //parameters
+1136   2          ModeMicroSec  = 0;
+1137   2          ModeTime[0]   = 0;
+1138   2          ModeColor[0]  = 0;
+1139   2      
+1140   2      
+1141   2        } // if --- initialize
+1142   1      
+1143   1      
+1144   1      
+1145   1        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1146   1        // mode start
+1147   1        else
+1148   1        {
+1149   2          //=============================================================
+1150   2          // PART-I
+1151   2          // fade in 
+1152   2          if (ModeMicroSec < 1200)
+1153   2          {
+1154   3            ModeTime[0]++;
+1155   3            if (ModeTime[0] > 30)
+1156   3            {
+1157   4              ModeTime[0] = 0;
+1158   4              if (  (DutyR < ColorData[1][R])
+1159   4                ||  (DutyG < ColorData[1][G])
+1160   4                ||  (DutyB < ColorData[1][B])
+1161   4                )
+1162   4              {
+1163   5                DutyR   += FadeR;
+1164   5                DutyG   += FadeG;
+1165   5                DutyB   += FadeB;
+1166   5              }
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 20  
+
+1167   4            }
+1168   3          } // PART -I
+1169   2      
+1170   2      
+1171   2      
+1172   2          //===================================================================================
+1173   2          // PART - II
+1174   2          // 515
+1175   2      
+1176   2          // initialize
+1177   2          else
+1178   2          if (ModeMicroSec == 1300)
+1179   2          {
+1180   3            ModeColor[0]  = 0;
+1181   3            ModeStep[0]   = 0;
+1182   3            ModeTime[0]   = 0;
+1183   3          }
+1184   2          else
+1185   2          if (ModeMicroSec < 4500)
+1186   2          {
+1187   3            ModeTime[0]++;
+1188   3            if (ModeTime[0] > 3)
+1189   3            {
+1190   4              ModeTime[0] = 0;
+1191   4      
+1192   4              switch (ModeStep[0])
+1193   4              {
+1194   5                case 0:
+1195   5                {
+1196   6                  if (  (DutyR < ColorData[ModeColor[0]][R]) 
+1197   6                    ||  (DutyG < ColorData[ModeColor[0]][G]) 
+1198   6                    ||  (DutyB < ColorData[ModeColor[0]][B]) 
+1199   6                    )
+1200   6                  {
+1201   7                    DutyR += FadeR;
+1202   7                    DutyG += FadeG;
+1203   7                    DutyB += FadeB;
+1204   7                  }
+1205   6                  else
+1206   6                  {
+1207   7                    ModeStep[0]++;
+1208   7                  }
+1209   6                } break;
+1210   5      
+1211   5      
+1212   5                case 1:
+1213   5                {
+1214   6                  ModeTime[1]++;
+1215   6                  DutyR   = 0;
+1216   6                  DutyG   = 0;
+1217   6                  DutyB   = 0;
+1218   6                  
+1219   6                  if (ModeTime[1] > 10)
+1220   6                  {
+1221   7                    ModeTime[1] = 0;
+1222   7                    ModeStep[0] = 0;
+1223   7      
+1224   7                    DutyR   = 0;
+1225   7                    DutyG   = 0;
+1226   7                    DutyB   = 0;
+1227   7      
+1228   7                    ModeColor[0]++;
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 21  
+
+1229   7                    if (ModeColor[0] >= 7)
+1230   7                    {
+1231   8                      ModeColor[0] = 0;
+1232   8                    }
+1233   7      
+1234   7                    FadeR   = ColorData[ModeColor[0]][R] / FADE_LEVEL;
+1235   7                    FadeG   = ColorData[ModeColor[0]][G] / FADE_LEVEL;
+1236   7                    FadeB   = ColorData[ModeColor[0]][B] / FADE_LEVEL;
+1237   7                  }
+1238   6                } break;
+1239   5              }
+1240   4            }
+1241   3          } // PART - II
+1242   2      
+1243   2      
+1244   2      
+1245   2          //==============================================================
+1246   2          // PART - III
+1247   2          // turn to white
+1248   2          else if (ModeMicroSec < 7600)
+1249   2          {
+1250   3            TempR = ColorData[6][R];
+1251   3            TempG = ColorData[6][G];
+1252   3            TempB = ColorData[6][B];
+1253   3          }
+1254   2          
+1255   2          
+1256   2          
+1257   2          //--------------------------------------------------------------
+1258   2          // END - Turn Off
+1259   2          //--------------------------------------------------------------
+1260   2          else if (ModeMicroSec == 7600)
+1261   2          {
+1262   3            DutyR = ColorData[6][R];
+1263   3            DutyG = ColorData[6][G];
+1264   3            DutyB = ColorData[6][B];
+1265   3          }
+1266   2          else
+1267   2          {
+1268   3            if (DutyR > 0)    DutyR--;
+1269   3            if (DutyG > 0)    DutyG--;
+1270   3            if (DutyB > 0)    DutyB--;
+1271   3          }
+1272   2      
+1273   2          //=============================================================
+1274   2          // time control
+1275   2          ModeMicroSec++;
+1276   2        }
+1277   1      }
+1278          
+1279          
+1280          
+1281          
+1282          
+1283          
+1284          
+1285          
+1286          /***********************************************************************************************
+1287           * Music_One
+1288           */
+1289          void Show_3(void)
+1290          {
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 22  
+
+1291   1        // intialize
+1292   1        if (DisplayData.InitFlag == TRUE)
+1293   1        {
+1294   2          DisplayData.InitFlag = FALSE;
+1295   2          ShowMode = 0;
+1296   2          //clear time parameters
+1297   2          TimeLine = 0;
+1298   2          
+1299   2          if (MotorData.Mode == 0)
+1300   2          {
+1301   3            MotorData.Mode      = 1;
+1302   3            MotorData.InitFlag    = TRUE;
+1303   3          }
+1304   2        }
+1305   1        
+1306   1        
+1307   1        //music start
+1308   1        else
+1309   1        {
+1310   2          TimeLine++;
+1311   2          if (TimeLine == 1)                  {ShowMode = 1;      ShowInit = TRUE;  }
+1312   2          else if (TimeLine == 2660)          {ShowMode = 2;      ShowInit = TRUE;  }
+1313   2          else if (TimeLine == 5350)          {ShowMode = 3;      ShowInit = TRUE;  }
+1314   2          else if (TimeLine == 5700)          {ShowMode = 4;      ShowInit = TRUE;  }
+1315   2          else if (TimeLine == 6605)          {ShowMode = 4;      ShowInit = TRUE;  }
+1316   2          else if (TimeLine == 8000)          
+1317   2          {
+1318   3            TimeLine = 0;     
+1319   3            DisplayData.InitFlag = TRUE; 
+1320   3          }
+1321   2          
+1322   2          /* Mode Control */
+1323   2          switch (ShowMode)
+1324   2          {
+1325   3            case 0:
+1326   3              All_Off();
+1327   3            break;
+1328   3            
+1329   3            case 1:
+1330   3              Show_3_1();
+1331   3            break;
+1332   3            
+1333   3            case 2:
+1334   3              Show_3_2();
+1335   3            break;
+1336   3            
+1337   3            case 3:
+1338   3              Show_3_3();
+1339   3            break;
+1340   3            
+1341   3            case 4:
+1342   3              Show_3_4();
+1343   3            break;
+1344   3          }
+1345   2          
+1346   2        } // else --- music start
+1347   1      }
+1348          
+1349          
+1350          
+1351          /*********************************************************************************************************
+             -*******
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 23  
+
+1352           * Prelude
+1353           */
+1354          static void Show_3_1(void)
+1355          {
+1356   1          // initialize
+1357   1          if (ShowInit == TRUE)
+1358   1          {
+1359   2            //clear flag
+1360   2            ShowInit = FALSE;
+1361   2          
+1362   2            DutyR    = 0;
+1363   2            DutyG   = 0;
+1364   2            DutyB   = 0;
+1365   2        
+1366   2            // prarametes
+1367   2            ModeMicroSec  = 0;
+1368   2            ModeColor[0]  = 0;
+1369   2            ModeTime[0]   = 0;
+1370   2            LedCnt        = 0;
+1371   2            TempColor     = 0;
+1372   2            ModeStep[0]   = 0;
+1373   2            HoldTime[0]   = 6;
+1374   2      
+1375   2            ModeColor[2]   = 0;
+1376   2          
+1377   2          
+1378   2          } // if --- initialize
+1379   1      
+1380   1      
+1381   1          //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1382   1          // Prelude
+1383   1          else
+1384   1          {
+1385   2            if (ModeMicroSec < 1500)
+1386   2              {
+1387   3                ModeTime[0]++;
+1388   3                if (ModeTime[0] > HoldTime[0])
+1389   3                {
+1390   4                  ModeTime[0] = 0;
+1391   4                  
+1392   4                  switch (ModeStep[0])
+1393   4                  {
+1394   5                    case 0:
+1395   5                    {
+1396   6                      DutyR = ColorData[TempColor][R];
+1397   6                      DutyG = ColorData[TempColor][G];
+1398   6                      DutyB = ColorData[TempColor][B];
+1399   6                      
+1400   6                      FadeR = ColorData[TempColor][R] / FADE_LEVEL;
+1401   6                      FadeG = ColorData[TempColor][G] / FADE_LEVEL;
+1402   6                      FadeB = ColorData[TempColor][B] / FADE_LEVEL;
+1403   6                      ModeStep[0]++;
+1404   6                    } break;
+1405   5                    
+1406   5                    case 1:
+1407   5                    {
+1408   6                      if (DutyR > 0 || DutyG > 0 || DutyB > 0)
+1409   6                      {
+1410   7                        DutyR -= FadeR;
+1411   7                        DutyG -= FadeG;
+1412   7                        DutyB -= FadeB;
+1413   7                      }
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 24  
+
+1414   6                      else
+1415   6                      {
+1416   7                        ModeStep[0] = 0;
+1417   7                        TempColor++;
+1418   7                        if (TempColor >= 7)   TempColor = 0;
+1419   7                      }
+1420   6                    } break;
+1421   5                  }
+1422   4                }
+1423   3      
+1424   3              } // PART - I
+1425   2      
+1426   2      
+1427   2      
+1428   2            //=============================================================
+1429   2            // PART -III
+1430   2            // initizlize
+1431   2            else
+1432   2            if (ModeMicroSec == 1500)
+1433   2            {
+1434   3              ModeTime[0]  = 0;
+1435   3              DutyR   = DUTY_MAX;
+1436   3              DutyG   = DUTY_MAX;
+1437   3              DutyB   = DUTY_MAX;
+1438   3              FadeR   = DutyR / FADE_LEVEL;
+1439   3              FadeG   = DutyG / FADE_LEVEL;
+1440   3              FadeB   = DutyB / FADE_LEVEL;
+1441   3            }
+1442   2      
+1443   2      
+1444   2            else
+1445   2            if (ModeMicroSec < 2000)
+1446   2            {
+1447   3              ModeTime[0]++;
+1448   3            if (ModeTime[0] > 9)
+1449   3            {
+1450   4              ModeTime[0] = 0;
+1451   4      
+1452   4              if (  (DutyR > 0)
+1453   4                 || (DutyG > 0)
+1454   4                 || (DutyB > 0)
+1455   4                )
+1456   4              {
+1457   5                DutyR   -= FadeR;
+1458   5                DutyG   -= FadeG;
+1459   5                DutyB   -= FadeB;
+1460   5              }
+1461   4              }
+1462   3            }
+1463   2            //=============================================================
+1464   2          // time control
+1465   2          ModeMicroSec++;
+1466   2          }
+1467   1      }
+1468          
+1469          
+1470          
+1471          /*********************************************************************************************************
+             -*********
+1472           * Interlude
+1473           */
+1474          static void Show_3_2(void)
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 25  
+
+1475          {
+1476   1        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1477   1        // initialize
+1478   1        if (ShowInit == TRUE)
+1479   1        {
+1480   2          //clear flag
+1481   2          ShowInit = FALSE;
+1482   2      
+1483   2          DutyR = 0;
+1484   2          DutyG = 0;
+1485   2          DutyB = 0;
+1486   2      
+1487   2      
+1488   2          //parameters
+1489   2          ModeMicroSec  = 0;
+1490   2          ModeColor[0]  = 0;
+1491   2          ModeStep[0]   = 0;
+1492   2          ModeTime[0]   = 0;
+1493   2      
+1494   2      
+1495   2          // fade
+1496   2          FadeR = ColorData[0][R] / FADE_LEVEL;
+1497   2          FadeG = ColorData[0][G] / FADE_LEVEL;
+1498   2          FadeB = ColorData[0][B] / FADE_LEVEL;
+1499   2      
+1500   2        } // if --- initialize
+1501   1      
+1502   1      
+1503   1      
+1504   1        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1505   1        // mode start
+1506   1        else
+1507   1        {
+1508   2          //===========================================================
+1509   2          // PART - I
+1510   2          // fade & color change
+1511   2          if (ModeMicroSec < 2000)
+1512   2          {
+1513   3            ModeTime[0]++;
+1514   3            if (ModeTime[0] > 2)
+1515   3            {
+1516   4              ModeTime[0] = 0;
+1517   4              switch (ModeStep[0])
+1518   4              {
+1519   5                case 1:
+1520   5                {
+1521   6                  if (  (DutyR > 0) 
+1522   6                    || (DutyG > 0) 
+1523   6                    || (DutyB > 0) 
+1524   6                    )
+1525   6                  {
+1526   7                    DutyR   -= FadeR;
+1527   7                    DutyG -= FadeG;
+1528   7                    DutyB -= FadeB;
+1529   7                  }
+1530   6      
+1531   6                  else
+1532   6                  {
+1533   7                    ModeStep[0] = 0;
+1534   7                    ModeColor[0]++;
+1535   7                    if (ModeColor[0] > 5)
+1536   7                    {
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 26  
+
+1537   8                      ModeColor[0] = 6;
+1538   8                    }
+1539   7                    
+1540   7                    FadeR = ColorData[ModeColor[0]][R] / FADE_LEVEL;
+1541   7                    FadeG = ColorData[ModeColor[0]][G] / FADE_LEVEL;
+1542   7                    FadeB = ColorData[ModeColor[0]][B] / FADE_LEVEL;
+1543   7                  }
+1544   6                } break;
+1545   5                
+1546   5                case 0:
+1547   5                {
+1548   6                  if (  (DutyR < ColorData[ModeColor[0]][R]) 
+1549   6                    ||  (DutyG < ColorData[ModeColor[0]][G]) 
+1550   6                    ||  (DutyB < ColorData[ModeColor[0]][B]) 
+1551   6                    )
+1552   6                  {
+1553   7                    DutyR   += FadeR;
+1554   7                    DutyG   += FadeG;
+1555   7                    DutyB   += FadeB;
+1556   7                  }
+1557   6                  
+1558   6                  else
+1559   6                  {
+1560   7                    if (ModeColor[0] < 6)
+1561   7                    {
+1562   8                      ModeStep[0]++;
+1563   8                    }
+1564   7                  }
+1565   6                } break;
+1566   5              }
+1567   4            }
+1568   3          }
+1569   2      
+1570   2      
+1571   2      
+1572   2          //=============================================================
+1573   2          // FADE -II
+1574   2          // flash
+1575   2      
+1576   2          // intialize
+1577   2          else
+1578   2          if (ModeMicroSec == 2000)
+1579   2          {
+1580   3            ModeTime[0] = 0;
+1581   3            ModeStep[0] = 0;
+1582   3            FadeR   = ColorData[6][R] / FADE_LEVEL;
+1583   3            FadeG   = ColorData[6][G] / FADE_LEVEL;
+1584   3            FadeB   = ColorData[6][B] / FADE_LEVEL;
+1585   3          }
+1586   2          else
+1587   2          if (ModeMicroSec < 2500)
+1588   2          {
+1589   3            ModeTime[0]++;
+1590   3      
+1591   3            // turn off
+1592   3            if (ModeTime[0] > 30)
+1593   3            {
+1594   4              ModeTime[0] = 0;
+1595   4      
+1596   4                    switch (ModeStep[0])
+1597   4                    {
+1598   5                        case 0:
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 27  
+
+1599   5                        {
+1600   6                            DutyR   = FadeR * FADE_LEVEL;
+1601   6                            DutyG   = FadeG * FADE_LEVEL;
+1602   6                            DutyB   = FadeB * FADE_LEVEL;
+1603   6      
+1604   6                            ModeStep[0]++;
+1605   6                            srand(RndSeed);
+1606   6                            RndSeed += 17;
+1607   6                            TempR = (_Uint8)(rand() % 20) + 5;
+1608   6                        } break;
+1609   5      
+1610   5                        case 1:
+1611   5                        {
+1612   6                            DutyR   = FadeR * TempR;
+1613   6                            DutyG   = FadeG * TempR; 
+1614   6                            DutyB   = FadeB * TempR;
+1615   6      
+1616   6                            ModeStep[0] = 0;
+1617   6                        } break;
+1618   5                    }
+1619   4            }
+1620   3          }
+1621   2      
+1622   2      
+1623   2      
+1624   2          //============================================================
+1625   2          // fade out
+1626   2          else
+1627   2          if (ModeMicroSec == 2500)
+1628   2          {
+1629   3            ModeTime[0] = 0;
+1630   3            DutyR = ColorData[6][R];
+1631   3            DutyG = ColorData[6][G];
+1632   3            DutyB = ColorData[6][B];
+1633   3            FadeR = DutyR / FADE_LEVEL;
+1634   3            FadeG = DutyG / FADE_LEVEL;
+1635   3            FadeB = DutyB / FADE_LEVEL;
+1636   3          }
+1637   2          else
+1638   2          {
+1639   3            ModeTime[0]++;
+1640   3            if (ModeTime[0] > 7)
+1641   3            {
+1642   4              ModeTime[0] = 0;
+1643   4      
+1644   4              if ( (DutyR > 0) || (DutyG > 0) || (DutyB > 0) )
+1645   4              {
+1646   5                DutyR -= FadeR;
+1647   5                DutyG -= FadeG;
+1648   5                DutyB -= FadeB;
+1649   5              }
+1650   4            }
+1651   3          }
+1652   2      
+1653   2      
+1654   2      
+1655   2      
+1656   2          //=============================================================
+1657   2          // time control
+1658   2          ModeMicroSec++;
+1659   2        } //else -- mode start
+1660   1      }
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 28  
+
+1661          
+1662          
+1663          
+1664          
+1665          /*********************************************************************************************************
+             -*********
+1666           * Climax
+1667           */
+1668          static void Show_3_3(void)
+1669          {
+1670   1        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1671   1        // initialize
+1672   1        if (ShowInit == TRUE)
+1673   1        {
+1674   2          //clear flag
+1675   2          ShowInit = FALSE;
+1676   2      
+1677   2      
+1678   2          // led initialize
+1679   2          DutyR = ColorData[6][R];
+1680   2          DutyG = ColorData[6][G];
+1681   2          DutyB = ColorData[6][B];
+1682   2          FadeR = DutyR / FADE_LEVEL;
+1683   2          FadeG = DutyG / FADE_LEVEL;
+1684   2          FadeB = DutyB / FADE_LEVEL;
+1685   2      
+1686   2      
+1687   2          //parameters
+1688   2          ModeMicroSec  = 0;
+1689   2          ModeColor[0]  = 0;
+1690   2          ModeStep[0]   = 0;
+1691   2          ModeTime[0]   = 0;
+1692   2        } // if --- initialize
+1693   1      
+1694   1      
+1695   1      
+1696   1        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1697   1        // mode start
+1698   1        else
+1699   1        {
+1700   2          //==================================================================================
+1701   2          // PART - II
+1702   2          // sparkle
+1703   2          if (ModeMicroSec < 1000)
+1704   2          {
+1705   3            ModeTime[0]++;
+1706   3            if (ModeTime[0] > 30)
+1707   3            {
+1708   4                ModeTime[0] = 0;
+1709   4      
+1710   4                ModeColor[0]++;
+1711   4                if (ModeColor[0] >= 7)
+1712   4                {
+1713   5                    ModeColor[0] = 0;
+1714   5                }
+1715   4      
+1716   4                DutyR   = ColorData[ModeColor[0]][R];
+1717   4                DutyG   = ColorData[ModeColor[0]][G];
+1718   4                DutyB   = ColorData[ModeColor[0]][B];
+1719   4            }
+1720   3          }
+1721   2      
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 29  
+
+1722   2      
+1723   2      
+1724   2          //========================================================================================
+1725   2          // PART - III
+1726   2          // rolling
+1727   2          else
+1728   2          if (ModeMicroSec == 1000)
+1729   2          {
+1730   3            Flash_Init();
+1731   3          }
+1732   2          else
+1733   2          if (ModeMicroSec < 3000)
+1734   2          {
+1735   3            Flash(TRUE);;
+1736   3          }
+1737   2      
+1738   2          //=============================================================
+1739   2          // time control
+1740   2          ModeMicroSec++;
+1741   2      
+1742   2        } //else -- mode start
+1743   1      }
+1744          
+1745          
+1746          
+1747          /*********************************************************************************************************
+             -*********
+1748           * Coda
+1749           */
+1750          static void Show_3_4(void)
+1751          {
+1752   1        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1753   1        // initialize
+1754   1        if (ShowInit == TRUE)
+1755   1        {
+1756   2          //clear flag
+1757   2          ShowInit = FALSE;
+1758   2      
+1759   2      
+1760   2          // led initialize
+1761   2          DutyR = 0;
+1762   2          DutyG = 0;
+1763   2          DutyB = 0;
+1764   2      
+1765   2      
+1766   2          FadeR = ColorData[0][R] / FADE_LEVEL;
+1767   2          FadeG = ColorData[0][G] /FADE_LEVEL;
+1768   2          FadeB = ColorData[0][B] /FADE_LEVEL;
+1769   2      
+1770   2          //parameters
+1771   2          ModeMicroSec = 0;
+1772   2          ModeTime[0] = 0;
+1773   2          ModeStep[0] = 0;
+1774   2          ModeColor[0]  = 0;
+1775   2      
+1776   2          Fade_Init();
+1777   2        } // if --- initialize
+1778   1      
+1779   1      
+1780   1      
+1781   1        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1782   1        // mode start
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 30  
+
+1783   1        else
+1784   1        {
+1785   2          //=============================================================
+1786   2          // PART-I
+1787   2          // fade in one by one
+1788   2          if (ModeMicroSec < 1000)
+1789   2          {
+1790   3            Fade(TRUE);
+1791   3          } // PART -I
+1792   2      
+1793   2      
+1794   2      
+1795   2          //===================================================================================
+1796   2          // PART - II
+1797   2          // COLOR 
+1798   2      
+1799   2          // initialize
+1800   2          else
+1801   2          if (ModeMicroSec == 1000)
+1802   2          {
+1803   3            ModeColor[0] = 0;
+1804   3      
+1805   3            DutyR  = ColorData[0][R];
+1806   3            DutyG = ColorData[0][G];
+1807   3            DutyB = ColorData[0][B];
+1808   3      
+1809   3            ModeTime[0] = 0;
+1810   3      
+1811   3          }
+1812   2          else
+1813   2          if (ModeMicroSec < 3000)
+1814   2          {
+1815   3            ModeTime[0]++;
+1816   3            if (ModeTime[0] > 60)
+1817   3            {
+1818   4              ModeTime[0] = 0;
+1819   4      
+1820   4              ModeColor[0]++;
+1821   4              if (ModeColor[0] >= 7)
+1822   4              {
+1823   5                ModeColor[0] = 0;
+1824   5              }
+1825   4      
+1826   4              DutyR   = ColorData[ModeColor[0]][R];
+1827   4              DutyG = ColorData[ModeColor[0]][G];
+1828   4              DutyB = ColorData[ModeColor[0]][B];
+1829   4            }     
+1830   3          } // PART - II
+1831   2      
+1832   2      
+1833   2      
+1834   2          //==================================================================
+1835   2          // PART -III
+1836   2          //initialize
+1837   2          else
+1838   2          if (ModeMicroSec == 3000)
+1839   2          {
+1840   3            TempColor = 0;
+1841   3            DutyR = 0;
+1842   3            DutyG = 0;
+1843   3            DutyB = 0;
+1844   3            
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 31  
+
+1845   3            FadeR       = ColorData[TempColor][R] / FADE_LEVEL;
+1846   3            FadeG       = ColorData[TempColor][G] / FADE_LEVEL;
+1847   3            FadeB       = ColorData[TempColor][B] / FADE_LEVEL;
+1848   3            ModeStep[0] = 0;
+1849   3            ModeTime[0] = 0;
+1850   3            
+1851   3            SpeedTime = 0;
+1852   3            LedCnt    = 0;
+1853   3          }
+1854   2      
+1855   2      
+1856   2          else
+1857   2          if (ModeMicroSec < 4500)
+1858   2          {
+1859   3            SpeedTime++;
+1860   3            if (SpeedTime > 5)
+1861   3            {
+1862   4              SpeedTime = 0;
+1863   4              
+1864   4              switch (ModeStep[0])
+1865   4              {
+1866   5                case 0:
+1867   5                {
+1868   6                  if (    (DutyR < ColorData[TempColor][R] / 2)
+1869   6                        ||(DutyG < ColorData[TempColor][G] / 2)
+1870   6                        ||(DutyB < ColorData[TempColor][B] / 2)
+1871   6                  )
+1872   6                  {
+1873   7                    DutyR   += FadeR;
+1874   7                    DutyG   += FadeG;
+1875   7                    DutyB   += FadeB;
+1876   7                  }
+1877   6                  else
+1878   6                  {
+1879   7                    ModeStep[0]++;
+1880   7                  }
+1881   6                } break;
+1882   5                
+1883   5                case 1:
+1884   5                {
+1885   6                  DutyR = ColorData[TempColor][R];
+1886   6                  DutyG = ColorData[TempColor][G];
+1887   6                  DutyB = ColorData[TempColor][B];
+1888   6                  ModeStep[0]++;
+1889   6                } break;
+1890   5                
+1891   5                
+1892   5                default:
+1893   5                {
+1894   6                  if
+1895   6                  (
+1896   6                      (DutyR > 0)
+1897   6                    ||(DutyG > 0)
+1898   6                    ||(DutyB > 0)
+1899   6                  )
+1900   6                  {
+1901   7                    DutyR   -= FadeR;
+1902   7                    DutyG   -= FadeG;
+1903   7                    DutyB   -= FadeB;
+1904   7                  }
+1905   6                  else
+1906   6                  {
+C51 COMPILER V9.52.0.0   LED_DISPLAY                                                       04/16/2018 20:02:13 PAGE 32  
+
+1907   7                    ModeStep[0] = 0;
+1908   7                    TempColor++;
+1909   7                    if(TempColor >= 7)      TempColor = 0;
+1910   7                    FadeR       = ColorData[TempColor][R] / FADE_LEVEL;
+1911   7                    FadeG       = ColorData[TempColor][G] / FADE_LEVEL;
+1912   7                    FadeB       = ColorData[TempColor][B] / FADE_LEVEL;
+1913   7                    ModeStep[0] = 0;
+1914   7                  }
+1915   6                } break;
+1916   5              }
+1917   4            }
+1918   3          }
+1919   2      
+1920   2          //==============================================================
+1921   2          // PART - III
+1922   2          // turn to white
+1923   2          else
+1924   2          if (ModeMicroSec < 4500)
+1925   2          {
+1926   3            Flash(TRUE);;
+1927   3          } // PART - II
+1928   2      
+1929   2      
+1930   2      
+1931   2          //==============================================================
+1932   2          // PART - III
+1933   2          // turn to white
+1934   2          else
+1935   2          {
+1936   3            Fade(TRUE);
+1937   3          }
+1938   2          
+1939   2      
+1940   2          //=============================================================
+1941   2          // time control
+1942   2          ModeMicroSec++;
+1943   2        } //else -- mode start
+1944   1      }
+1945          
+1946          
+1947          
+1948          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   4811    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     28    ----
+   IDATA SIZE       =     34    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

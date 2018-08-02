@@ -1,0 +1,235 @@
+
+AccTemp                            at 0x0011  xxxx.x  0000 to 0000
+DDR0                               at 0x0045  xxxx.x  0000 to 0000
+DDR1                               at 0x0046  xxxx.x  0000 to 0000
+DetTime                            at 0x0016  xxxx.x  0000 to 0000
+Det_Release                        at 0x0065  xxxx.x  0000 to 0000
+Det_Scan                           at 0x0059  xxxx.x  0000 to 0000
+Det_Scan_Exit                      at 0x0067  xxxx.x  0000 to 0000
+FSR                                at 0x0004  xxxx.x  0000 to 0000
+INDF                               at 0x0000  xxxx.x  0000 to 0000
+INTECON                            at 0x000E  xxxx.x  0000 to 0000
+INTFLAG                            at 0x000F  xxxx.x  0000 to 0000
+KBIM                               at 0x0009  xxxx.x  0000 to 0000
+KeyNum                             at 0x0014  xxxx.x  0000 to 0000
+KeyTime                            at 0x0013  xxxx.x  0000 to 0000
+Key_Deal                           at 0x004C  xxxx.x  0000 to 0000
+Key_Release                        at 0x0048  xxxx.x  0000 to 0000
+Key_Scan                           at 0x0039  xxxx.x  0000 to 0000
+Key_Scan_2                         at 0x003E  xxxx.x  0000 to 0000
+Key_Scan_3                         at 0x0043  xxxx.x  0000 to 0000
+Key_Scan_Exit                      at 0x0058  xxxx.x  0000 to 0000
+MCR                                at 0x0008  xxxx.x  0000 to 0000
+Main                               at 0x0032  xxxx.x  0000 to 0000
+ODCON                              at 0x000C  xxxx.x  0000 to 0000
+P0                                 at 0x0005  xxxx.x  0000 to 0000
+P1                                 at 0x0006  xxxx.x  0000 to 0000
+PCL                                at 0x0002  xxxx.x  0000 to 0000
+PCLATH                             at 0x000A  xxxx.x  0000 to 0000
+PDCON                              at 0x000B  xxxx.x  0000 to 0000
+PUCON                              at 0x000D  xxxx.x  0000 to 0000
+PWMCR                              at 0x0048  xxxx.x  0000 to 0000
+Pulse_Release                      at 0x007D  xxxx.x  0000 to 0000
+Pulse_Snd                          at 0x0068  xxxx.x  0000 to 0000
+Pulse_Snd_Exit                     at 0x0082  xxxx.x  0000 to 0000
+STATUS                             at 0x0003  xxxx.x  0000 to 0000
+SndCnt                             at 0x0018  xxxx.x  0000 to 0000
+SndCnt1                            at 0x0017  xxxx.x  0000 to 0000
+SndTime                            at 0x0015  xxxx.x  0000 to 0000
+StatusTemp                         at 0x0010  xxxx.x  0000 to 0000
+T0CNT                              at 0x0001  xxxx.x  0000 to 0000
+T0CR                               at 0x0041  xxxx.x  0000 to 0000
+T1CNT                              at 0x004D  xxxx.x  0000 to 0000
+T1CR                               at 0x004C  xxxx.x  0000 to 0000
+T1DATA0                            at 0x004F  xxxx.x  0000 to 0000
+T1DATA1                            at 0x0049  xxxx.x  0000 to 0000
+T1DATA2                            at 0x004A  xxxx.x  0000 to 0000
+T1LOAD                             at 0x004E  xxxx.x  0000 to 0000
+TM0CR                              at 0x004B  xxxx.x  0000 to 0000
+WorkFlag                           at 0x0012  xxxx.x  0000 to 0000
+_Interrupt                         at 0x0009  xxxx.x  0000 to 0000
+_Interrupt_Exit                    at 0x000E  xxxx.x  0000 to 0000
+_Ram_clear                         at 0x0029  xxxx.x  0000 to 0000
+_Start                             at 0x0015  xxxx.x  0000 to 0000
+_User_Init                         at 0x0030  xxxx.x  0000 to 0000
+__30P011                           at 0x0001  xxxx.x  0000 to 0000
+#define         INDF7          INDF,7
+#define         INDF6          INDF,6
+#define         INDF5          INDF,5
+#define         INDF4          INDF,4
+#define         INDF3          INDF,3
+#define         INDF2          INDF,2
+#define         INDF1          INDF,1
+#define         INDF0          INDF,0
+#define         T0C7           T0CNT,7
+#define         T0C6           T0CNT,6
+#define         T0C5           T0CNT,5
+#define         T0C4           T0CNT,4
+#define         T0C3           T0CNT,3
+#define         T0C2           T0CNT,2
+#define         T0C1           T0CNT,1
+#define         T0C0           T0CNT,0
+#define         PC7             PCL,7
+#define         PC6             PCL,6
+#define         PC5             PCL,5
+#define         PC4             PCL,4
+#define         PC3             PCL,3
+#define         PC2             PCL,2
+#define         PC1             PCL,1
+#define         PC0             PCL,0
+#define RST     STATUS,7
+#define TO      STATUS,4
+#define PD      STATUS,3
+#define Z         STATUS,2
+#define DC      STATUS,1
+#define C         STATUS,0
+#define         FSR5           FSR,5
+#define         FSR4           FSR,4
+#define         FSR3           FSR,3
+#define         FSR2           FSR,2
+#define         FSR1           FSR,1
+#define         FSR0           FSR,0
+#define         P03D           P0,3
+#define         P02D           P0,2
+#define         P01D           P0,1
+#define         P00D           P0,0
+#define         P17D           P1,7
+#define         P16D           P1,6
+#define         P15D           P1,5
+#define         P14D           P1,4
+#define         P13D           P1,3
+#define         P12D           P1,2
+#define         P11D           P1,1
+#define         P10D           P1,0
+#define WDTEN       MCR,7
+#define EIS           MCR,6
+#define LVDF        MCR,5
+#define LVDSEL3   MCR,4
+#define LVDSEL2   MCR,3
+#define LVDSEL1   MCR,2
+#define LVDSEL0   MCR,1
+#define LVDEN       MCR,0
+#define         KBIM5           KBIM,5
+#define         KBIM4           KBIM,4
+#define         KBIM3           KBIM,3
+#define         KBIM2           KBIM,2
+#define         KBIM1           KBIM,1
+#define         KBIM0           KBIM,0
+#define PCH1      PCLATH,1
+#define PCH0      PCLATH,0
+#define         P12PD           PDCON,6
+#define         P11PD           PDCON,5
+#define         P10PD           PDCON,4
+#define         P03PD           PDCON,3
+#define         P02PD           PDCON,2
+#define         P01PD           PDCON,1
+#define         P00PD           PDCON,0
+#define         P17OD           ODCON,7
+#define         P16OD           ODCON,6
+#define         P15OD           ODCON,5
+#define         P14OD           ODCON,4
+#define         P12OD           ODCON,2
+#define         P11OD           ODCON,1
+#define         P10OD           ODCON,0
+#define         P17PU           PUCON,7
+#define         P16PU           PUCON,6
+#define         P15PU           PUCON,5
+#define         P14PU           PUCON,4
+#define         P12PU           PUCON,2
+#define         P11PU           PUCON,1
+#define         P10PU           PUCON,0
+#define INTE      INTECON
+#define GIE         INTECON,7
+#define INTIE     INTECON,2
+#define KBIE      INTECON,1
+#define T0IE      INTECON,0
+#define INTF      INTFLAG
+#define INTIF     INTF,2
+#define KBIF      INTF,1
+#define T0IF      INTF,0
+#define         INT0M           T0CR,6
+#define         T0PTS           T0CR,5
+#define         T0SE            T0CR,4
+#define         T0PTA           T0CR,3
+#define         T0PR2           T0CR,2
+#define         T0PR1           T0CR,1
+#define         T0PR0           T0CR,0
+#define         DDR03           DDR0,3
+#define         DDR02           DDR0,2
+#define         DDR01           DDR0,1
+#define         DDR00           DDR0,0
+#define         DDR17           DDR1,7
+#define         DDR16           DDR1,6
+#define         DDR15           DDR1,5
+#define         DDR14           DDR1,4
+#define         DDR13           DDR1,3
+#define         DDR12           DDR1,2
+#define         DDR11           DDR1,1
+#define         DDR10           DDR1,0
+#define         PMW0OE          PWMCR,7
+#define         PWM1OE          PWMCR,6
+#define         PWM2OE          PWMCR,5
+#define         DBLCK           PWMCR,4
+#define         PWMMD           PWMCR,3
+#define         PWMINV          PWMCR,2
+#define         PMW1E           PWMCR,1
+#define         PWM2E           PWMCR,0
+#define T1DATA17   T1DATA1,7
+#define T1DATA16   T1DATA1,6
+#define T1DATA15   T1DATA1,5
+#define T1DATA14   T1DATA1,4
+#define T1DATA13   T1DATA1,3
+#define T1DATA12   T1DATA1,2
+#define T1DATA11   T1DATA1,1
+#define T1DATA10   T1DATA1,0
+#define T1DATA27   T1DATA2,7
+#define T1DATA26   T1DATA2,6
+#define T1DATA25   T1DATA2,5
+#define T1DATA24   T1DATA2,4
+#define T1DATA23   T1DATA2,3
+#define T1DATA22   T1DATA2,2
+#define T1DATA21   T1DATA2,1
+#define T1DATA20   T1DATA2,0
+#define TBS     TM0CR,7
+#define T1IE    TM0CR,1
+#define T1IF    TM0CR,0
+#define TC1EN    T1CR,7
+#define PWM0E    T1CR,6
+#define BUZE     T1CR,5
+#define T1PTS1   T1CR,4
+#define T1PTS0   T1CR,3
+#define T1PR2    T1CR,2
+#define T1PR1    T1CR,1
+#define T1PR0    T1CR,0
+#define T1C7   T1CNT,7
+#define T1C6   T1CNT,6
+#define T1C5   T1CNT,5
+#define T1C4   T1CNT,4
+#define T1C3   T1CNT,3
+#define T1C2   T1CNT,2
+#define T1C1   T1CNT,1
+#define T1C0   T1CNT,0
+#define T1LOAD7   T1LOAD,7
+#define T1LOAD6   T1LOAD,6
+#define T1LOAD5   T1LOAD,5
+#define T1LOAD4   T1LOAD,4
+#define T1LOAD3   T1LOAD,3
+#define T1LOAD2   T1LOAD,2
+#define T1LOAD1   T1LOAD,1
+#define T1LOAD0   T1LOAD,0
+#define T1DATA07   T1DATA0,7
+#define T1DATA06   T1DATA0,6
+#define T1DATA05   T1DATA0,5
+#define T1DATA04   T1DATA0,4
+#define T1DATA03   T1DATA0,3
+#define T1DATA02   T1DATA0,2
+#define T1DATA01   T1DATA0,1
+#define T1DATA00   T1DATA0,0
+#define         PORT_KEY_1                      P1,2
+#define         PORT_KEY_2                      P1,4
+#define         PORT_KEY_3                      P1,5
+#define         PORT_DET                        P1,0
+#define         PORT_OUT                        P1,1
+#define         KeyDoneFlag             WorkFlag,0
+#define     SndFlag                 WorkFlag,1
+#define     SndAllowFlag            WorkFlag,2

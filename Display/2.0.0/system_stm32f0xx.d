@@ -1,0 +1,13 @@
+.\system_stm32f0xx.o: RTE\Device\STM32F030C8\system_stm32f0xx.c
+.\system_stm32f0xx.o: .\Include\stm32f0xx.h
+.\system_stm32f0xx.o: C:\Keil\ARM\PACK\ARM\CMSIS\3.20.3\CMSIS\Include\core_cm0.h
+.\system_stm32f0xx.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\system_stm32f0xx.o: C:\Keil\ARM\PACK\ARM\CMSIS\3.20.3\CMSIS\Include\core_cmInstr.h
+.\system_stm32f0xx.o: C:\Keil\ARM\PACK\ARM\CMSIS\3.20.3\CMSIS\Include\core_cmFunc.h
+.\system_stm32f0xx.o: C:\Keil\ARM\PACK\Keil\STM32F0xx_DFP\1.0.0\Device\Include\system_stm32f0xx.h
+.\system_stm32f0xx.o: .\Include\stm32f0xx_conf.h
+.\system_stm32f0xx.o: .\FWLib\inc\stm32f0xx_gpio.h
+.\system_stm32f0xx.o: .\Include\stm32f0xx.h
+.\system_stm32f0xx.o: .\FWLib\inc\stm32f0xx_iwdg.h
+.\system_stm32f0xx.o: .\FWLib\inc\stm32f0xx_rcc.h
+.\system_stm32f0xx.o: .\FWLib\inc\stm32f0xx_tim.h

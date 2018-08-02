@@ -1,0 +1,118 @@
+C51 COMPILER V9.52.0.0   TIMER_CTRL                                                        03/30/2018 19:49:14 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE TIMER_CTRL
+OBJECT MODULE PLACED IN .\HexDocument\Timer_Ctrl.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE PublicSrc\Timer_Ctrl.c BROWSE INCDIR(.\PrivateInc;.\PublicInc) DEBUG OB
+                    -JECTEXTEND PRINT(.\Timer_Ctrl.lst) TABS(2) OBJECT(.\HexDocument\Timer_Ctrl.obj)
+
+line level    source
+
+   1          /*************************************************************
+   2            *
+   3            * @FileName     Timer_Ctrl.c
+   4            * @Date         2017.03.17
+   5            * @Author       DS.Chin
+   6            * @Description  Timer through 24 hours
+   7            *
+   8          **************************************************************/
+   9          #include "Timer_Ctrl.h"
+  10          
+  11          
+  12          /* @Brief Gloable Variables */
+  13          _TypeStructTime   TimerData;
+  14          
+  15          
+  16          
+  17          /*****************************************************
+  18            *
+  19            * @FunctionName   Count_Down_Control
+  20            *
+  21          *****/
+  22          void Count_Down_Control(void)
+  23          {
+  24   1        /* if count down hour equals 0, then exit this function */
+  25   1        if (TimerData.CntDwnHour == 0)      return;
+  26   1        
+  27   1        
+  28   1        /* if count down hour unequals 0, then start the time */
+  29   1        // Initial the real time
+  30   1        if (TimerData.InitFlag == TRUE)
+  31   1        {
+  32   2          TimerData.InitFlag = FALSE;
+  33   2          TimerData.RealTime.MicroSec   = 0;
+  34   2          TimerData.RealTime.Second     = 0;
+  35   2          TimerData.RealTime.Minute     = 0;
+  36   2          TimerData.RealTime.Hour       = 0;
+  37   2        }
+  38   1        
+  39   1        
+  40   1        /* Real Time */
+  41   1        TimerData.RealTime.MicroSec++;
+  42   1        if (TimerData.RealTime.MicroSec >= 50)    // 1s
+  43   1        {
+  44   2          TimerData.RealTime.MicroSec   = 0;
+  45   2          TimerData.RealTime.Second ++;
+  46   2          if (TimerData.RealTime.Second >= 60)    // 1minute
+  47   2          {
+  48   3            TimerData.RealTime.Second   = 0;
+  49   3            TimerData.RealTime.Minute ++;
+  50   3            if (TimerData.RealTime.Minute >= 60)  // 1hour
+  51   3            {
+  52   4              TimerData.RealTime.Minute = 0;
+  53   4              TimerData.RealTime.Hour ++;
+  54   4              if (TimerData.RealTime.Hour >= 24)  // 1day
+C51 COMPILER V9.52.0.0   TIMER_CTRL                                                        03/30/2018 19:49:14 PAGE 2   
+
+  55   4              {
+  56   5                TimerData.RealTime.Hour = 0;
+  57   5              }
+  58   4            }
+  59   3          }
+  60   2        }
+  61   1        
+  62   1        
+  63   1        /* Get the timer hour status */
+  64   1        if (TimerData.RealTime.MicroSec   == 0
+  65   1          &&TimerData.RealTime.Second     == 0
+  66   1          &&TimerData.RealTime.Minute     == 0
+  67   1          &&TimerData.RealTime.Hour       == 0)
+  68   1        {
+  69   2          TimerData.Status    = TIM_OPEN;
+  70   2          TimerData.OnOffFlag = TRUE;
+  71   2        }
+  72   1        
+  73   1        else
+  74   1        if (TimerData.RealTime.MicroSec   == 0
+  75   1          &&TimerData.RealTime.Second     == 0
+  76   1          &&TimerData.RealTime.Minute     == 0
+  77   1          &&TimerData.RealTime.Hour       == TimerData.CntDwnHour)
+  78   1        {
+  79   2          TimerData.Status    = TIM_CLOSE;
+  80   2          TimerData.OnOffFlag = FALSE;
+  81   2        }
+  82   1      }
+  83          
+  84          
+  85          
+  86          
+  87          
+  88          
+  89          
+  90          
+  91          
+  92          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    112    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

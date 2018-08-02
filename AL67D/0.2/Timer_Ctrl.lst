@@ -1,0 +1,127 @@
+C51 COMPILER V9.52.0.0   TIMER_CTRL                                                        04/16/2018 20:02:15 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE TIMER_CTRL
+OBJECT MODULE PLACED IN .\HexDocument\Timer_Ctrl.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE PublicSrc\Timer_Ctrl.c BROWSE INCDIR(.\PrivateInc;.\PublicInc) DEBUG OB
+                    -JECTEXTEND PRINT(.\Timer_Ctrl.lst) TABS(2) OBJECT(.\HexDocument\Timer_Ctrl.obj)
+
+line level    source
+
+   1          /*************************************************************
+   2            *
+   3            * @FileName     Timer_Ctrl.c
+   4            * @Date         2017.03.17
+   5            * @Author       DS.Chin
+   6            * @Description  Timer through 24 hours
+   7            *
+   8          **************************************************************/
+   9          #include "Timer_Ctrl.h"
+  10          
+  11          
+  12          /* @Brief Gloable Variables */
+  13          _TypeStructTime   TimerData;
+  14          
+  15          xdata _Uint16   TimerChk;
+  16          
+  17          
+  18          
+  19          /*****************************************************
+  20            *
+  21            * @FunctionName   Count_Down_Control
+  22            *
+  23          *****/
+  24          void Count_Down_Control(void)
+  25          {
+  26   1        /* if count down hour equals 0, then exit this function */
+  27   1        if (TimerData.CntDwnHour == 0)      return;
+  28   1        
+  29   1        
+  30   1        /* if count down hour unequals 0, then start the time */
+  31   1        // Initial the real time
+  32   1        if (TimerData.InitFlag == TRUE)
+  33   1        {
+  34   2          TimerData.InitFlag = FALSE;
+  35   2          TimerData.RealTime.MicroSec   = 0;
+  36   2          TimerData.RealTime.Second     = 0;
+  37   2          TimerData.RealTime.Minute     = 0;
+  38   2          TimerData.RealTime.Hour       = 0;
+  39   2          TimerChk = 0;
+  40   2        }
+  41   1        
+  42   1        
+  43   1        /* Real Time */
+  44   1        TimerData.RealTime.MicroSec++;
+  45   1        if (TimerData.RealTime.MicroSec >= 50)    // 1s
+  46   1        {
+  47   2          TimerData.RealTime.MicroSec   = 0;
+  48   2          TimerChk++;
+  49   2          if (TimerChk >= 24000)
+  50   2          {
+  51   3            TimerChk = 0;
+  52   3            return;
+  53   3          }
+  54   2          TimerData.RealTime.Second ++;
+C51 COMPILER V9.52.0.0   TIMER_CTRL                                                        04/16/2018 20:02:15 PAGE 2   
+
+  55   2          if (TimerData.RealTime.Second >= 60)    // 1minute
+  56   2          {
+  57   3            TimerData.RealTime.Second   = 0;
+  58   3            TimerData.RealTime.Minute ++;
+  59   3            if (TimerData.RealTime.Minute >= 60)  // 1hour
+  60   3            {
+  61   4              TimerData.RealTime.Minute = 0;
+  62   4              TimerData.RealTime.Hour ++;
+  63   4              if (TimerData.RealTime.Hour >= 24)  // 1day
+  64   4              {
+  65   5                TimerData.RealTime.Hour = 0;
+  66   5              }
+  67   4            }
+  68   3          }
+  69   2        }
+  70   1        
+  71   1        
+  72   1        /* Get the timer hour status */
+  73   1        if (TimerData.RealTime.MicroSec   == 0
+  74   1          &&TimerData.RealTime.Second     == 0
+  75   1          &&TimerData.RealTime.Minute     == 0
+  76   1          &&TimerData.RealTime.Hour       == 0)
+  77   1        {
+  78   2          TimerData.Status    = TIM_OPEN;
+  79   2          TimerData.OnOffFlag = TRUE;
+  80   2        }
+  81   1        
+  82   1        else
+  83   1        if (TimerData.RealTime.MicroSec   == 0
+  84   1          &&TimerData.RealTime.Second     == 0
+  85   1          &&TimerData.RealTime.Minute     == 0
+  86   1          &&TimerData.RealTime.Hour       == TimerData.CntDwnHour)
+  87   1        {
+  88   2          TimerData.Status    = TIM_CLOSE;
+  89   2          TimerData.OnOffFlag = FALSE;
+  90   2        }
+  91   1      }
+  92          
+  93          
+  94          
+  95          
+  96          
+  97          
+  98          
+  99          
+ 100          
+ 101          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    156    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      2    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

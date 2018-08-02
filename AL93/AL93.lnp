@@ -1,0 +1,10 @@
+"STARTUP.obj",
+"AL93.obj",
+"Config.obj",
+"CSR1010.obj",
+"Data_Process.obj",
+"Eprom.obj",
+"Led_Display.obj",
+"Timer_Motor.obj" 
+TO "AL93" 
+RAMSIZE(256) 

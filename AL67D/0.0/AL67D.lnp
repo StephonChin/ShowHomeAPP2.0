@@ -1,0 +1,14 @@
+"STARTUP.obj",
+"AL67D.obj",
+"KeyScan.obj",
+"Led_Display.obj",
+"MCU_Config.obj",
+"Motor.obj",
+"Ntc_Msr.obj",
+"CSR1010.obj",
+"Data_Process.obj",
+"Flash_Prgrm.obj",
+"Led_Class.obj",
+"Timer_Ctrl.obj" 
+TO "AL67D" 
+RAMSIZE(256) 

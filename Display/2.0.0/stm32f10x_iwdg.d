@@ -1,0 +1,15 @@
+.\stm32f10x_iwdg.o: FWLib\src\stm32f10x_iwdg.c
+.\stm32f10x_iwdg.o: .\FWLib\inc\stm32f10x_iwdg.h
+.\stm32f10x_iwdg.o: C:\Keil\ARM\PACK\Keil\STM32F1xx_DFP\1.0.2\Device\Include\stm32f10x.h
+.\stm32f10x_iwdg.o: C:\Keil\ARM\PACK\ARM\CMSIS\3.20.3\CMSIS\Include\core_cm3.h
+.\stm32f10x_iwdg.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\stm32f10x_iwdg.o: C:\Keil\ARM\PACK\ARM\CMSIS\3.20.3\CMSIS\Include\core_cmInstr.h
+.\stm32f10x_iwdg.o: C:\Keil\ARM\PACK\ARM\CMSIS\3.20.3\CMSIS\Include\core_cmFunc.h
+.\stm32f10x_iwdg.o: C:\Keil\ARM\PACK\Keil\STM32F1xx_DFP\1.0.2\Device\Include\system_stm32f10x.h
+.\stm32f10x_iwdg.o: .\Include\stm32f10x_conf.h
+.\stm32f10x_iwdg.o: .\FWLib\inc\stm32f10x_gpio.h
+.\stm32f10x_iwdg.o: C:\Keil\ARM\PACK\Keil\STM32F1xx_DFP\1.0.2\Device\Include\stm32f10x.h
+.\stm32f10x_iwdg.o: .\FWLib\inc\stm32f10x_iwdg.h
+.\stm32f10x_iwdg.o: .\FWLib\inc\stm32f10x_rcc.h
+.\stm32f10x_iwdg.o: .\FWLib\inc\stm32f10x_tim.h
+.\stm32f10x_iwdg.o: .\FWLib\inc\misc.h

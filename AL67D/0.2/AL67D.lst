@@ -1,0 +1,103 @@
+C51 COMPILER V9.52.0.0   AL67D                                                             04/16/2018 20:02:12 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE AL67D
+OBJECT MODULE PLACED IN .\HexDocument\AL67D.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE PrivateSrc\AL67D.c BROWSE INCDIR(.\PrivateInc;.\PublicInc) DEBUG OBJECT
+                    -EXTEND PRINT(.\AL67D.lst) TABS(2) OBJECT(.\HexDocument\AL67D.obj)
+
+line level    source
+
+   1          /*******************************************************************************
+   2            *
+   3            * Project Name    AL67-3D
+   4            * Date            2017.12.19
+   5            * Author          DS.Chin
+   6            * Description     AL67-3D controled by APP var CSR1010
+   7            *
+   8          *******************************************************************************/
+   9          #include "AL67D.h"
+  10          
+  11          
+  12          
+  13          /*******************************************************
+  14            *
+  15            * Function Name   | TIM0_Update_Interrupt
+  16            * Description   | TIM0 100us中断服务函数
+  17            *
+  18          *****/
+  19          void Led_Duty_Control(void) interrupt 1
+  20          {
+  21   1        
+  22   1        TF0 = RESET;
+  23   1      
+  24   1        /* LASER占空比控制 */
+  25   1        Led_Update();
+  26   1        
+  27   1        /* Motor占空比控制 */
+  28   1        Motor_Duty_Control();
+  29   1      }
+  30          
+  31          
+  32          /**
+  33            * Programm Entrance
+  34            */
+  35          void main(void)
+  36          {
+  37   1        /* Initialize the MCU peripheral */
+  38   1        MCU_Config();
+  39   1        
+  40   1        /* Read the Mode, Coor & Timer after Power On */
+  41   1        User_Data_Init();
+  42   1          
+  43   1          Csr1010_Init();
+  44   1      
+  45   1        while (1)
+  46   1        {
+  47   2          if (TF2 == SET)
+  48   2          {
+  49   3            TF2 = RESET;
+  50   3                  
+  51   3                  TA      = 0xAA;
+  52   3                  TA      = 0x55;
+  53   3                  WDCON       |= BIT6;        //WDCLR = 1, clear the WDT 
+  54   3            
+C51 COMPILER V9.52.0.0   AL67D                                                             04/16/2018 20:02:12 PAGE 2   
+
+  55   3            Csr1010_Rcv_Data();
+  56   3            
+  57   3            Data_Process();
+  58   3            
+  59   3            Csr1010_Snd_Data();
+  60   3            
+  61   3            Led_Display();
+  62   3            
+  63   3            Ntc_Msr();
+  64   3            
+  65   3            Key_Scan();
+  66   3            
+  67   3            Motor_Control();
+  68   3            
+  69   3            Count_Down_Control(); 
+  70   3                  
+  71   3                  Byte_Write_To_APROM();
+  72   3                  
+  73   3                  BT_Work_Detect();
+  74   3          }
+  75   2        }
+  76   1      }
+  77          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    119    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

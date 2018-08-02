@@ -1,0 +1,261 @@
+C51 COMPILER V9.52.0.0   MCU_CONFIG                                                        03/30/2018 19:49:12 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MCU_CONFIG
+OBJECT MODULE PLACED IN .\HexDocument\MCU_Config.obj
+COMPILER INVOKED BY: C:\Keil\C51\C51\BIN\C51.EXE PrivateSrc\MCU_Config.c BROWSE INCDIR(.\PrivateInc;.\PublicInc) DEBUG O
+                    -BJECTEXTEND PRINT(.\MCU_Config.lst) TABS(2) OBJECT(.\HexDocument\MCU_Config.obj)
+
+line level    source
+
+   1          /********************************************************************
+   2            *
+   3            * File Name       = Configuration.c
+   4            * Date            = 2016.10.28
+   5            * Author          = DS.Chin
+   6            *
+   7          *********************************************************************/
+   8          #include "MCU_Config.h"
+   9          
+  10          _Uint8      HseStatus = 0;
+  11          
+  12          
+  13          /******************************************************************
+  14            *
+  15            * Function Name     MCU_Config
+  16            *
+  17          ******************************************************************/
+  18          void MCU_Config(void)
+  19          {
+  20   1          /* Disable Interrupt */
+  21   1        IE &= ~BIT7;
+  22   1          
+  23   1        CLK_Init();
+  24   1        
+  25   1        GPIO_Init();
+  26   1        
+  27   1        TIM_Init();
+  28   1        
+  29   1        ADC_Init();
+  30   1        
+  31   1        UART_Init();
+  32   1          
+  33   1          WDT_Init();
+  34   1          
+  35   1          /* Enable Interrupt */
+  36   1        IE |= BIT7;
+  37   1      }
+  38          
+  39          /******************************************************************
+  40            *
+  41            * Function Name     CLK_Init
+  42            *
+  43          ******************************************************************/
+  44          static void CLK_Init(void)
+  45          {
+  46   1        _Uint16 ClkChgTime = 10000;
+  47   1        
+  48   1        TA    = 0xAA;
+  49   1        TA    = 0x55;
+  50   1        CKEN|= BIT7;          // change clock to HXT
+  51   1        
+  52   1        
+  53   1        while ( !(CKSWT & 0x80) && (ClkChgTime != 0))         ClkChgTime--;   /* Wait HXT stable */
+  54   1        
+C51 COMPILER V9.52.0.0   MCU_CONFIG                                                        03/30/2018 19:49:12 PAGE 2   
+
+  55   1        /* HXT open successfully */
+  56   1        if (ClkChgTime > 0)  
+  57   1        {
+  58   2          TA      = 0xAA;
+  59   2          TA      = 0x55;
+  60   2          CKSWT   = 0x2;        // switch source to HXT
+  61   2          
+  62   2          TA    = 0xAA;
+  63   2          TA    = 0x55;
+  64   2          CKEN   &= ~BIT5;      // Close HIRC
+  65   2          
+  66   2          HseStatus = 1;
+  67   2        }
+  68   1        
+  69   1        /* HXT open fail */
+  70   1        else
+  71   1        {
+  72   2          TA    = 0xAA;
+  73   2          TA    = 0x55;
+  74   2          CKSWT  &= ~(BIT1 | BIT0); 
+  75   2          HseStatus = 0;
+  76   2        }
+  77   1      }
+  78          
+  79          /******************************************************************
+  80            *
+  81            * Function Name     GPIO_Init
+  82            *
+  83          ******************************************************************/
+  84          static void GPIO_Init(void)
+  85          {
+  86   1        //P20 P21 P22 P23 output P-P
+  87   1        P2M1 &= ~(BIT0 | BIT1 | BIT2 | BIT3);
+  88   1        P2M2 |= (BIT0 | BIT1 | BIT2 | BIT3);
+  89   1        P2   &= ~(BIT0 | BIT1 | BIT2 | BIT3);
+  90   1        
+  91   1        //P02 P05 P06 P07 output P-P
+  92   1          P0M1 &= ~(BIT2 | BIT5 | BIT6 | BIT7);
+  93   1          P0M2 |= (BIT2 | BIT5 | BIT6 | BIT7);
+  94   1          P0   &= ~(BIT2 | BIT5 | BIT6 | BIT7);
+  95   1          
+  96   1          //P26 Input
+  97   1          P2M1 |= BIT6;
+  98   1          P2M2 &= ~BIT6;
+  99   1          
+ 100   1          //PIO11_T P04, VDD_CE P01
+ 101   1          P0M1 &= ~BIT1;
+ 102   1          P0M2 |= BIT1;
+ 103   1          P0   |= BIT1;
+ 104   1          P0M1 |= BIT4;
+ 105   1          P0M2 &= ~BIT4;
+ 106   1          
+ 107   1      }
+ 108          
+ 109          /******************************************************************
+ 110            *
+ 111            * Function Name     TIM_Init
+ 112            *
+ 113          ******************************************************************/
+ 114          static void TIM_Init(void)
+ 115          {
+ 116   1        /* TIMER 0 */
+C51 COMPILER V9.52.0.0   MCU_CONFIG                                                        03/30/2018 19:49:12 PAGE 3   
+
+ 117   1        TMOD    = 0x2;
+ 118   1        CKCON  &= ~BIT3;    //8/12 = 2/3M or 1.843M
+ 119   1          if (HseStatus > 0)  //external 8M crystal
+ 120   1          {
+ 121   2              TL0     = 190;
+ 122   2              TH0     = 190;  //66 * 3 / 2 = 100us
+ 123   2          }
+ 124   1          else
+ 125   1          {
+ 126   2              TL0     = 72;
+ 127   2              TH0     = 72;   //184 / 1.843 = 100us
+ 128   2          }
+ 129   1        ET0     = 1;
+ 130   1        TCON   |= BIT4;
+ 131   1        
+ 132   1        /* TIMER 2 */
+ 133   1        T2CON   = 0x0;
+ 134   1        T2MOD   = 0xA0;     //8/16 = 0.5M = 2us or 22.118 / 16 = 1.382375M
+ 135   1          
+ 136   1          if (HseStatus > 0)
+ 137   1          {
+ 138   2              
+ 139   2              RCMP2L  = 0xF0;
+ 140   2              RCMP2H  = 0xD8;       //20ms
+ 141   2          }
+ 142   1          else
+ 143   1          {
+ 144   2              RCMP2L  = 0x00;
+ 145   2              RCMP2H  = 0x94;       //20ms
+ 146   2          }
+ 147   1        TR2   = 1;
+ 148   1      }
+ 149          
+ 150          
+ 151          /*******************************************************************
+ 152            *
+ 153            * Function Name     ADC_Init
+ 154            *
+ 155          ******************************************************************/
+ 156          static void ADC_Init(void)
+ 157          {
+ 158   1          //P03 Selected as A/D input
+ 159   1        P0M1 |= BIT3;
+ 160   1          P0M2 &= ~BIT3;
+ 161   1          
+ 162   1          //A/D configuration
+ 163   1          ADCCON0     = 0x03;         //Channel 3
+ 164   1          ADCCON1     = 0x21;         //Vref = VDD, Fadc = Fsys / 4,  ADC enable
+ 165   1          ADCCON2     = 0x0;
+ 166   1          ADCAQT      = 14;           // 20 cycle
+ 167   1          ADCS        = 1;            // Start to converse A/D value 
+ 168   1      }
+ 169          
+ 170          
+ 171          /******************************************************************
+ 172              *
+ 173            * FUNCTION NAME     UART_Init
+ 174            * INPUT         None
+ 175            * OUTPUT        None
+ 176              *
+ 177          ******************************************************************/
+ 178          static void UART_Init(void)
+C51 COMPILER V9.52.0.0   MCU_CONFIG                                                        03/30/2018 19:49:12 PAGE 4   
+
+ 179          {
+ 180   1        /* P24 Rx, P25 Tx*/
+ 181   1        P2M1  &= ~(BIT4 | BIT5);
+ 182   1        P2M2  &= ~(BIT4 | BIT5);
+ 183   1        P2    |= (BIT4 | BIT5);   // P24 = 1, P25 = 1
+ 184   1        
+ 185   1        /* Set UART */
+ 186   1        SCON_1 = 0x50;    // work at mode 1
+ 187   1        T3CON |= BIT7;
+ 188   1        T3CON &= ~BIT6;
+ 189   1        
+ 190   1        /* Bond Rate 9600 */
+ 191   1        T3CON &= ~(BIT0 | BIT1 | BIT2);
+ 192   1          if (HseStatus > 0)
+ 193   1          {
+ 194   2              RH3   = 0xFF;
+ 195   2              RL3   = 0xCC;     // Rate = 8M / (16 * (0xffff - 0xffCB + 1)) = 8M / (16 * 52) = 9600;
+ 196   2          }
+ 197   1          else
+ 198   1          {
+ 199   2              RH3   = 0xFF;
+ 200   2              RL3   = 0x70;   // Rate = 22.118M / (16 * (0xffff - 0xff70 + 1))  = 22.118M / (16 * 144) = 9600;
+ 201   2          }
+ 202   1        T3CON |= BIT3;
+ 203   1        
+ 204   1        EIP1  |= BIT0;
+ 205   1        EIPH1 |= BIT0;
+ 206   1        
+ 207   1      
+ 208   1        /* Receive Interrupt Enable */
+ 209   1        EIE1 |= BIT0;
+ 210   1      }
+ 211          
+ 212          /******************************************************************
+ 213              *
+ 214            * FUNCTION NAME     WDT_Init
+ 215            * INPUT         None
+ 216            * OUTPUT        None
+ 217              *
+ 218          ******************************************************************/
+ 219          static void WDT_Init(void)
+ 220          {
+ 221   1          TA      = 0xAA;
+ 222   1          TA      = 0x55;
+ 223   1          WDCON       = 0xC3;     // 102.4ms
+ 224   1      }
+ 225          
+ 226          
+ 227          
+ 228          
+ 229          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    286    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.52.0.0   MCU_CONFIG                                                        03/30/2018 19:49:12 PAGE 5   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
