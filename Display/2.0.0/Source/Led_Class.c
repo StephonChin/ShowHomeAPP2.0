@@ -377,7 +377,7 @@ static void Send_Data_Process(void)
 
 
 	/* SndBuffer_5 Data Get */
-	for (TempVar = 0; TempVar < 2; TempVal++){
+	for (TempVar = 0; TempVar < 2; TempVar++){
 		if (Grd.Ball[2].DutyR > 0 && Grd.Ball[2].DutyG > 0 && Grd.Ball[2].DutyB > 0){
 			SndBuffer_5[0][R] = 255;
 			SndBuffer_5[0][G] = 255;
