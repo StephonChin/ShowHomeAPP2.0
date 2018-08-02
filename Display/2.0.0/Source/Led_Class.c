@@ -4,10 +4,10 @@
 	*									Led_Class.c
 	* DATE
 	*									01 NOV. 2017
-	* AUTHOR			
+	* AUTHOR
 	*									DS.Chin
 	* DESCRIPTION
-	*									LED Communicate 
+	*									LED Communicate
 	*
 *********************************************************************/
 #include "Led_Class.h"
@@ -19,7 +19,7 @@
  * 15 Leds -- Middle 15 Leds
  * 10 Leds -- Second Left 7 Leds
  * 90 Leds -- Light Strings Right 9*2+12=30Leds , Middle 9*2+6=24Leds, Left 9*2+9*2=36Leds
- * 85 Leds -- Snow + Tree + Ball + Candy Cane + Spot Lights 
+ * 85 Leds -- Snow + Tree + Ball + Candy Cane + Spot Lights
  */
 //_TypeLed	Roof30[27];
 //_TypeLed	Roof40[32];
@@ -56,35 +56,35 @@ void Led_Update(void)
 	_Uint8	*DataBufAdd	= 0;
 	_Uint8  DataBuf 		= 0;
 	_Uint8	TimeTemp		= 0;
-	
+
 	GPIO_InitTypeDef GPIO_InitStructure;
-	
+
 	/* Send Data Process */
 	Send_Data_Process();
-	
-	
+
+
 	/* Change the I/O PA8 to output */
 	if (KeyDetFlag == FALSE)
 	{
 		GPIO_InitStructure.GPIO_Pin   	= GPIO_Pin_8;
-		GPIO_InitStructure.GPIO_Mode  	= GPIO_Mode_Out_OD;						
-		GPIO_InitStructure.GPIO_Speed  	= GPIO_Speed_50MHz;	
+		GPIO_InitStructure.GPIO_Mode  	= GPIO_Mode_Out_OD;
+		GPIO_InitStructure.GPIO_Speed  	= GPIO_Speed_50MHz;
 		GPIO_Init(GPIOA, &GPIO_InitStructure);
 		GPIOA->BRR = GPIO_Pin_8;
 	}
-	
-	
+
+
 	/* Group 2 - Roof40*/
-	DataBufAdd = SndBuffer_3[0];	
-	for (ColorTemp = 0; ColorTemp < BYTE_LEFT; ColorTemp++)			
+	DataBufAdd = SndBuffer_3[0];
+	for (ColorTemp = 0; ColorTemp < BYTE_LEFT; ColorTemp++)
 	{
 		DataBuf = *DataBufAdd++;
-					
-		for (BitTemp = 0; BitTemp < 8; BitTemp++)	
+
+		for (BitTemp = 0; BitTemp < 8; BitTemp++)
 		{
 			if ((DataBuf & 0x80) != 0x80)
 			{
-				GPIOB->BSRR = GPIO_Pin_15;	
+				GPIOB->BSRR = GPIO_Pin_15;
 				__nop();__nop();__nop();__nop();__nop();
 				GPIOB->BRR 	= GPIO_Pin_15;
 				for (TimeTemp = 0; TimeTemp < 3; TimeTemp++);
@@ -97,21 +97,21 @@ void Led_Update(void)
 			}
 			TimeTemp = 3;
 			while(TimeTemp--);
-			DataBuf <<= 1;								
+			DataBuf <<= 1;
 		}
 	}
-	
+
 	/* Group 3 - Roof10 + Roof24*/
-	DataBufAdd = SndBuffer_1[0];	
-	for (ColorTemp = 0; ColorTemp < BYTE_RIGHT; ColorTemp++)			
+	DataBufAdd = SndBuffer_1[0];
+	for (ColorTemp = 0; ColorTemp < BYTE_RIGHT; ColorTemp++)
 	{
 		DataBuf = *DataBufAdd++;
-					
-		for (BitTemp = 0; BitTemp < 8; BitTemp++)	
+
+		for (BitTemp = 0; BitTemp < 8; BitTemp++)
 		{
 			if ((DataBuf & 0x80) != 0x80)
 			{
-				GPIOB->BSRR = GPIO_Pin_14;	
+				GPIOB->BSRR = GPIO_Pin_14;
 				__nop();__nop();__nop();__nop();__nop();
 				GPIOB->BRR 	= GPIO_Pin_14;
 				for (TimeTemp = 0; TimeTemp < 3; TimeTemp++);
@@ -124,21 +124,21 @@ void Led_Update(void)
 			}
 			TimeTemp = 3;
 			while(TimeTemp--);
-			DataBuf <<= 1;								
+			DataBuf <<= 1;
 		}
 	}
-	
+
 	/* Group 4 - Grd*/
-	DataBufAdd = SndBuffer_2[0];	
-	for (ColorTemp = 0; ColorTemp < BYTE_MIDDLE; ColorTemp++)			
+	DataBufAdd = SndBuffer_2[0];
+	for (ColorTemp = 0; ColorTemp < BYTE_MIDDLE; ColorTemp++)
 	{
 		DataBuf = *DataBufAdd++;
-					
-		for (BitTemp = 0; BitTemp < 8; BitTemp++)	
+
+		for (BitTemp = 0; BitTemp < 8; BitTemp++)
 		{
 			if ((DataBuf & 0x80) != 0x80)
 			{
-				GPIOB->BSRR = GPIO_Pin_13;	
+				GPIOB->BSRR = GPIO_Pin_13;
 				__nop();__nop();__nop();__nop();__nop();
 				GPIOB->BRR 	= GPIO_Pin_13;
 				for (TimeTemp = 0; TimeTemp < 3; TimeTemp++);
@@ -151,22 +151,22 @@ void Led_Update(void)
 			}
 			TimeTemp = 3;
 			while(TimeTemp--);
-			DataBuf <<= 1;								
+			DataBuf <<= 1;
 		}
 	}
-	
+
 	if (KeyDetFlag == FALSE)
 	{
-		DataBufAdd = SndBuffer_4[0];	
-		for (ColorTemp = 0; ColorTemp < BYTE_MIX_R; ColorTemp++)			
+		DataBufAdd = SndBuffer_4[0];
+		for (ColorTemp = 0; ColorTemp < BYTE_MIX_R; ColorTemp++)
 		{
 			DataBuf = *DataBufAdd++;
-						
-			for (BitTemp = 0; BitTemp < 8; BitTemp++)	
+
+			for (BitTemp = 0; BitTemp < 8; BitTemp++)
 			{
 				if ((DataBuf & 0x80) != 0x80)
 				{
-					GPIOA->BSRR = GPIO_Pin_8;	
+					GPIOA->BSRR = GPIO_Pin_8;
 					__nop();__nop();__nop();__nop();__nop();
 					GPIOA->BRR 	= GPIO_Pin_8;
 					for (TimeTemp = 0; TimeTemp < 3; TimeTemp++);
@@ -179,23 +179,23 @@ void Led_Update(void)
 				}
 				TimeTemp = 3;
 				while(TimeTemp--);
-				DataBuf <<= 1;								
+				DataBuf <<= 1;
 			}
 		}
 	}
-	
-	
+
+
 	/* Group 5 - LihgtString*/
-	DataBufAdd = SndBuffer_5[0];	
-	for (ColorTemp = 0; ColorTemp < BYTE_MIX_L; ColorTemp++)			
+	DataBufAdd = SndBuffer_5[0];
+	for (ColorTemp = 0; ColorTemp < BYTE_MIX_L; ColorTemp++)
 	{
 		DataBuf = *DataBufAdd++;
-					
-		for (BitTemp = 0; BitTemp < 8; BitTemp++)	
+
+		for (BitTemp = 0; BitTemp < 8; BitTemp++)
 		{
 			if ((DataBuf & 0x80) != 0x80)
 			{
-				GPIOB->BSRR = GPIO_Pin_12;	
+				GPIOB->BSRR = GPIO_Pin_12;
 				__nop();__nop();__nop();__nop();__nop();
 				GPIOB->BRR 	= GPIO_Pin_12;
 				for (TimeTemp = 0; TimeTemp < 3; TimeTemp++);
@@ -208,22 +208,22 @@ void Led_Update(void)
 			}
 			TimeTemp = 3;
 			while(TimeTemp--);
-			DataBuf <<= 1;								
+			DataBuf <<= 1;
 		}
 	}
-	
-	
+
+
 		/* Group 6 - Mini Tree*/
-	DataBufAdd = SndBuffer_6[0];	
-	for (ColorTemp = 0; ColorTemp < BYTE_TREE; ColorTemp++)			
+	DataBufAdd = SndBuffer_6[0];
+	for (ColorTemp = 0; ColorTemp < BYTE_TREE; ColorTemp++)
 	{
 		DataBuf = *DataBufAdd++;
-					
-		for (BitTemp = 0; BitTemp < 8; BitTemp++)	
+
+		for (BitTemp = 0; BitTemp < 8; BitTemp++)
 		{
 			if ((DataBuf & 0x80) != 0x80)
 			{
-				GPIOC->BSRR = GPIO_Pin_13;	
+				GPIOC->BSRR = GPIO_Pin_13;
 				__nop();__nop();__nop();__nop();__nop();
 				GPIOC->BRR 	= GPIO_Pin_13;
 				for (TimeTemp = 0; TimeTemp < 3; TimeTemp++);
@@ -236,17 +236,17 @@ void Led_Update(void)
 			}
 			TimeTemp = 3;
 			while(TimeTemp--);
-			DataBuf <<= 1;								
+			DataBuf <<= 1;
 		}
 	}
-	
+
 	DataBufAdd = 0;
-	
+
 	/* Change the I/O PA8 to Input */
 	if (KeyDetFlag == FALSE)
 	{
 		GPIO_InitStructure.GPIO_Pin   	= GPIO_Pin_8;
-		GPIO_InitStructure.GPIO_Mode  	= GPIO_Mode_IPU;						
+		GPIO_InitStructure.GPIO_Mode  	= GPIO_Mode_IPU;
 		GPIO_Init(GPIOA, &GPIO_InitStructure);
 	}
 }
@@ -258,7 +258,7 @@ void Led_Update(void)
 static void Send_Data_Process(void)
 {
 	_Uint8	TempVar = 0;
-	
+
 	/* SndBuffer_1 Data Get */
 	for (TempVar = 0; TempVar < 30; TempVar++)
 	{
@@ -278,10 +278,10 @@ static void Send_Data_Process(void)
 		SndBuffer_1[TempVar][G] = Roof40[TempVar - 40].DutyG / DIP_LEVEL;
 		SndBuffer_1[TempVar][B] = Roof40[TempVar - 40].DutyB / DIP_LEVEL;
 	}
-	
-	
-	
-	
+
+
+
+
 	/* SndBuffer_2 Data Get */
 	for (TempVar = 0; TempVar < 24; TempVar++)
 	{
@@ -313,10 +313,10 @@ static void Send_Data_Process(void)
 		SndBuffer_2[TempVar][G] = Roof40[62 - TempVar].DutyG / DIP_LEVEL;
 		SndBuffer_2[TempVar][B] = Roof40[62 - TempVar].DutyB / DIP_LEVEL;
 	}
-	
-	
-	
-	
+
+
+
+
 	/* SndBuffer_3 Data Get */
 	for (TempVar = 0; TempVar < 36; TempVar++)
 	{
@@ -329,19 +329,19 @@ static void Send_Data_Process(void)
 		SndBuffer_3[TempVar][R] = Roof30[TempVar - 19].DutyR / DIP_LEVEL;
 		SndBuffer_3[TempVar][G] = Roof30[TempVar - 19].DutyG / DIP_LEVEL;
 		SndBuffer_3[TempVar][B] = Roof30[TempVar - 19].DutyB / DIP_LEVEL;
-	} 
+	}
 	for (TempVar = 46; TempVar < 56; TempVar++)
 	{
 		SndBuffer_3[TempVar][R] = Roof40[77 - TempVar].DutyR / DIP_LEVEL;
 		SndBuffer_3[TempVar][G] = Roof40[77 - TempVar].DutyG / DIP_LEVEL;
 		SndBuffer_3[TempVar][B] = Roof40[77 - TempVar].DutyB / DIP_LEVEL;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	/* SndBuffer_4 Data Get */
 	for (TempVar = 0; TempVar < 27; TempVar++)
 	{
@@ -359,46 +359,64 @@ static void Send_Data_Process(void)
 		}
 	}
 
-	
+
 	for (TempVar = 27; TempVar < 29; TempVar++)
 	{
 		SndBuffer_4[TempVar][R] = 255 - Grd.Ball[TempVar - 27].DutyR / DIP_LEVEL;
 		SndBuffer_4[TempVar][G] = 255 - Grd.Ball[TempVar - 27].DutyG / DIP_LEVEL;
 		SndBuffer_4[TempVar][B] = 255 - Grd.Ball[TempVar - 27].DutyB / DIP_LEVEL;
 	}
-	
+
 	for (TempVar = 29; TempVar < 50; TempVar++)
 	{
 		SndBuffer_4[TempVar][R] = Grd.Snow[TempVar - 29].DutyR / 2;
 		SndBuffer_4[TempVar][G] = Grd.Snow[TempVar - 29].DutyG / DIP_LEVEL;
 		SndBuffer_4[TempVar][B] = Grd.Snow[TempVar - 29].DutyB / DIP_LEVEL;
 	}
-	
-	
-	
+
+
+
 	/* SndBuffer_5 Data Get */
-	for (TempVar = 0; TempVar < 2; TempVar++)
-	{
-		SndBuffer_5[TempVar][R] = 255 - Grd.Ball[TempVar + 2].DutyR / DIP_LEVEL;
-		SndBuffer_5[TempVar][G] = 255 - Grd.Ball[TempVar + 2].DutyG / DIP_LEVEL;
-		SndBuffer_5[TempVar][B] = 255 - Grd.Ball[TempVar + 2].DutyB / DIP_LEVEL;
+	for (TempVar = 0; TempVar < 2; TempVal++){
+		if (Grd.Ball[2].DutyR > 0 && Grd.Ball[2].DutyG > 0 && Grd.Ball[2].DutyB > 0){
+			SndBuffer_5[0][R] = 255;
+			SndBuffer_5[0][G] = 255;
+			SndBuffer_5[0][B] = 255;
+			SndBuffer_5[1][R] = 255;
+			SndBuffer_5[1][G] = 255 - Grd.Ball[2].DutyG / DIP_LEVEL;
+			SndBuffer_5[1][B] = 255;
+		}
+		else{
+			SndBuffer_5[0][R] = 255 - Grd.Ball[2].DutyR / DIP_LEVEL;
+			SndBuffer_5[0][G] = 255 - Grd.Ball[2].DutyG / DIP_LEVEL;
+			SndBuffer_5[0][B] = 255 - Grd.Ball[2].DutyB / DIP_LEVEL;
+			SndBuffer_5[1][R] = 255;
+			SndBuffer_5[1][G] = 255;
+			SndBuffer_5[1][B] = 255;
+		}
 	}
-	
-	for (TempVar = 2; TempVar < 32; TempVar++)
+	for (TempVar = 2; TempVar < 4; TempVar++)
 	{
-		SndBuffer_5[TempVar][R] = Grd.Cane[TempVar - 2].DutyR / DIP_LEVEL;
-		SndBuffer_5[TempVar][G] = Grd.Cane[TempVar - 2].DutyG / DIP_LEVEL;
-		SndBuffer_5[TempVar][B] = Grd.Cane[TempVar - 2].DutyB / DIP_LEVEL;
+		SndBuffer_5[TempVar][R] = 255 - Grd.Ball[TempVar].DutyR / DIP_LEVEL;
+		SndBuffer_5[TempVar][G] = 255 - Grd.Ball[TempVar].DutyG / DIP_LEVEL;
+		SndBuffer_5[TempVar][B] = 255 - Grd.Ball[TempVar].DutyB / DIP_LEVEL;
 	}
-	
-	for (TempVar = 32; TempVar < 35; TempVar++)
+
+	for (TempVar = 4; TempVar < 34; TempVar++)
 	{
-		SndBuffer_5[TempVar][R] = 255 - Grd.Spot[TempVar - 32].DutyR / DIP_LEVEL;
-		SndBuffer_5[TempVar][G] = 255 - Grd.Spot[TempVar - 32].DutyG / DIP_LEVEL;
-		SndBuffer_5[TempVar][B] = 255 - Grd.Spot[TempVar - 32].DutyB / DIP_LEVEL;
+		SndBuffer_5[TempVar][R] = Grd.Cane[TempVar - 4].DutyR / DIP_LEVEL;
+		SndBuffer_5[TempVar][G] = Grd.Cane[TempVar - 4].DutyG / DIP_LEVEL;
+		SndBuffer_5[TempVar][B] = Grd.Cane[TempVar - 4].DutyB / DIP_LEVEL;
 	}
-	
-	
+
+	for (TempVar = 34; TempVar < 37; TempVar++)
+	{
+		SndBuffer_5[TempVar][R] = 255 - Grd.Spot[TempVar - 34].DutyR / DIP_LEVEL;
+		SndBuffer_5[TempVar][G] = 255 - Grd.Spot[TempVar - 34].DutyG / DIP_LEVEL;
+		SndBuffer_5[TempVar][B] = 255 - Grd.Spot[TempVar - 34].DutyB / DIP_LEVEL;
+	}
+
+
 	/* SndBuffer_6 Data Get */
 	SndBuffer_6[0][R] = SndBuffer_1[0][G];
 	SndBuffer_6[0][G] = SndBuffer_1[0][R];
@@ -410,28 +428,3 @@ static void Send_Data_Process(void)
 		SndBuffer_6[TempVar][B] = SndBuffer_1[TempVar][B];
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

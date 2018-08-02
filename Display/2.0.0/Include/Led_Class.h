@@ -31,7 +31,7 @@
 #define		GRP_MIX_R					50
 #define		BYTE_MIX_R				150
 
-#define		GPR_MIX_L					35
+#define		GPR_MIX_L					37
 #define		BYTE_MIX_L				105
 
 #define		GRP_TREE					10
@@ -52,6 +52,7 @@ typedef struct _LED_TYPE
 
 typedef struct _GROUND_TYPE
 {
+	_TypeLed	Kal[2];
 	_TypeLed	Snow[21];
 	_TypeLed	Tree[27];
 	_TypeLed	Ball[4];
@@ -84,7 +85,7 @@ extern _TypeLed String30[];
 extern _TypeLed	String24[];
 extern _TypeLed String36[];
 extern _TypeGround 		Grd;
- 
+
 
 
 
