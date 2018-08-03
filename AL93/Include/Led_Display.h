@@ -19,15 +19,19 @@
 #define			DUTY_MAX										100
 #define			DUTY_MIN										0
 
-#define     SPARKLE_TIME         				30     	
+#define     SPARKLE_TIME         				30
 #define			SPARKLE_BASIC								40
-							
-#define     GLIMMER_TIME         				40      
+
+#define     GLIMMER_TIME         				40
 #define			GLIMMER_BASIC								80
 #define     FADE_TIME               		1      	//10ms * FADE_TIME  = 20ms
 #define     TWINKLE_FADE_TIME       		1     	//10ms * TWINKLE_FADE_TIME  = 10ms
 #define     TWINKLE_DARK_TIME       		10     	//10ms * TWINKLE_DARK_TIME = 100ms
 #define     TWINKLE_BRIGHT_TIME     		3      	//10ms * TWINKLE_BRIGHT_TIME = 30ms
+
+
+#define			MODE_MAX										0xE
+#define 		COLOR_MAX										7
 
 /* @Type Define */
 typedef struct _LED_TYPE

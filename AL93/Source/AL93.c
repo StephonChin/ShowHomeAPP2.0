@@ -8,7 +8,10 @@
 	*								by APP through CSR1010.
 	*								This project is modified many times
 	*								Used Nuton's mcu named N76E885(TSSOP20)
-	*								
+	*
+	* @Modify
+	*								Update the mode (Lowe's 2017 -> Homedopt 2019)
+	*								adapt to ShowHome APP 2.0
 **************************************************************************************************/
 #include "AL93.h"
 
@@ -27,37 +30,40 @@ void main(void)
 {
 	/* Configuration of MCU */
 	MCU_Config();
-	
+
 	/* Read the mode, color and count down hour from APROM at 0x4000 */
 	User_Init();
-	
+
 	/* Csr1010 Init | Send device type */
 	Csr1010_Init();
-	
+
 	while (1)
 	{
 		/* scan every 10ms */
 		if (TF2 == SET)
 		{
 			TF2 = RESET;
-			
+
 			/* Process the receive data from CSR1010 */
 			Csr1010_Rcv_Data();
-			
+
 			/* Send data to CSR1010 */
 			Csr1010_Snd_Data();
-			
+
 			/* Data Process */
 			Data_Process();
-			
+
 			/* Timer*/
 			Count_Down_Control();
-			
+
 			/* Motor */
 			Motor_Control();
-			
+
 			/* Led Display */
 			Led_Display_Control();
+
+			/* White data to APROM */
+			Byte_Write_To_APROM();
 		}
 	}
 }

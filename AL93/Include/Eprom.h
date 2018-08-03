@@ -11,6 +11,7 @@
 #include "System.h"
 #include "Config.h"
 #include "Led_Display.h"
+#include "Data_Process.h"
 
 
 /* @Define */
@@ -30,16 +31,13 @@ typedef enum _EPROM_SAVE_TYPE
 {
 	APROM_MODE,
 	APROM_COLOR,
-	APROM_TIMER
+	APROM_TIMER,
+	APROM_CHKSUMH,
+	ARPOM_CHKSUML,
+	APROM_POWERON,
+	APROM_CHSUMRST
 }_TypeEnumEprom;
 
-
-typedef struct _APROM_WRITE_DATA
-{
-	_Uint8		Mode;
-	_Uint8		Color;
-	_Uint8		CntDwnHour;
-}_TypeStructAP;
 
 
 
@@ -49,8 +47,8 @@ void Byte_Write_To_APROM(void);
 _Uint8 Byte_Read_From_APROM(_TypeEnumEprom);
 
 
-/* @Exported variables */
-extern _TypeStructAP 	APData;
+//Exported arguments
+extern bit 		FlashSaveFlag;
 
 
 #endif

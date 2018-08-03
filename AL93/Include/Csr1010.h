@@ -1,7 +1,7 @@
 /**************************************************************************************
 	*
 	* @FileName	Csr1010.h
-	* 
+	*
 ***************************************************************************************/
 #ifndef __CSR1010_H__
 #define __CSR1010_H__
@@ -12,52 +12,31 @@
 
 
 /* <-----------define---------------------> */
-#define 	RCV_BYTE_MAX	10
+#define 	BUFFER_MAX					15
+#define 	USART_TIME_DIFF			3				// 3 * 20ms = 60ms
 
 
-/* <-----------Type Define-------------> */
-typedef struct RCV_DATA_TYPE
-{
-	_Flag			RcvDoneFlag;
-	_Uint8 		DataBuf[6];
-}_TypeStructRcv;
-
-
-typedef struct SND_DATA_TYPE
-{
-	enum SND_STATUS
-	{
-		SND_IDLE,	SND_TYPE,	SND_NORMAL
-	}SndStatus;
-	_Flag 		SndByteDoneFlag;
-	_Uint8 		DataBuf[8];
-	_Flag			InitFlag;
-	_Uint8		SndCnt;
-	_Uint8		TimeDelay;
-}_TypeStructSnd;
 
 
 /***
 	* @Brief Exported Functions
 	*/
-void Csr1010_Init(void);
-void Csr1010_Snd_Data(void);
 void Csr1010_Rcv_Data(void);
-	
+void Csr1010_Snd_Data(_Uint8 *pBuf, _Uint8 len);
+
 
 /***
 	* @Brief File Functions
 	*/
-static void Csr1010_Rcv_Byte(void);
-static void Csr1010_Snd_Byte(_Uint8);
-
+static bit Csr1010_Rcv_Byte(void);
+static bit Csr1010_Snd_Byte(_Uint8 SndBuf);
 
 /***
 	* @Brief Exported Variables
 	*/
-extern _TypeStructRcv 		RcvData;
-extern _TypeStructSnd 		SndData;
-extern _Flag							RcvDoneFlag;
+  extern _Uint8 					 RcvData[BUFFER_MAX];
+  extern _Uint8 					 SndData[BUFFER_MAX];
+  extern bit 						   RcvFlag = FALSE;
 
 
 

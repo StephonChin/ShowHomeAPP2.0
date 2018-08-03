@@ -6,255 +6,122 @@
 	* @Description
 	*							| Communicate to CSR1010
 	*							| Receive data from APP
-	* 						| Send dato to APP
+	* 						| Send data to APP
 	*
 ***************************************************************************/
 #include "Csr1010.h"
 
 
-
-/* <-------------Gloable Variables-------------------> */
-_TypeStructRcv 	RcvData;
-_TypeStructSnd 	SndData;
-_Flag						RcvDoneFlag;
-
-
-/* <-------------File Variables----------------------> */
-_Uint8	RcvBuffer[RCV_BYTE_MAX];
-enum
-{
-	RCV_IDLE,
-	RCV_STT,
-	RCV_END,
-	RCV_ERR
-}RcvByteStatus;
+//Global arguments
+_Uint8 					RcvData[BUFFER_MAX];
+_Uint8 					SndData[BUFFER_MAX];
+bit 						RcvFlag = FALSE;
 
 
-
-/*********************************************************
-	*
-	* @FunctionName	Csr1010_Init
-	*
-*****/
-void Csr1010_Init(void)
-{
-	SndData.SndByteDoneFlag	= FALSE;
-}
+//File arguments
+bit 						RcvingFlag = FALSE;
+volatile bit		SndDoneFlag = FALSE;
+_Uint8					RcvTimeOut = 0;;
+_Uint8					RcvCnt = 0;
 
 
-/**********************************************************
-	*
-	* @FunctionName	Uart_Interrupt
-	*
-****/
+/**
+	* Uart_Interrupt
+	*		> Receive and send data interrput service for USART
+  */
 void Uart_Interrupt(void) interrupt 15
 {
 	/* When receive interrupt flag been set */
 	if (RI_1)
 	{
 		RI_1 = RESET;
-		Csr1010_Rcv_Byte();
+		RcvingFlag = Csr1010_Rcv_Byte();
 	}
-	
+
 	/* When send interrput flag been set */
 	if (TI_1)
 	{
 		TI_1 = RESET;
-		SndData.SndByteDoneFlag = FALSE;
+		SndDoneFlag = FALSE;
 	}
-	
+
 	return;
 }
 
 
 
-
-
-
-/***********************************************************
-	*
-	* @FunctionName	Csr1010_Rcv_Byte
-	*
-****/
-static void Csr1010_Rcv_Byte(void)
+/**
+	* Csr1010_Rcv_Byte
+	*		> Receive one byte
+	*/
+static bit Csr1010_Rcv_Byte(void)
 {
-	static _Uint8		ByteCnt;
-				 _Uint8		RcvBufferTemp = 0;
-	
-	
-	// move receive data to RcvBuffer
-	RcvBufferTemp = SBUF_1;
-	
-	// start to receive data when receive status is idle
-	if (RcvByteStatus == RCV_IDLE)
-	{
-		if (RcvBufferTemp == 0xFD)
-		{
-			RcvByteStatus 	= RCV_STT;
-			ByteCnt = 0;
-		}
+	RcvTimeOut = 0;
+	if (RcvCnt < BUFFER_MAX){
+		*RcvData = SBUF;
+		RcvData++;
+		RcvCnt++;
 	}
-	
-	// receive the data 
-	else if (RcvByteStatus == RCV_STT)
-	{
-		if (RcvBufferTemp == 0xFE)			RcvByteStatus 					= RCV_END;									/* Rcv End */
-		else if (ByteCnt >= 6)					RcvByteStatus 					= RCV_ERR;									/* Rcv Err */		
-		else														RcvBuffer[ByteCnt++] 		= RcvBufferTemp;						/* Rcving */ 
+	else{
+		return FALSE;
 	}
+
+	return TRUE;
 }
 
 
 
-
-
-
-
-/************************************************************
-	*
-	* @FunctionName	Csr1010_Rcv_Data
-	*
-****/
+/**
+	* Csr1010_Rcv_Data
+	*		> Receive data
+	*/
 void Csr1010_Rcv_Data(void)
 {
-	static _Uint8		RcvSttHoldTime;		
-				 _Uint8		TempCnt = 0;
-	
-	
-	/* Exit when receive status is idle or working */
-	if (RcvByteStatus == RCV_IDLE)
-	{
-		RcvSttHoldTime = 0;
-		return;
-	}
-	
-	
-	/* Hold time after received, if timer > 1second, received err, then clear the data */
-	if (RcvByteStatus == RCV_STT)
-	{
-		RcvSttHoldTime++;
-		if (RcvSttHoldTime > 100)
-		{
-			RcvSttHoldTime 	= 0;
-			RcvByteStatus		= RCV_IDLE;
+	if (RcvingFlag){
+		RcvTimeOut++;
+		if (RcvTimeOut >= USART_TIME_DIFF){
+			RcvingFlag = FALSE;
+			RcvCnt = 0;
+			RcvFlag = TRUE;
 		}
-		return;
 	}
-	
-	
-	/* received error */
-	if (RcvByteStatus == RCV_ERR)
-	{
-		for (TempCnt = 0; TempCnt < 6; TempCnt++)		RcvBuffer[TempCnt]	= 0;			// clear the buffer
-		RcvByteStatus = RCV_IDLE;																									// clear the status
-		return;
-	}
-	
-	
-	/* received success */
-	if (RcvByteStatus == RCV_END)
-	{
-		RcvDoneFlag	= TRUE;
-		for (TempCnt = 0; TempCnt < 6; TempCnt++)									// move the buffer to rcvdata
-		{
-			RcvData.DataBuf[TempCnt]	= RcvBuffer[TempCnt];
-			RcvBuffer[TempCnt] 				= 0;
-		}
-		RcvByteStatus = RCV_IDLE;																	// clear status
+	else{
+		RcvCnt = 0;
 	}
 }
 
 
 
-
-
-
-
-
-
-
-/***********************************************************
-	*
-	* @FunctionName	Csr1010_Snd_Data
-	*
-*****/
-void Csr1010_Snd_Data(void)
+/**
+	* Csr1010_Snd_Data
+	*		> Send data
+	*/
+void Csr1010_Snd_Data(_Uint8 *pBuf, _Uint8 len)
 {
-	_Uint8	TempCnt = 0;
-	
-	/* when snd data is idle , exit */
-	if (SndData.SndStatus == SND_IDLE)
-	{
-		SndData.SndByteDoneFlag 	= FALSE;
-		SndData.SndCnt						= 0;
-		SndData.InitFlag					= TRUE;
-		SndData.TimeDelay					= 0;
-		return;
-	}
-	
-	/* type send LA1 */
-	if (SndData.SndStatus == SND_TYPE)
-	{
-		// Send type command "LA1"
-		Csr1010_Snd_Byte(0xFC);
-		Csr1010_Snd_Byte('L');
-		Csr1010_Snd_Byte('A');
-		Csr1010_Snd_Byte('2');
-		Csr1010_Snd_Byte(0xFE);
-		
-		// Send power on command after type command sent completed
-		SndData.SndStatus = SND_NORMAL;	
-		SndData.InitFlag	= TRUE;
-		SndData.SndCnt		= 0;
-		SndData.TimeDelay	= 0;
-		for (TempCnt = 0; TempCnt < 8; TempCnt++)		SndData.DataBuf[TempCnt] = 0;
-		SndData.DataBuf[0]	= 0x1;
-		return;
-	}
-	
-	
-	/* Send normally */
-	if (SndData.SndStatus == SND_NORMAL)
-	{
-		if (SndData.InitFlag == TRUE)
-		{
-			SndData.InitFlag	= FALSE;
-			Csr1010_Snd_Byte(0xFD);
-			for (TempCnt = 0; TempCnt < 8; TempCnt++)		Csr1010_Snd_Byte(SndData.DataBuf[TempCnt]);
-			Csr1010_Snd_Byte(0xFE);
-		}
-		else
-		{
-			SndData.SndCnt++;
-			if (SndData.SndCnt >= 2)
-			{
-				SndData.SndCnt = 0;
-				SndData.SndStatus = SND_IDLE;
-			}
-			else
-			{
-				SndData.TimeDelay++;
-				if (SndData.TimeDelay >= 10)
-				{
-					SndData.TimeDelay = 0;
-					SndData.InitFlag	= TRUE;
-				}
-			}
-		}
+	while (len){
+		Csr1010_Snd_Byte(*pBuf);
+		pBuf++;
+		len--;
 	}
 }
 
 
 
-/******************************************************
-	*
-	* @Function Name	Csr1010_Snd_Byte
-	*
-****/
-static void Csr1010_Snd_Byte(_Uint8 SndBuf)
+/**
+	* Csr1010_Snd_Byte
+	*		> Send one byte
+	*		> if send successfully, return TRUE. if send failly return FALSE.
+ 	*/
+static bit Csr1010_Snd_Byte(_Uint8 SndBuf)
 {
-	while (SndData.SndByteDoneFlag);
+	_Uint16		timeOut = 10000;
+
 	SBUF_1 = SndBuf;
-	SndData.SndByteDoneFlag = TRUE;
-}
+	while (SndDoneFlag && timeOut){
+		timeOut--;
+	};
+	SndDoneFlag = TRUE;
 
+	if (timeOut == 0) 	return FALSE;
+	return TRUE;
+}

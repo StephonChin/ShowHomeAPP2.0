@@ -37,6 +37,8 @@
 static void Count_Down_Process(void);
 static void CSR1010_Process(void);
 static void Color_Value_Get(_Uint8	ColorValBuf);
+static void Password_Process(void);
+static _Uint8		Hex_To_Char(_Uint8 HexBuf);
 
 
 /***
@@ -44,6 +46,18 @@ static void Color_Value_Get(_Uint8	ColorValBuf);
 	*/
 void User_Init(void);
 void Data_Process(void);
+
+
+//Exported arguments
+extern _Uint8					ChkSumH;
+extern _Uint8					ChkSumL;
+extern _Uint8					ChkSumRst;
+extern _Uint8					ChkSumRstSave;
+extern _Uint8					PowerOnNum;
+extern _Uint8					ChkSumRst;
+extern _Uint8					ChkSumRstSave;
+extern _Uint8					PowerOnNum;
+extern _Flag						WdtRstFlag;
 
 
 
