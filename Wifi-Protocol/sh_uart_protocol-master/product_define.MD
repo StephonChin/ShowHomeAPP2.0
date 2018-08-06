@@ -1,8 +1,18 @@
 # Products
 ```
     To control the christmas tree or light strings via bluetooth by wifi.
-    The protocol is 
 ```
+
+## General command
+```
+    "WIFI_STATUS":0x01
+```
+```
+    len = 1
+    payload = 0x01    - 待机状态
+            = 0x02    - 正在连接中
+            = 0x03    - 连接成功
+···
 
 ## Christmas Tree
 ### command information
@@ -30,10 +40,10 @@
 ### command information
 ```
 typedef enum APC_CMD_T{
-    CMD_NONE                = 0x00, 
-    CMD_SOCKET_ON           = 0x30, 
+    CMD_NONE                = 0x00,
+    CMD_SOCKET_ON           = 0x30,
     CMD_SOCKET_OFF          = 0x31;
-    
+
     CMD_THEME_SET           = 0x32,     // Change color or theme
                                         // len = 1  >>          Value from 0 to 0x1C
                                         //---------------------------------------------------

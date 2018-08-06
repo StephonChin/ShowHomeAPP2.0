@@ -37,7 +37,7 @@ void MCU_Config(void)
 static void CLK_Init(void)
 {
   TA		  = 0xAA;
-  TA		  = 0x55;
+  TA		  = 0x55
   CKSWT  &= ~(BIT1 | BIT0);	      //Select HIRC as system clock Sys_Clk = 22.118M
 }
 
@@ -60,7 +60,7 @@ static void GPIO_Init(void)
   P0M2 |= (BIT4 | BIT5 | BIT6);
   P0 &= ~(BIT4 | BIT5 | BIT6);
   
-  PORT_BT_CE = RESET;
+  PORT_BT_CE = SET;
 }
 
 

@@ -175,9 +175,9 @@ static void Wifi_Process(void)
   if (RcvFlag[0] == FALSE)    return;
   RcvFlag[0] = FALSE;
   
-  CmdBuffer     = RcvData[0].DataBuf[2];
-  LengthBuffer  = RcvData[0].DataBuf[4];
-  InfoBuffer    = RcvData[0].DataBuf[5];
+  CmdBuffer     = RcvData[0].DataBuf[1];
+  LengthBuffer  = RcvData[0].DataBuf[3];
+  InfoBuffer    = RcvData[0].DataBuf[4];
   
   if (LengthBuffer > 0)
   {
@@ -190,12 +190,16 @@ static void Wifi_Process(void)
           ErrNum = ERR_COLOR_RANGE;
           break;
         }
+        
+        if (NormalMode > 0x8){
+          NormalMode = 0x1;
+        }
 
         //Change the color
         NormalColor = InfoBuffer;
         
         SndData[1].SndStatus  = SND_BROADCAST;
-        SndData[1].DataBuf[0] = 0x23;
+        SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
         SndData[1].DataBuf[1] = 0x00;
         SndData[1].DataBuf[2] = 0xFF;
         SndData[1].DataBuf[3] = 0xFF;
@@ -224,7 +228,7 @@ static void Wifi_Process(void)
         NormalMode = InfoBuffer + 1;
         
         SndData[1].SndStatus  = SND_BROADCAST;
-        SndData[1].DataBuf[0] = 0x23;
+        SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
         SndData[1].DataBuf[1] = 0x00;
         SndData[1].DataBuf[2] = 0xFF;
         SndData[1].DataBuf[3] = 0xFF;
@@ -253,10 +257,10 @@ static void Wifi_Process(void)
         ShowMode = ((_Uint8)rand()) % 3 + 1;
         
         //Setting show mode
-        ShowColor = InfoBuffer + 1;
+        ShowColor = InfoBuffer;
         
         SndData[1].SndStatus  = SND_BROADCAST;
-        SndData[1].DataBuf[0] = 0x23;
+        SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
         SndData[1].DataBuf[1] = 0x00;
         SndData[1].DataBuf[2] = 0xFF;
         SndData[1].DataBuf[3] = 0xFF;
@@ -275,13 +279,13 @@ static void Wifi_Process(void)
       // Setting timer
       case CMD_TIMER_SET:{
         //Err check
-        if (InfoBuffer > 8 || (InfoBuffer % 2 == 1)){
-          ErrNum = ERR_TIMER_INVALID;
-          break;
-        }
+//        if (InfoBuffer > 8 || (InfoBuffer % 2 == 1)){
+//          ErrNum = ERR_TIMER_INVALID;
+//          break;
+//        }
 
         SndData[1].SndStatus  = SND_BROADCAST;
-        SndData[1].DataBuf[0] = 0x23;
+        SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
         SndData[1].DataBuf[1] = 0x00;
         SndData[1].DataBuf[2] = 0xFF;
         SndData[1].DataBuf[3] = 0xFF;
@@ -309,7 +313,7 @@ static void Wifi_Process(void)
     // Turn Off
     if (CmdBuffer == CMD_SOCKET_OFF){
       SndData[1].SndStatus  = SND_BROADCAST;
-      SndData[1].DataBuf[0] = 0x23;
+      SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
       SndData[1].DataBuf[1] = 0x00;
       SndData[1].DataBuf[2] = 0xFF;
       SndData[1].DataBuf[3] = 0xFF;
@@ -326,7 +330,7 @@ static void Wifi_Process(void)
     // Turn On
     else if (CmdBuffer == CMD_SOCKET_ON){
       SndData[1].SndStatus  = SND_BROADCAST;
-      SndData[1].DataBuf[0] = 0x23;
+      SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
       SndData[1].DataBuf[1] = 0x00;
       SndData[1].DataBuf[2] = 0xFF;
       SndData[1].DataBuf[3] = 0xFF;

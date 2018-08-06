@@ -36,28 +36,6 @@ typedef struct SND_DATA_TYPE
 }_TypeStructSnd;
 
 
-// Command type for light strings controlled by WIFI via bluetooth	
-typedef struct{
-    _Uint8 version;           // protocol version
-    _Uint8  crc8;             // crc checksum
-    union{
-      _Uint8 buffer;
-      struct{
-        _Uint8 ack     : 1;
-        _Uint8 cmd     : 7;
-      }Info;
-    }cmd;		          // command content            
-    _Uint8  idx;		  // reserved for sensor
-    _Uint8  len;              // data length
-    _Uint8  payload[20];       // data contents
-} UART_PACKET;
-	
-typedef struct{
-	_Uint8 no;		  // ???
-	_Uint8 intensity; // ???
-}UART_Light_T;
-
-
 typedef enum UART_CMD_T{
     CMD_NONE          = 0x00,
     CMD_SOCKET_ON			= 0x30,
