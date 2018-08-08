@@ -7,19 +7,19 @@
 
   <Targets>
     <Target>
-      <TargetName>WifiBt</TargetName>
+      <TargetName>Mini93Motor</TargetName>
       <ToolsetNumber>0x0</ToolsetNumber>
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>N76E885</Device>
+          <Device>N76E003</Device>
           <Vendor>Nuvoton</Vendor>
-          <Cpu>IRAM(0 - 0xFF) IROM(0 - 0x47FF)  XRAM(0 - 0xFF) CLOCK(25000000)</Cpu>
+          <Cpu>IRAM(0 - 0xFF) IROM(0 - 0x47FF)  XRAM(0 - 0x2FF) CLOCK(16000000)</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"LIB\STARTUP.A51" ("Standard 8051 Startup Code")</StartupFile>
           <FlashDriverDll></FlashDriverDll>
           <DeviceId>0</DeviceId>
-          <RegisterFile>N76E885.H</RegisterFile>
+          <RegisterFile>N76E003.H</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -43,11 +43,11 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\</OutputDirectory>
-          <OutputName>WifiBt</OutputName>
+          <OutputDirectory>.\Output\</OutputDirectory>
+          <OutputName>Mini93Motor</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\</ListingPath>
@@ -268,7 +268,7 @@
               <XRA>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x100</Size>
+                <Size>0x300</Size>
               </XRA>
               <XRA512>
                 <Type>0</Type>
@@ -299,7 +299,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\UserAPP</IncludePath>
+              <IncludePath>.\User</IncludePath>
             </VariousControls>
           </C51>
           <Ax51>
@@ -349,7 +349,7 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Startp</GroupName>
+          <GroupName>StartUp</GroupName>
           <Files>
             <File>
               <FileName>STARTUP.A51</FileName>
@@ -359,137 +359,32 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Src</GroupName>
+          <GroupName>User</GroupName>
           <Files>
             <File>
               <FileName>Config.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\UserAPP\Config.c</FilePath>
+              <FilePath>.\User\Config.c</FilePath>
             </File>
-            <File>
-              <FileName>Data_Process.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\UserAPP\Data_Process.c</FilePath>
-            </File>
-            <File>
-              <FileName>Key_Scan.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\UserAPP\Key_Scan.c</FilePath>
-            </File>
-            <File>
-              <FileName>USART.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\UserAPP\USART.c</FilePath>
-            </File>
-            <File>
-              <FileName>WifiBt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\UserAPP\WifiBt.c</FilePath>
-            </File>
-            <File>
-              <FileName>BT_Control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\UserAPP\BT_Control.c</FilePath>
-            </File>
-            <File>
-              <FileName>Flash_Prgm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\UserAPP\Flash_Prgm.c</FilePath>
-            </File>
-            <File>
-              <FileName>Led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\UserAPP\Led.c</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>2</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <BankNo>65535</BankNo>
-                </CommonProperty>
-                <File51>
-                  <C51>
-                    <RegisterColoring>2</RegisterColoring>
-                    <VariablesInOrder>2</VariablesInOrder>
-                    <IntegerPromotion>2</IntegerPromotion>
-                    <uAregs>2</uAregs>
-                    <UseInterruptVector>2</UseInterruptVector>
-                    <Fuzzy>8</Fuzzy>
-                    <Optimize>0</Optimize>
-                    <WarningLevel>3</WarningLevel>
-                    <SizeSpeed>2</SizeSpeed>
-                    <ObjectExtend>2</ObjectExtend>
-                    <ACallAJmp>2</ACallAJmp>
-                    <InterruptVectorAddress>0</InterruptVectorAddress>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </C51>
-                </File51>
-              </FileOption>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Inc</GroupName>
-          <Files>
             <File>
               <FileName>Config.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\UserAPP\Config.h</FilePath>
-            </File>
-            <File>
-              <FileName>Data_Process.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\UserAPP\Data_Process.h</FilePath>
-            </File>
-            <File>
-              <FileName>Key_Scan.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\UserAPP\Key_Scan.h</FilePath>
+              <FilePath>.\User\Config.h</FilePath>
             </File>
             <File>
               <FileName>TypeDef.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\UserAPP\TypeDef.h</FilePath>
+              <FilePath>.\User\TypeDef.h</FilePath>
             </File>
             <File>
-              <FileName>USART.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\UserAPP\USART.h</FilePath>
+              <FileName>Mini93Motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\Mini93Motor.c</FilePath>
             </File>
             <File>
-              <FileName>WifiBt.h</FileName>
+              <FileName>MIni93Motor.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\UserAPP\WifiBt.h</FilePath>
-            </File>
-            <File>
-              <FileName>BT_Control.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\UserAPP\BT_Control.h</FilePath>
-            </File>
-            <File>
-              <FileName>Flash_Prgm.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\UserAPP\Flash_Prgm.h</FilePath>
-            </File>
-            <File>
-              <FileName>Led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\UserAPP\Led.h</FilePath>
+              <FilePath>.\User\MIni93Motor.h</FilePath>
             </File>
           </Files>
         </Group>

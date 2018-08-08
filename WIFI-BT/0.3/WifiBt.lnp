@@ -5,6 +5,7 @@
 "USART.obj",
 "WifiBt.obj",
 "BT_Control.obj",
-"Flash_Prgm.obj" 
+"Flash_Prgm.obj",
+"Led.obj" 
 TO "WifiBt" 
 RAMSIZE(256) 

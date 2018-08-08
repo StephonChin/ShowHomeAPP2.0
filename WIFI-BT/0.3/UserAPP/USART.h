@@ -38,9 +38,15 @@ typedef struct SND_DATA_TYPE
 
 typedef enum UART_CMD_T{
     CMD_NONE          = 0x00,
+
+		CMD_WIFI_STATUS		= 0x01,
+
+
+
+
     CMD_SOCKET_ON			= 0x30,
     CMD_SOCKET_OFF		= 0x31,
-  
+
     /* ShowHome APP products commands */
     CMD_THEME_SET           = 0x32,     // Change color or theme
                                         // len = 1  >>          Value from 0 to 0x1C
@@ -126,7 +132,7 @@ void Csr1010_Snd_Data(void);
 void Csr1010_Rcv_Data(void);
 void Wifi_Snd_Data(void);
 void Wifi_Rcv_Data(void);
-	
+
 
 //-------------------< File Functions >----------------------------
 static void USART0_Rcv_Byte(void);

@@ -1,0 +1,1053 @@
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+NO OBJECT MODULE REQUESTED
+ASSEMBLER INVOKED BY: C:\Keil\C51\C51\BIN\A51.EXE Led.src PR(.\Led.ls1) EP DEBUG
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; .\Led.SRC generated from: UserAPP\Led.c
+                       2     ; COMPILER INVOKED BY:
+                       3     ;        C:\Keil\C51\C51\BIN\C51.EXE UserAPP\Led.c BROWSE INCDIR(.\UserAPP) DEBUG OBJECTEXT
+                             END PRINT(.\Led.lst) TABS(2) SRC(.\Led.SRC)
+                       4     
+                       5     $nomod51 
+                       6     
+                       7     NAME    LED
+                       8     
+  00B1                 9     P0M1    DATA    0B1H
+  00A4                10     RXD_1   BIT     0A0H.4
+  00B3                11     P1M1    DATA    0B3H
+  00B2                12     P0M2    DATA    0B2H
+  0080                13     P0      DATA    080H
+  00BB                14     SADDR_1 DATA    0BBH
+  00B5                15     P2M1    DATA    0B5H
+  00B4                16     P1M2    DATA    0B4H
+  0090                17     P1      DATA    090H
+  00A5                18     TXD_1   BIT     0A0H.5
+  00C2                19     AA      BIT     0C0H.2
+  00D8                20     INTSEL0 BIT     0D8H.0
+  00B6                21     P2M2    DATA    0B6H
+  00AC                22     P3M1    DATA    0ACH
+  00A0                23     P2      DATA    0A0H
+  00D9                24     INTSEL1 BIT     0D8H.1
+  00B0                25     P3      DATA    0B0H
+  00AD                26     P3M2    DATA    0ADH
+  00A0                27     T0      BIT     0A0H.0
+  00D6                28     AC      BIT     0D0H.6
+  008F                29     WKCON   DATA    08FH
+  00A1                30     T1      BIT     0A0H.1
+  009C                31     EIE1    DATA    09CH
+  00AF                32     EA      BIT     0A8H.7
+  00D8                33     PWMCON0 DATA    0D8H
+  00A3                34     FB      BIT     0A0H.3
+  00DF                35     PWMCON1 DATA    0DFH
+  0080                36     AIN0    BIT     080H.0
+  0081                37     AIN1    BIT     080H.1
+  0082                38     AIN2    BIT     080H.2
+  009F                39     FE      BIT     098H.7
+  0083                40     AIN3    BIT     080H.3
+  0084                41     AIN4    BIT     080H.4
+  0085                42     AIN5    BIT     080H.5
+  00AE                43     EADC    BIT     0A8H.6
+  00D1                44     PWMPH   DATA    0D1H
+  00A8                45     IE      DATA    0A8H
+  0096                46     CKSWT   DATA    096H
+  0086                47     AIN6    BIT     080H.6
+  00EF                48     ADCF    BIT     0E8H.7
+  0087                49     AIN7    BIT     080H.7
+  00FE                50     EIP1    DATA    0FEH
+  00A6                51     AIN8    BIT     0A0H.6
+  00A0                52     AIN9    BIT     0A0H.0
+  00D9                53     PWMPL   DATA    0D9H
+  00E8                54     ADCHS0  BIT     0E8H.0
+  00C7                55     TA      DATA    0C7H
+  00E9                56     ADCHS1  BIT     0E8H.1
+  00EA                57     ADCHS2  BIT     0E8H.2
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE     2
+
+  00AC                58     ES      BIT     0A8H.4
+  00EB                59     ADCHS3  BIT     0E8H.3
+  00C1                60     I2ADDR  DATA    0C1H
+  00BE                61     PADC    BIT     0B8H.6
+  00B8                62     IP      DATA    0B8H
+  0098                63     RI      BIT     098H.0
+  00AD                64     EBOD    BIT     0A8H.5
+  00DA                65     INTTYP0 BIT     0D8H.2
+  0080                66     INT0    BIT     080H.0
+  00C3                67     SI      BIT     0C0H.3
+  00D7                68     CY      BIT     0D0H.7
+  00DB                69     INTTYP1 BIT     0D8H.3
+  00EE                70     ADCS    BIT     0E8H.6
+  00FF                71     FE_1    BIT     0F8H.7
+  0081                72     INT1    BIT     080H.1
+  0099                73     TI      BIT     098H.1
+  00D2                74     PWM01H  DATA    0D2H
+  00DE                75     LOAD    BIT     0D8H.6
+  0097                76     CKEN    DATA    097H
+  00BC                77     PS      BIT     0B8H.4
+  00DA                78     PWM01L  DATA    0DAH
+  00D3                79     PWM23H  DATA    0D3H
+  0081                80     SP      DATA    081H
+  0090                81     PWM0    BIT     090H.0
+  00D2                82     OV      BIT     0D0H.2
+  0084                83     SS      BIT     080H.4
+  0091                84     PWM1    BIT     090H.1
+  00BD                85     PBOD    BIT     0B8H.5
+  00F6                86     P0DIDS  DATA    0F6H
+  00B2                87     P0SR    DATA    0B2H
+  0082                88     PWM2    BIT     080H.2
+  00F7                89     EIPH    DATA    0F7H
+  00DB                90     PWM23L  DATA    0DBH
+  00D5                91     PWM45H  DATA    0D5H
+  00B4                92     P1SR    DATA    0B4H
+  0083                93     PWM3    BIT     080H.3
+  00B6                94     P2SR    DATA    0B6H
+  0085                95     PWM4    BIT     080H.5
+  00AD                96     P3SR    DATA    0ADH
+  0086                97     PWM5    BIT     080H.6
+  0087                98     PWM6    BIT     080H.7
+  00DD                99     PWM45L  DATA    0DDH
+  00D4               100     PWM67H  DATA    0D4H
+  00A6               101     PWM7    BIT     0A0H.6
+  00F8               102     RI_1    BIT     0F8H.0
+  00F9               103     TI_1    BIT     0F8H.1
+  00CB               104     RCMP2H  DATA    0CBH
+  00DC               105     PWM67L  DATA    0DCH
+  00CF               106     ADCMPH  DATA    0CFH
+  0080               107     P00     BIT     080H.0
+  00F2               108     ADCAQT  DATA    0F2H
+  0081               109     P01     BIT     080H.1
+  0090               110     P10     BIT     090H.0
+  00FB               111     PMEN    DATA    0FBH
+  0099               112     SBUF    DATA    099H
+  0087               113     PCON    DATA    087H
+  0082               114     P02     BIT     080H.2
+  0091               115     P11     BIT     090H.1
+  00A0               116     P20     BIT     0A0H.0
+  00CA               117     RCMP2L  DATA    0CAH
+  0083               118     P03     BIT     080H.3
+  0092               119     P12     BIT     090H.2
+  00A1               120     P21     BIT     0A0H.1
+  00B0               121     P30     BIT     0B0H.0
+  00E3               122     ADCDLY  DATA    0E3H
+  00CE               123     ADCMPL  DATA    0CEH
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE     3
+
+  0084               124     P04     BIT     080H.4
+  0080               125     VREF    BIT     080H.0
+  00A2               126     P22     BIT     0A0H.2
+  00B1               127     P31     BIT     0B0H.1
+  0098               128     SCON    DATA    098H
+  0085               129     P05     BIT     080H.5
+  00A3               130     P23     BIT     0A0H.3
+  00B2               131     P32     BIT     0B0H.2
+  0089               132     TMOD    DATA    089H
+  0088               133     TCON    DATA    088H
+  0086               134     P06     BIT     080H.6
+  00A4               135     P24     BIT     0A0H.4
+  00B3               136     P33     BIT     0B0H.3
+  0087               137     P07     BIT     080H.7
+  00A5               138     P25     BIT     0A0H.5
+  00B4               139     P34     BIT     0B0H.4
+  00A6               140     P26     BIT     0A0H.6
+  00B5               141     P35     BIT     0B0H.5
+  00C8               142     CM_CR2  BIT     0C8H.0
+  00A2               143     MISO    BIT     0A0H.2
+  00A1               144     MOSI    BIT     0A0H.1
+  00B6               145     P36     BIT     0B0H.6
+  00F3               146     SPCR    DATA    0F3H
+  00BD               147     I2STAT  DATA    0BDH
+  00B7               148     P37     BIT     0B0H.7
+  00F5               149     SPDR    DATA    0F5H
+  00DD               150     PWMF    BIT     0D8H.5
+  00E5               151     C0H     DATA    0E5H
+  00A0               152     IC0     BIT     0A0H.0
+  00E7               153     C1H     DATA    0E7H
+  00A1               154     IC1     BIT     0A0H.1
+  00EE               155     C2H     DATA    0EEH
+  009F               156     CHPCON  DATA    09FH
+  0089               157     IE0     BIT     088H.1
+  00A2               158     IC2     BIT     0A0H.2
+  008B               159     IE1     BIT     088H.3
+  00E4               160     C0L     DATA    0E4H
+  0091               161     SFRS    DATA    091H
+  00E6               162     C1L     DATA    0E6H
+  00F0               163     B       DATA    0F0H
+  00ED               164     C2L     DATA    0EDH
+  009A               165     SBUF_1  DATA    09AH
+  00A5               166     IAPUEN  DATA    0A5H
+  00F8               167     SCON_1  DATA    0F8H
+  00E0               168     ACC     DATA    0E0H
+  00A9               169     ET0     BIT     0A8H.1
+  00F4               170     SPSR    DATA    0F4H
+  00A4               171     IAPTRG  DATA    0A4H
+  008D               172     TF0     BIT     088H.5
+  00AB               173     ET1     BIT     0A8H.3
+  008F               174     TF1     BIT     088H.7
+  009A               175     RB8     BIT     098H.2
+  00CF               176     TF2     BIT     0C8H.7
+  00D7               177     FBD     DATA    0D7H
+  008C               178     TH0     DATA    08CH
+  0088               179     IT0     BIT     088H.0
+  00A8               180     EX0     BIT     0A8H.0
+  00C6               181     RH3     DATA    0C6H
+  008D               182     TH1     DATA    08DH
+  008A               183     IT1     BIT     088H.2
+  009B               184     TB8     BIT     098H.3
+  00AA               185     EX1     BIT     0A8H.2
+  00CD               186     TH2     DATA    0CDH
+  00D0               187     P       BIT     0D0H.0
+  00FA               188     PDTCNT  DATA    0FAH
+  009F               189     SM0     BIT     098H.7
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE     4
+
+  008A               190     TL0     DATA    08AH
+  009E               191     SM1     BIT     098H.6
+  00C5               192     RL3     DATA    0C5H
+  008B               193     TL1     DATA    08BH
+  009D               194     SM2     BIT     098H.5
+  00C6               195     I2CEN   BIT     0C0H.6
+  00CC               196     TL2     DATA    0CCH
+  00B1               197     P0S     DATA    0B1H
+  009B               198     EIE     DATA    09BH
+  00B9               199     PT0     BIT     0B8H.1
+  00B3               200     P1S     DATA    0B3H
+  00BB               201     PT1     BIT     0B8H.3
+  00D3               202     RS0     BIT     0D0H.3
+  00BC               203     I2DAT   DATA    0BCH
+  00B5               204     P2S     DATA    0B5H
+  008C               205     TR0     BIT     088H.4
+  00D4               206     RS1     BIT     0D0H.4
+  00BE               207     I2CLK   DATA    0BEH
+  00AC               208     P3S     DATA    0ACH
+  008E               209     TR1     BIT     088H.6
+  00DC               210     CLRPWM  BIT     0D8H.4
+  00A3               211     SDA     BIT     0A0H.3
+  00B8               212     PX0     BIT     0B8H.0
+  00CA               213     TR2     BIT     0C8H.2
+  00FF               214     EIPH1   DATA    0FFH
+  00BA               215     PX1     BIT     0B8H.2
+  00E8               216     ADCCON0 DATA    0E8H
+  00E1               217     ADCCON1 DATA    0E1H
+  00E2               218     ADCCON2 DATA    0E2H
+  00C0               219     I2CON   DATA    0C0H
+  0083               220     DPH     DATA    083H
+  00FA               221     RB8_1   BIT     0F8H.2
+  00A6               222     CLO     BIT     0A0H.6
+  00EF               223     EIP     DATA    0EFH
+  00FB               224     TB8_1   BIT     0F8H.3
+  00EC               225     PIF     DATA    0ECH
+  0082               226     DPL     DATA    082H
+  00FF               227     SM0_1   BIT     0F8H.7
+  00FC               228     PMD     DATA    0FCH
+  00B7               229     IPH     DATA    0B7H
+  0086               230     SCL     BIT     080H.6
+  00FE               231     SM1_1   BIT     0F8H.6
+  00BF               232     I2TOC   DATA    0BFH
+  00FD               233     SM2_1   BIT     0F8H.5
+  00C3               234     ADCRH   DATA    0C3H
+  00A7               235     IAPAH   DATA    0A7H
+  009C               236     REN     BIT     098H.4
+  00AE               237     IAPFD   DATA    0AEH
+  0092               238     CAPCON0 DATA    092H
+  00C9               239     T2MOD   DATA    0C9H
+  00C8               240     T2CON   DATA    0C8H
+  00C2               241     ADCRL   DATA    0C2H
+  00A3               242     BODCON0 DATA    0A3H
+  0093               243     CAPCON1 DATA    093H
+  00C5               244     STA     BIT     0C0H.5
+  00DE               245     PIO     DATA    0DEH
+  00C4               246     T3CON   DATA    0C4H
+  00AB               247     BODCON1 DATA    0ABH
+  00A6               248     IAPAL   DATA    0A6H
+  0094               249     CAPCON2 DATA    094H
+  00DF               250     PWMRUN  BIT     0D8H.7
+  00B9               251     SADEN   DATA    0B9H
+  00AF               252     IAPCN   DATA    0AFH
+  00A0               253     RXD     BIT     0A0H.0
+  00D6               254     PNP     DATA    0D6H
+  00A9               255     SADDR   DATA    0A9H
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE     5
+
+  008E               256     CKCON   DATA    08EH
+  0083               257     TXD     BIT     080H.3
+  00A3               258     STADC   BIT     0A0H.3
+  00A2               259     AUXR1   DATA    0A2H
+  0095               260     CKDIV   DATA    095H
+  0086               261     RWK     DATA    086H
+  00D5               262     F0      BIT     0D0H.5
+  00C4               263     STO     BIT     0C0H.4
+  00EC               264     ETGSEL0 BIT     0E8H.4
+  00FC               265     REN_1   BIT     0F8H.4
+  00ED               266     ETGSEL1 BIT     0E8H.5
+  00E9               267     PICON   DATA    0E9H
+  00D0               268     PSW     DATA    0D0H
+  0085               269     SPICK   BIT     080H.5
+  00EA               270     PINEN   DATA    0EAH
+  00F9               271     PDTEN   DATA    0F9H
+  00AA               272     WDCON   DATA    0AAH
+  00EB               273     PIPEN   DATA    0EBH
+  00BA               274     SADEN_1 DATA    0BAH
+                     275     ?PR?Led_Updae?LED    SEGMENT CODE 
+                     276     ?DT?Led_Updae?LED    SEGMENT DATA OVERLAYABLE 
+                     277     ?PR?Led_Control?LED  SEGMENT CODE 
+                     278     ?PR?Led_Off?LED      SEGMENT CODE 
+                     279     ?PR?Led_Normal?LED   SEGMENT CODE 
+                     280     ?PR?Led_Err?LED      SEGMENT CODE 
+                     281     ?PR?Wifi_Standby?LED SEGMENT CODE 
+                     282     ?PR?Wifi_Connected?LED                   SEGMENT CODE 
+                     283     ?PR?Wifi_Connecting?LED                  SEGMENT CODE 
+                     284     ?XD?LED              SEGMENT XDATA 
+                     285     ?DT?LED              SEGMENT DATA 
+                     286     ?BI?LED              SEGMENT BIT 
+                     287             EXTRN   CODE (?C?CLDPTR)
+                     288             PUBLIC  UpdateFlag
+                     289             PUBLIC  LedStep
+                     290             PUBLIC  LedInit
+                     291             PUBLIC  LedTime
+                     292             PUBLIC  LedMode
+                     293             PUBLIC  LedData
+                     294             PUBLIC  Led_Control
+                     295     
+----                 296             RSEG  ?DT?Led_Updae?LED
+0000                 297     ?Led_Updae?BYTE:
+0000                 298          bitCnt?040:   DS   1
+0001                 299             ORG  1
+0001                 300         byteCnt?041:   DS   1
+0002                 301             ORG  2
+0002                 302         tempBuf?042:   DS   1
+0003                 303             ORG  3
+0003                 304            pBuf?043:   DS   3
+                     305     
+----                 306             RSEG  ?XD?LED
+0000                 307             LedData:   DS   30
+                     308     
+----                 309             RSEG  ?DT?LED
+0000                 310             LedMode:   DS   1
+0001                 311             LedTime:   DS   1
+0002                 312             LedStep:   DS   1
+                     313     
+----                 314             RSEG  ?BI?LED
+0000                 315             LedInit:   DBIT   1
+0001                 316          UpdateFlag:   DBIT   1
+                     317     ; /********************************************************************
+                     318     ;   *
+                     319     ;   * FILE NAME      Led.c
+                     320     ;   *
+                     321     ; *********************************************************************/
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE     6
+
+                     322     ; #include "Led.h"
+                     323     ; 
+                     324     ; 
+                     325     ; //Global arguments
+                     326     ; _Uint8    LedMode;
+                     327     ; bit       LedInit;
+                     328     ; 
+                     329     ; 
+                     330     ; //File arguments
+                     331     ; _TypeLed_U   xdata  LedData;
+                     332     ; bit       UpdateFlag;
+                     333     ; _Uint8    LedStep;
+                     334     ; _Uint8    LedTime;
+                     335     ; 
+                     336     ; 
+                     337     ; 
+                     338     ; /**
+                     339     ;   * Led_Updae
+                     340     ;   *   > Update the led driver data
+                     341     ;   *   > Led type: SK6812MINI-3535
+                     342     ;   *   > 0: 0.3u + 0.9u    1: 0.9u + 0.3u
+                     343     ;   */
+                     344     ; static void Led_Updae(void)
+                     345     
+----                 346             RSEG  ?PR?Led_Updae?LED
+0000                 347     Led_Updae:
+                     348             USING   0
+                     349                             ; SOURCE LINE # 28
+                     350     ; {
+                     351                             ; SOURCE LINE # 29
+                     352     ;   _uint8  bitCnt    = 0;
+                     353                             ; SOURCE LINE # 30
+0000 E4              354             CLR     A
+0001 F500     F      355             MOV     bitCnt?040,A
+                     356     ;   _uint8  byteCnt   = 0;
+                     357                             ; SOURCE LINE # 31
+0003 F500     F      358             MOV     byteCnt?041,A
+                     359     ;   _uint8  tempBuf   = 0;
+                     360                             ; SOURCE LINE # 32
+0005 F500     F      361             MOV     tempBuf?042,A
+                     362     ;   _uint8  * pBuf    = 0;
+                     363                             ; SOURCE LINE # 33
+0007 F500     F      364             MOV     pBuf?043,A
+0009 F500     F      365             MOV     pBuf?043+01H,A
+000B F500     F      366             MOV     pBuf?043+02H,A
+                     367     ; 
+                     368     ;   if (UpdateFlag == FALSE)    return;
+                     369                             ; SOURCE LINE # 35
+000D 30004A   F      370             JNB     UpdateFlag,?C0002
+0010                 371     ?C0001:
+                     372     ;   UpdateFlag = FALSE;
+                     373                             ; SOURCE LINE # 36
+0010 C200     F      374             CLR     UpdateFlag
+                     375     ; 
+                     376     ;   pBuf = &LedData.SendBuf;
+                     377                             ; SOURCE LINE # 38
+0012 750001   F      378             MOV     pBuf?043,#01H
+0015 750000   F      379             MOV     pBuf?043+01H,#HIGH (LedData)
+0018 750000   F      380             MOV     pBuf?043+02H,#LOW (LedData)
+                     381     ;   for (byteCnt = 0;byteCnt < COLOR_TOTAL;byteCnt++){
+                     382                             ; SOURCE LINE # 39
+001B E4              383             CLR     A
+001C F500     F      384             MOV     byteCnt?041,A
+001E                 385     ?C0003:
+                     386     ;     tempBuf = *pBuf;
+                     387                             ; SOURCE LINE # 40
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE     7
+
+001E AB00     F      388             MOV     R3,pBuf?043
+0020 AA00     F      389             MOV     R2,pBuf?043+01H
+0022 A900     F      390             MOV     R1,pBuf?043+02H
+0024 120000   F      391             LCALL   ?C?CLDPTR
+0027 F500     F      392             MOV     tempBuf?042,A
+                     393     ;     pBuf++;
+                     394                             ; SOURCE LINE # 41
+0029 7401            395             MOV     A,#01H
+002B 2500     F      396             ADD     A,pBuf?043+02H
+002D F500     F      397             MOV     pBuf?043+02H,A
+002F E4              398             CLR     A
+0030 3500     F      399             ADDC    A,pBuf?043+01H
+0032 F500     F      400             MOV     pBuf?043+01H,A
+                     401     ;     for (bitCnt = 0; bitCnt < 8; bitCnt++){
+                     402                             ; SOURCE LINE # 42
+0034 E4              403             CLR     A
+0035 F500     F      404             MOV     bitCnt?040,A
+0037                 405     ?C0006:
+                     406     ;       if (tempBuf & 0x80 == 0x80){
+                     407                             ; SOURCE LINE # 43
+0037 E500     F      408             MOV     A,tempBuf?042
+0039 30E006          409             JNB     ACC.0,?C0009
+                     410     ;         PORT_COMM = SET;
+                     411                             ; SOURCE LINE # 44
+003C D284            412             SETB    P04
+                     413     ;         __asm(NOP);
+                     414             (NOP);
+*** _________________________________^
+*** ERROR #A9 IN 414 (Led.src, LINE 414): SYNTAX ERROR
+                     415     ;         PORT_COMM = RESET;
+                     416                             ; SOURCE LINE # 46
+003E C284            417             CLR     P04
+                     418     ;       }
+                     419                             ; SOURCE LINE # 47
+0040 8004            420             SJMP    ?C0010
+0042                 421     ?C0009:
+                     422     ;       else{
+                     423                             ; SOURCE LINE # 48
+                     424     ;         PORT_COMM = SET;
+                     425                             ; SOURCE LINE # 49
+0042 D284            426             SETB    P04
+                     427     ; 
+                     428     ;         PORT_COMM = RESET;
+                     429                             ; SOURCE LINE # 51
+0044 C284            430             CLR     P04
+                     431     ;       }
+                     432                             ; SOURCE LINE # 52
+0046                 433     ?C0010:
+                     434     ; 
+                     435     ;       tempBuf <<= 1;
+                     436                             ; SOURCE LINE # 54
+0046 E500     F      437             MOV     A,tempBuf?042
+0048 25E0            438             ADD     A,ACC
+004A F500     F      439             MOV     tempBuf?042,A
+                     440     ;     }
+                     441                             ; SOURCE LINE # 55
+004C 0500     F      442             INC     bitCnt?040
+004E E500     F      443             MOV     A,bitCnt?040
+0050 B408E4          444             CJNE    A,#08H,?C0006
+                     445     ;   }
+                     446                             ; SOURCE LINE # 56
+0053                 447     ?C0005:
+0053 0500     F      448             INC     byteCnt?041
+0055 E500     F      449             MOV     A,byteCnt?041
+0057 B41EC4          450             CJNE    A,#01EH,?C0003
+                     451     ; }
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE     8
+
+                     452                             ; SOURCE LINE # 57
+005A                 453     ?C0002:
+005A 22              454             RET     
+                     455     ; END OF Led_Updae
+                     456     
+                     457     ; 
+                     458     ; /**
+                     459     ;   * Led_Control
+                     460     ;   *   > Control the led display mode
+                     461     ;   */
+                     462     ; void Led_Control(void)
+                     463     
+----                 464             RSEG  ?PR?Led_Control?LED
+0000                 465     Led_Control:
+                     466             USING   0
+                     467                             ; SOURCE LINE # 63
+                     468     ; {
+                     469                             ; SOURCE LINE # 64
+                     470     ;   switch (LedMode){
+                     471                             ; SOURCE LINE # 65
+0000 E500     F      472             MOV     A,LedMode
+0002 14              473             DEC     A
+0003 6015            474             JZ      ?C0013
+0005 14              475             DEC     A
+0006 6017            476             JZ      ?C0014
+0008 14              477             DEC     A
+0009 6019            478             JZ      ?C0015
+000B 14              479             DEC     A
+000C 601B            480             JZ      ?C0016
+000E 14              481             DEC     A
+000F 601D            482             JZ      ?C0017
+0011 2405            483             ADD     A,#05H
+0013 701C            484             JNZ     ?C0011
+                     485     ;     case LED_OFF:               Led_Off();              break;
+                     486                             ; SOURCE LINE # 66
+0015                 487     ?C0012:
+0015 120000   F      488             LCALL   Led_Off
+0018 8017            489             SJMP    ?C0011
+                     490     ;     case LED_WIFI_STANDBY:      Wifi_Standby();         break;
+                     491                             ; SOURCE LINE # 67
+001A                 492     ?C0013:
+001A 120000   F      493             LCALL   Wifi_Standby
+001D 8012            494             SJMP    ?C0011
+                     495     ;     case LED_WIFI_CONNECTING:   Wifi_Connecting();      break;
+                     496                             ; SOURCE LINE # 68
+001F                 497     ?C0014:
+001F 120000   F      498             LCALL   Wifi_Connecting
+0022 800D            499             SJMP    ?C0011
+                     500     ;     case LED_WIFI_CONNETED:     Wifi_Connected();       break;
+                     501                             ; SOURCE LINE # 69
+0024                 502     ?C0015:
+0024 120000   F      503             LCALL   Wifi_Connected
+0027 8008            504             SJMP    ?C0011
+                     505     ;     case LED_NORMAL:            Led_Normal();           break;
+                     506                             ; SOURCE LINE # 70
+0029                 507     ?C0016:
+0029 120000   F      508             LCALL   Led_Normal
+002C 8003            509             SJMP    ?C0011
+                     510     ;     case LED_ERROR:             Led_Err();              break;
+                     511                             ; SOURCE LINE # 71
+002E                 512     ?C0017:
+002E 120000   F      513             LCALL   Led_Err
+                     514     ;   }
+                     515                             ; SOURCE LINE # 72
+0031                 516     ?C0011:
+                     517     ;   
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE     9
+
+                     518     ;   Led_Updae();
+                     519                             ; SOURCE LINE # 74
+0031 020000   F      520             LJMP    Led_Updae
+                     521     ; END OF Led_Control
+                     522     
+                     523     ; }
+                     524     ; 
+                     525     ; /**
+                     526     ;   * Led_Off
+                     527     ;   */
+                     528     ; static void Led_Off(void)
+                     529     
+----                 530             RSEG  ?PR?Led_Off?LED
+0000                 531     Led_Off:
+                     532             USING   0
+                     533                             ; SOURCE LINE # 80
+                     534     ; {
+                     535                             ; SOURCE LINE # 81
+                     536     ;   _uint8  cnt = 0;
+                     537                             ; SOURCE LINE # 82
+                     538     ;---- Variable 'cnt?244' assigned to Register 'R7' ----
+0000 E4              539             CLR     A
+0001 FF              540             MOV     R7,A
+                     541     ;   if(LedInit == TRUE){
+                     542                             ; SOURCE LINE # 83
+0002 300036   F      543             JNB     LedInit,?C0023
+                     544     ;     LedInit = FALSE;
+                     545                             ; SOURCE LINE # 84
+0005 C200     F      546             CLR     LedInit
+                     547     ;     for (cnt = 0; cnt < LED_TOTAL; cnt++){
+                     548                             ; SOURCE LINE # 85
+0007                 549     ?C0020:
+                     550     ;       LedData.Buffer[cnt].DutyR = 0;
+                     551                             ; SOURCE LINE # 86
+0007 EF              552             MOV     A,R7
+0008 75F003          553             MOV     B,#03H
+000B A4              554             MUL     AB
+000C 2400     F      555             ADD     A,#LOW (LedData)
+000E F582            556             MOV     DPL,A
+0010 E4              557             CLR     A
+0011 3400     F      558             ADDC    A,#HIGH (LedData)
+0013 F583            559             MOV     DPH,A
+0015 E4              560             CLR     A
+0016 F0              561             MOVX    @DPTR,A
+                     562     ;       LedData.Buffer[cnt].DutyG = 0;
+                     563                             ; SOURCE LINE # 87
+0017 EF              564             MOV     A,R7
+0018 75F003          565             MOV     B,#03H
+001B A4              566             MUL     AB
+001C 2400     F      567             ADD     A,#LOW (LedData+01H)
+001E F582            568             MOV     DPL,A
+0020 E4              569             CLR     A
+0021 3400     F      570             ADDC    A,#HIGH (LedData+01H)
+0023 F583            571             MOV     DPH,A
+0025 E4              572             CLR     A
+0026 F0              573             MOVX    @DPTR,A
+                     574     ;       LedData.Buffer[cnt].DutyB = 0;
+                     575                             ; SOURCE LINE # 88
+0027 EF              576             MOV     A,R7
+0028 75F003          577             MOV     B,#03H
+002B A4              578             MUL     AB
+002C 2400     F      579             ADD     A,#LOW (LedData+02H)
+002E F582            580             MOV     DPL,A
+0030 E4              581             CLR     A
+0031 3400     F      582             ADDC    A,#HIGH (LedData+02H)
+0033 F583            583             MOV     DPH,A
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE    10
+
+0035 E4              584             CLR     A
+0036 F0              585             MOVX    @DPTR,A
+                     586     ;     }
+                     587                             ; SOURCE LINE # 89
+0037 0F              588             INC     R7
+0038 BF0ACC          589             CJNE    R7,#0AH,?C0020
+                     590     ;   }
+                     591                             ; SOURCE LINE # 90
+                     592     ; }
+                     593                             ; SOURCE LINE # 91
+003B                 594     ?C0023:
+003B 22              595             RET     
+                     596     ; END OF Led_Off
+                     597     
+                     598     ; 
+                     599     ; /**
+                     600     ;   * Led_Normal
+                     601     ;   */
+                     602     ; static void Led_Normal(void)
+                     603     
+----                 604             RSEG  ?PR?Led_Normal?LED
+0000                 605     Led_Normal:
+                     606                             ; SOURCE LINE # 96
+                     607     ; {
+                     608                             ; SOURCE LINE # 97
+                     609     ; 
+                     610     ; }
+                     611                             ; SOURCE LINE # 99
+0000 22              612             RET     
+                     613     ; END OF Led_Normal
+                     614     
+                     615     ; 
+                     616     ; /**
+                     617     ;   * Led_Err
+                     618     ;   */
+                     619     ; static void Led_Err(void)
+                     620     
+----                 621             RSEG  ?PR?Led_Err?LED
+0000                 622     Led_Err:
+                     623                             ; SOURCE LINE # 104
+                     624     ; {
+                     625                             ; SOURCE LINE # 105
+                     626     ; 
+                     627     ; }
+                     628                             ; SOURCE LINE # 107
+0000 22              629             RET     
+                     630     ; END OF Led_Err
+                     631     
+                     632     ; 
+                     633     ; /**
+                     634     ;   * Wifi_Standby
+                     635     ;   */
+                     636     ; static void Wifi_Standby(void)
+                     637     
+----                 638             RSEG  ?PR?Wifi_Standby?LED
+0000                 639     Wifi_Standby:
+                     640                             ; SOURCE LINE # 112
+                     641     ; {
+                     642                             ; SOURCE LINE # 113
+                     643     ; 
+                     644     ; }
+                     645                             ; SOURCE LINE # 115
+0000 22              646             RET     
+                     647     ; END OF Wifi_Standby
+                     648     
+                     649     ; 
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE    11
+
+                     650     ; /**
+                     651     ;   * Wifi_Connected
+                     652     ;   */
+                     653     ; static void Wifi_Connected(void)
+                     654     
+----                 655             RSEG  ?PR?Wifi_Connected?LED
+0000                 656     Wifi_Connected:
+                     657                             ; SOURCE LINE # 120
+                     658     ; {
+                     659                             ; SOURCE LINE # 121
+                     660     ; 
+                     661     ; }
+                     662                             ; SOURCE LINE # 123
+0000 22              663             RET     
+                     664     ; END OF Wifi_Connected
+                     665     
+                     666     ; 
+                     667     ; 
+                     668     ; /**
+                     669     ;   * Wifi_Connecting
+                     670     ;   */
+                     671     ; static void Wifi_Connecting(void)
+                     672     
+----                 673             RSEG  ?PR?Wifi_Connecting?LED
+0000                 674     Wifi_Connecting:
+                     675                             ; SOURCE LINE # 129
+                     676     ; {
+                     677                             ; SOURCE LINE # 130
+                     678     ; 
+                     679     ; }
+                     680                             ; SOURCE LINE # 132
+0000 22              681             RET     
+                     682     ; END OF Wifi_Connecting
+                     683     
+                     684             END
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE    12
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                  T Y P E  V A L U E   ATTRIBUTES
+
+?BI?LED . . . . . . . .  B SEG    0002H       REL=UNIT
+?C0001. . . . . . . . .  C ADDR   0010H   R   SEG=?PR?LED_UPDAE?LED
+?C0002. . . . . . . . .  C ADDR   005AH   R   SEG=?PR?LED_UPDAE?LED
+?C0003. . . . . . . . .  C ADDR   001EH   R   SEG=?PR?LED_UPDAE?LED
+?C0005. . . . . . . . .  C ADDR   0053H   R   SEG=?PR?LED_UPDAE?LED
+?C0006. . . . . . . . .  C ADDR   0037H   R   SEG=?PR?LED_UPDAE?LED
+?C0009. . . . . . . . .  C ADDR   0042H   R   SEG=?PR?LED_UPDAE?LED
+?C0010. . . . . . . . .  C ADDR   0046H   R   SEG=?PR?LED_UPDAE?LED
+?C0011. . . . . . . . .  C ADDR   0031H   R   SEG=?PR?LED_CONTROL?LED
+?C0012. . . . . . . . .  C ADDR   0015H   R   SEG=?PR?LED_CONTROL?LED
+?C0013. . . . . . . . .  C ADDR   001AH   R   SEG=?PR?LED_CONTROL?LED
+?C0014. . . . . . . . .  C ADDR   001FH   R   SEG=?PR?LED_CONTROL?LED
+?C0015. . . . . . . . .  C ADDR   0024H   R   SEG=?PR?LED_CONTROL?LED
+?C0016. . . . . . . . .  C ADDR   0029H   R   SEG=?PR?LED_CONTROL?LED
+?C0017. . . . . . . . .  C ADDR   002EH   R   SEG=?PR?LED_CONTROL?LED
+?C0020. . . . . . . . .  C ADDR   0007H   R   SEG=?PR?LED_OFF?LED
+?C0023. . . . . . . . .  C ADDR   003BH   R   SEG=?PR?LED_OFF?LED
+?C?CLDPTR . . . . . . .  C ADDR   -----       EXT
+?DT?LED . . . . . . . .  D SEG    0003H       REL=UNIT
+?DT?LED_UPDAE?LED . . .  D SEG    0006H       REL=UNIT
+?LED_UPDAE?BYTE . . . .  D ADDR   0000H   R   SEG=?DT?LED_UPDAE?LED
+?PR?LED_CONTROL?LED . .  C SEG    0034H       REL=UNIT
+?PR?LED_ERR?LED . . . .  C SEG    0001H       REL=UNIT
+?PR?LED_NORMAL?LED. . .  C SEG    0001H       REL=UNIT
+?PR?LED_OFF?LED . . . .  C SEG    003CH       REL=UNIT
+?PR?LED_UPDAE?LED . . .  C SEG    005BH       REL=UNIT
+?PR?WIFI_CONNECTED?LED.  C SEG    0001H       REL=UNIT
+?PR?WIFI_CONNECTING?LED  C SEG    0001H       REL=UNIT
+?PR?WIFI_STANDBY?LED. .  C SEG    0001H       REL=UNIT
+?XD?LED . . . . . . . .  X SEG    001EH       REL=UNIT
+AA. . . . . . . . . . .  B ADDR   00C0H.2 A   
+AC. . . . . . . . . . .  B ADDR   00D0H.6 A   
+ACC . . . . . . . . . .  D ADDR   00E0H   A   
+ADCAQT. . . . . . . . .  D ADDR   00F2H   A   
+ADCCON0 . . . . . . . .  D ADDR   00E8H   A   
+ADCCON1 . . . . . . . .  D ADDR   00E1H   A   
+ADCCON2 . . . . . . . .  D ADDR   00E2H   A   
+ADCDLY. . . . . . . . .  D ADDR   00E3H   A   
+ADCF. . . . . . . . . .  B ADDR   00E8H.7 A   
+ADCHS0. . . . . . . . .  B ADDR   00E8H.0 A   
+ADCHS1. . . . . . . . .  B ADDR   00E8H.1 A   
+ADCHS2. . . . . . . . .  B ADDR   00E8H.2 A   
+ADCHS3. . . . . . . . .  B ADDR   00E8H.3 A   
+ADCMPH. . . . . . . . .  D ADDR   00CFH   A   
+ADCMPL. . . . . . . . .  D ADDR   00CEH   A   
+ADCRH . . . . . . . . .  D ADDR   00C3H   A   
+ADCRL . . . . . . . . .  D ADDR   00C2H   A   
+ADCS. . . . . . . . . .  B ADDR   00E8H.6 A   
+AIN0. . . . . . . . . .  B ADDR   0080H.0 A   
+AIN1. . . . . . . . . .  B ADDR   0080H.1 A   
+AIN2. . . . . . . . . .  B ADDR   0080H.2 A   
+AIN3. . . . . . . . . .  B ADDR   0080H.3 A   
+AIN4. . . . . . . . . .  B ADDR   0080H.4 A   
+AIN5. . . . . . . . . .  B ADDR   0080H.5 A   
+AIN6. . . . . . . . . .  B ADDR   0080H.6 A   
+AIN7. . . . . . . . . .  B ADDR   0080H.7 A   
+AIN8. . . . . . . . . .  B ADDR   00A0H.6 A   
+AIN9. . . . . . . . . .  B ADDR   00A0H.0 A   
+AUXR1 . . . . . . . . .  D ADDR   00A2H   A   
+B . . . . . . . . . . .  D ADDR   00F0H   A   
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE    13
+
+BITCNT?040. . . . . . .  D ADDR   0000H   R   SEG=?DT?LED_UPDAE?LED
+BODCON0 . . . . . . . .  D ADDR   00A3H   A   
+BODCON1 . . . . . . . .  D ADDR   00ABH   A   
+BYTECNT?041 . . . . . .  D ADDR   0001H   R   SEG=?DT?LED_UPDAE?LED
+C0H . . . . . . . . . .  D ADDR   00E5H   A   
+C0L . . . . . . . . . .  D ADDR   00E4H   A   
+C1H . . . . . . . . . .  D ADDR   00E7H   A   
+C1L . . . . . . . . . .  D ADDR   00E6H   A   
+C2H . . . . . . . . . .  D ADDR   00EEH   A   
+C2L . . . . . . . . . .  D ADDR   00EDH   A   
+CAPCON0 . . . . . . . .  D ADDR   0092H   A   
+CAPCON1 . . . . . . . .  D ADDR   0093H   A   
+CAPCON2 . . . . . . . .  D ADDR   0094H   A   
+CHPCON. . . . . . . . .  D ADDR   009FH   A   
+CKCON . . . . . . . . .  D ADDR   008EH   A   
+CKDIV . . . . . . . . .  D ADDR   0095H   A   
+CKEN. . . . . . . . . .  D ADDR   0097H   A   
+CKSWT . . . . . . . . .  D ADDR   0096H   A   
+CLO . . . . . . . . . .  B ADDR   00A0H.6 A   
+CLRPWM. . . . . . . . .  B ADDR   00D8H.4 A   
+CM_CR2. . . . . . . . .  B ADDR   00C8H.0 A   
+CY. . . . . . . . . . .  B ADDR   00D0H.7 A   
+DPH . . . . . . . . . .  D ADDR   0083H   A   
+DPL . . . . . . . . . .  D ADDR   0082H   A   
+EA. . . . . . . . . . .  B ADDR   00A8H.7 A   
+EADC. . . . . . . . . .  B ADDR   00A8H.6 A   
+EBOD. . . . . . . . . .  B ADDR   00A8H.5 A   
+EIE . . . . . . . . . .  D ADDR   009BH   A   
+EIE1. . . . . . . . . .  D ADDR   009CH   A   
+EIP . . . . . . . . . .  D ADDR   00EFH   A   
+EIP1. . . . . . . . . .  D ADDR   00FEH   A   
+EIPH. . . . . . . . . .  D ADDR   00F7H   A   
+EIPH1 . . . . . . . . .  D ADDR   00FFH   A   
+ES. . . . . . . . . . .  B ADDR   00A8H.4 A   
+ET0 . . . . . . . . . .  B ADDR   00A8H.1 A   
+ET1 . . . . . . . . . .  B ADDR   00A8H.3 A   
+ETGSEL0 . . . . . . . .  B ADDR   00E8H.4 A   
+ETGSEL1 . . . . . . . .  B ADDR   00E8H.5 A   
+EX0 . . . . . . . . . .  B ADDR   00A8H.0 A   
+EX1 . . . . . . . . . .  B ADDR   00A8H.2 A   
+F0. . . . . . . . . . .  B ADDR   00D0H.5 A   
+FB. . . . . . . . . . .  B ADDR   00A0H.3 A   
+FBD . . . . . . . . . .  D ADDR   00D7H   A   
+FE. . . . . . . . . . .  B ADDR   0098H.7 A   
+FE_1. . . . . . . . . .  B ADDR   00F8H.7 A   
+I2ADDR. . . . . . . . .  D ADDR   00C1H   A   
+I2CEN . . . . . . . . .  B ADDR   00C0H.6 A   
+I2CLK . . . . . . . . .  D ADDR   00BEH   A   
+I2CON . . . . . . . . .  D ADDR   00C0H   A   
+I2DAT . . . . . . . . .  D ADDR   00BCH   A   
+I2STAT. . . . . . . . .  D ADDR   00BDH   A   
+I2TOC . . . . . . . . .  D ADDR   00BFH   A   
+IAPAH . . . . . . . . .  D ADDR   00A7H   A   
+IAPAL . . . . . . . . .  D ADDR   00A6H   A   
+IAPCN . . . . . . . . .  D ADDR   00AFH   A   
+IAPFD . . . . . . . . .  D ADDR   00AEH   A   
+IAPTRG. . . . . . . . .  D ADDR   00A4H   A   
+IAPUEN. . . . . . . . .  D ADDR   00A5H   A   
+IC0 . . . . . . . . . .  B ADDR   00A0H.0 A   
+IC1 . . . . . . . . . .  B ADDR   00A0H.1 A   
+IC2 . . . . . . . . . .  B ADDR   00A0H.2 A   
+IE. . . . . . . . . . .  D ADDR   00A8H   A   
+IE0 . . . . . . . . . .  B ADDR   0088H.1 A   
+IE1 . . . . . . . . . .  B ADDR   0088H.3 A   
+INT0. . . . . . . . . .  B ADDR   0080H.0 A   
+INT1. . . . . . . . . .  B ADDR   0080H.1 A   
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE    14
+
+INTSEL0 . . . . . . . .  B ADDR   00D8H.0 A   
+INTSEL1 . . . . . . . .  B ADDR   00D8H.1 A   
+INTTYP0 . . . . . . . .  B ADDR   00D8H.2 A   
+INTTYP1 . . . . . . . .  B ADDR   00D8H.3 A   
+IP. . . . . . . . . . .  D ADDR   00B8H   A   
+IPH . . . . . . . . . .  D ADDR   00B7H   A   
+IT0 . . . . . . . . . .  B ADDR   0088H.0 A   
+IT1 . . . . . . . . . .  B ADDR   0088H.2 A   
+LED . . . . . . . . . .  N NUMB   -----       
+LEDDATA . . . . . . . .  X ADDR   0000H   R   SEG=?XD?LED
+LEDINIT . . . . . . . .  B ADDR   0000H.0 R   SEG=?BI?LED
+LEDMODE . . . . . . . .  D ADDR   0000H   R   SEG=?DT?LED
+LEDSTEP . . . . . . . .  D ADDR   0002H   R   SEG=?DT?LED
+LEDTIME . . . . . . . .  D ADDR   0001H   R   SEG=?DT?LED
+LED_CONTROL . . . . . .  C ADDR   0000H   R   SEG=?PR?LED_CONTROL?LED
+LED_ERR . . . . . . . .  C ADDR   0000H   R   SEG=?PR?LED_ERR?LED
+LED_NORMAL. . . . . . .  C ADDR   0000H   R   SEG=?PR?LED_NORMAL?LED
+LED_OFF . . . . . . . .  C ADDR   0000H   R   SEG=?PR?LED_OFF?LED
+LED_UPDAE . . . . . . .  C ADDR   0000H   R   SEG=?PR?LED_UPDAE?LED
+LOAD. . . . . . . . . .  B ADDR   00D8H.6 A   
+MISO. . . . . . . . . .  B ADDR   00A0H.2 A   
+MOSI. . . . . . . . . .  B ADDR   00A0H.1 A   
+OV. . . . . . . . . . .  B ADDR   00D0H.2 A   
+P . . . . . . . . . . .  B ADDR   00D0H.0 A   
+P0. . . . . . . . . . .  D ADDR   0080H   A   
+P00 . . . . . . . . . .  B ADDR   0080H.0 A   
+P01 . . . . . . . . . .  B ADDR   0080H.1 A   
+P02 . . . . . . . . . .  B ADDR   0080H.2 A   
+P03 . . . . . . . . . .  B ADDR   0080H.3 A   
+P04 . . . . . . . . . .  B ADDR   0080H.4 A   
+P05 . . . . . . . . . .  B ADDR   0080H.5 A   
+P06 . . . . . . . . . .  B ADDR   0080H.6 A   
+P07 . . . . . . . . . .  B ADDR   0080H.7 A   
+P0DIDS. . . . . . . . .  D ADDR   00F6H   A   
+P0M1. . . . . . . . . .  D ADDR   00B1H   A   
+P0M2. . . . . . . . . .  D ADDR   00B2H   A   
+P0S . . . . . . . . . .  D ADDR   00B1H   A   
+P0SR. . . . . . . . . .  D ADDR   00B2H   A   
+P1. . . . . . . . . . .  D ADDR   0090H   A   
+P10 . . . . . . . . . .  B ADDR   0090H.0 A   
+P11 . . . . . . . . . .  B ADDR   0090H.1 A   
+P12 . . . . . . . . . .  B ADDR   0090H.2 A   
+P1M1. . . . . . . . . .  D ADDR   00B3H   A   
+P1M2. . . . . . . . . .  D ADDR   00B4H   A   
+P1S . . . . . . . . . .  D ADDR   00B3H   A   
+P1SR. . . . . . . . . .  D ADDR   00B4H   A   
+P2. . . . . . . . . . .  D ADDR   00A0H   A   
+P20 . . . . . . . . . .  B ADDR   00A0H.0 A   
+P21 . . . . . . . . . .  B ADDR   00A0H.1 A   
+P22 . . . . . . . . . .  B ADDR   00A0H.2 A   
+P23 . . . . . . . . . .  B ADDR   00A0H.3 A   
+P24 . . . . . . . . . .  B ADDR   00A0H.4 A   
+P25 . . . . . . . . . .  B ADDR   00A0H.5 A   
+P26 . . . . . . . . . .  B ADDR   00A0H.6 A   
+P2M1. . . . . . . . . .  D ADDR   00B5H   A   
+P2M2. . . . . . . . . .  D ADDR   00B6H   A   
+P2S . . . . . . . . . .  D ADDR   00B5H   A   
+P2SR. . . . . . . . . .  D ADDR   00B6H   A   
+P3. . . . . . . . . . .  D ADDR   00B0H   A   
+P30 . . . . . . . . . .  B ADDR   00B0H.0 A   
+P31 . . . . . . . . . .  B ADDR   00B0H.1 A   
+P32 . . . . . . . . . .  B ADDR   00B0H.2 A   
+P33 . . . . . . . . . .  B ADDR   00B0H.3 A   
+P34 . . . . . . . . . .  B ADDR   00B0H.4 A   
+P35 . . . . . . . . . .  B ADDR   00B0H.5 A   
+P36 . . . . . . . . . .  B ADDR   00B0H.6 A   
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE    15
+
+P37 . . . . . . . . . .  B ADDR   00B0H.7 A   
+P3M1. . . . . . . . . .  D ADDR   00ACH   A   
+P3M2. . . . . . . . . .  D ADDR   00ADH   A   
+P3S . . . . . . . . . .  D ADDR   00ACH   A   
+P3SR. . . . . . . . . .  D ADDR   00ADH   A   
+PADC. . . . . . . . . .  B ADDR   00B8H.6 A   
+PBOD. . . . . . . . . .  B ADDR   00B8H.5 A   
+PBUF?043. . . . . . . .  D ADDR   0003H   R   SEG=?DT?LED_UPDAE?LED
+PCON. . . . . . . . . .  D ADDR   0087H   A   
+PDTCNT. . . . . . . . .  D ADDR   00FAH   A   
+PDTEN . . . . . . . . .  D ADDR   00F9H   A   
+PICON . . . . . . . . .  D ADDR   00E9H   A   
+PIF . . . . . . . . . .  D ADDR   00ECH   A   
+PINEN . . . . . . . . .  D ADDR   00EAH   A   
+PIO . . . . . . . . . .  D ADDR   00DEH   A   
+PIPEN . . . . . . . . .  D ADDR   00EBH   A   
+PMD . . . . . . . . . .  D ADDR   00FCH   A   
+PMEN. . . . . . . . . .  D ADDR   00FBH   A   
+PNP . . . . . . . . . .  D ADDR   00D6H   A   
+PS. . . . . . . . . . .  B ADDR   00B8H.4 A   
+PSW . . . . . . . . . .  D ADDR   00D0H   A   
+PT0 . . . . . . . . . .  B ADDR   00B8H.1 A   
+PT1 . . . . . . . . . .  B ADDR   00B8H.3 A   
+PWM0. . . . . . . . . .  B ADDR   0090H.0 A   
+PWM01H. . . . . . . . .  D ADDR   00D2H   A   
+PWM01L. . . . . . . . .  D ADDR   00DAH   A   
+PWM1. . . . . . . . . .  B ADDR   0090H.1 A   
+PWM2. . . . . . . . . .  B ADDR   0080H.2 A   
+PWM23H. . . . . . . . .  D ADDR   00D3H   A   
+PWM23L. . . . . . . . .  D ADDR   00DBH   A   
+PWM3. . . . . . . . . .  B ADDR   0080H.3 A   
+PWM4. . . . . . . . . .  B ADDR   0080H.5 A   
+PWM45H. . . . . . . . .  D ADDR   00D5H   A   
+PWM45L. . . . . . . . .  D ADDR   00DDH   A   
+PWM5. . . . . . . . . .  B ADDR   0080H.6 A   
+PWM6. . . . . . . . . .  B ADDR   0080H.7 A   
+PWM67H. . . . . . . . .  D ADDR   00D4H   A   
+PWM67L. . . . . . . . .  D ADDR   00DCH   A   
+PWM7. . . . . . . . . .  B ADDR   00A0H.6 A   
+PWMCON0 . . . . . . . .  D ADDR   00D8H   A   
+PWMCON1 . . . . . . . .  D ADDR   00DFH   A   
+PWMF. . . . . . . . . .  B ADDR   00D8H.5 A   
+PWMPH . . . . . . . . .  D ADDR   00D1H   A   
+PWMPL . . . . . . . . .  D ADDR   00D9H   A   
+PWMRUN. . . . . . . . .  B ADDR   00D8H.7 A   
+PX0 . . . . . . . . . .  B ADDR   00B8H.0 A   
+PX1 . . . . . . . . . .  B ADDR   00B8H.2 A   
+RB8 . . . . . . . . . .  B ADDR   0098H.2 A   
+RB8_1 . . . . . . . . .  B ADDR   00F8H.2 A   
+RCMP2H. . . . . . . . .  D ADDR   00CBH   A   
+RCMP2L. . . . . . . . .  D ADDR   00CAH   A   
+REN . . . . . . . . . .  B ADDR   0098H.4 A   
+REN_1 . . . . . . . . .  B ADDR   00F8H.4 A   
+RH3 . . . . . . . . . .  D ADDR   00C6H   A   
+RI. . . . . . . . . . .  B ADDR   0098H.0 A   
+RI_1. . . . . . . . . .  B ADDR   00F8H.0 A   
+RL3 . . . . . . . . . .  D ADDR   00C5H   A   
+RS0 . . . . . . . . . .  B ADDR   00D0H.3 A   
+RS1 . . . . . . . . . .  B ADDR   00D0H.4 A   
+RWK . . . . . . . . . .  D ADDR   0086H   A   
+RXD . . . . . . . . . .  B ADDR   00A0H.0 A   
+RXD_1 . . . . . . . . .  B ADDR   00A0H.4 A   
+SADDR . . . . . . . . .  D ADDR   00A9H   A   
+SADDR_1 . . . . . . . .  D ADDR   00BBH   A   
+SADEN . . . . . . . . .  D ADDR   00B9H   A   
+SADEN_1 . . . . . . . .  D ADDR   00BAH   A   
+A51 MACRO ASSEMBLER  LED                                                                  08/07/2018 17:17:53 PAGE    16
+
+SBUF. . . . . . . . . .  D ADDR   0099H   A   
+SBUF_1. . . . . . . . .  D ADDR   009AH   A   
+SCL . . . . . . . . . .  B ADDR   0080H.6 A   
+SCON. . . . . . . . . .  D ADDR   0098H   A   
+SCON_1. . . . . . . . .  D ADDR   00F8H   A   
+SDA . . . . . . . . . .  B ADDR   00A0H.3 A   
+SFRS. . . . . . . . . .  D ADDR   0091H   A   
+SI. . . . . . . . . . .  B ADDR   00C0H.3 A   
+SM0 . . . . . . . . . .  B ADDR   0098H.7 A   
+SM0_1 . . . . . . . . .  B ADDR   00F8H.7 A   
+SM1 . . . . . . . . . .  B ADDR   0098H.6 A   
+SM1_1 . . . . . . . . .  B ADDR   00F8H.6 A   
+SM2 . . . . . . . . . .  B ADDR   0098H.5 A   
+SM2_1 . . . . . . . . .  B ADDR   00F8H.5 A   
+SP. . . . . . . . . . .  D ADDR   0081H   A   
+SPCR. . . . . . . . . .  D ADDR   00F3H   A   
+SPDR. . . . . . . . . .  D ADDR   00F5H   A   
+SPICK . . . . . . . . .  B ADDR   0080H.5 A   
+SPSR. . . . . . . . . .  D ADDR   00F4H   A   
+SS. . . . . . . . . . .  B ADDR   0080H.4 A   
+STA . . . . . . . . . .  B ADDR   00C0H.5 A   
+STADC . . . . . . . . .  B ADDR   00A0H.3 A   
+STO . . . . . . . . . .  B ADDR   00C0H.4 A   
+T0. . . . . . . . . . .  B ADDR   00A0H.0 A   
+T1. . . . . . . . . . .  B ADDR   00A0H.1 A   
+T2CON . . . . . . . . .  D ADDR   00C8H   A   
+T2MOD . . . . . . . . .  D ADDR   00C9H   A   
+T3CON . . . . . . . . .  D ADDR   00C4H   A   
+TA. . . . . . . . . . .  D ADDR   00C7H   A   
+TB8 . . . . . . . . . .  B ADDR   0098H.3 A   
+TB8_1 . . . . . . . . .  B ADDR   00F8H.3 A   
+TCON. . . . . . . . . .  D ADDR   0088H   A   
+TEMPBUF?042 . . . . . .  D ADDR   0002H   R   SEG=?DT?LED_UPDAE?LED
+TF0 . . . . . . . . . .  B ADDR   0088H.5 A   
+TF1 . . . . . . . . . .  B ADDR   0088H.7 A   
+TF2 . . . . . . . . . .  B ADDR   00C8H.7 A   
+TH0 . . . . . . . . . .  D ADDR   008CH   A   
+TH1 . . . . . . . . . .  D ADDR   008DH   A   
+TH2 . . . . . . . . . .  D ADDR   00CDH   A   
+TI. . . . . . . . . . .  B ADDR   0098H.1 A   
+TI_1. . . . . . . . . .  B ADDR   00F8H.1 A   
+TL0 . . . . . . . . . .  D ADDR   008AH   A   
+TL1 . . . . . . . . . .  D ADDR   008BH   A   
+TL2 . . . . . . . . . .  D ADDR   00CCH   A   
+TMOD. . . . . . . . . .  D ADDR   0089H   A   
+TR0 . . . . . . . . . .  B ADDR   0088H.4 A   
+TR1 . . . . . . . . . .  B ADDR   0088H.6 A   
+TR2 . . . . . . . . . .  B ADDR   00C8H.2 A   
+TXD . . . . . . . . . .  B ADDR   0080H.3 A   
+TXD_1 . . . . . . . . .  B ADDR   00A0H.5 A   
+UPDATEFLAG. . . . . . .  B ADDR   0000H.1 R   SEG=?BI?LED
+VREF. . . . . . . . . .  B ADDR   0080H.0 A   
+WDCON . . . . . . . . .  D ADDR   00AAH   A   
+WIFI_CONNECTED. . . . .  C ADDR   0000H   R   SEG=?PR?WIFI_CONNECTED?LED
+WIFI_CONNECTING . . . .  C ADDR   0000H   R   SEG=?PR?WIFI_CONNECTING?LED
+WIFI_STANDBY. . . . . .  C ADDR   0000H   R   SEG=?PR?WIFI_STANDBY?LED
+WKCON . . . . . . . . .  D ADDR   008FH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 1 ERROR(S)

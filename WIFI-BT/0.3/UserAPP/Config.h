@@ -25,9 +25,7 @@
 //--------------------< PORT Define >------------------------------
 #define PORT_KEY_1      P26
 #define PORT_KEY_2      P07
-#define PORT_R          P04
-#define PORT_G          P05
-#define PORT_B          P06
+#define PORT_COMM       P04
 #define PORT_BT_DT      P21
 #define PORT_BT_CE      P23
 #define PORT_TX         P25

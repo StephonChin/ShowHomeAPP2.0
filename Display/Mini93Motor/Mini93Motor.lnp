@@ -1,0 +1,5 @@
+"STARTUP.obj",
+"Config.obj",
+"Mini93Motor.obj" 
+TO "Mini93Motor" 
+RAMSIZE(256) 

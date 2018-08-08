@@ -191,11 +191,11 @@ static void Wifi_Process(void)
         }
         else if (InfoBuffer == 0x2){
           LedMode   = LED_WIFI_CONNECTING;
-          LedInit   = TRUE;
+          LedInit   = TRUE:
         }
         else if (InfoBuffer == 0x3){
           LedMode   = LED_WIFI_CONNETED;
-          LedInit   = TRUE;
+          LedInit   = TRUE:
         }
       } break;
 

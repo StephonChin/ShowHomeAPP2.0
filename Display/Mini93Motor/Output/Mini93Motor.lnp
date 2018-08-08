@@ -1,0 +1,5 @@
+".\Output\STARTUP.obj",
+".\Output\Config.obj",
+".\Output\Mini93Motor.obj" 
+TO ".\Output\Mini93Motor" 
+PRINT(".\Mini93Motor.m51") RAMSIZE(256) 

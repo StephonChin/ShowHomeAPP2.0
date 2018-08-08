@@ -12,6 +12,7 @@
 #include "BT_Control.h"
 #include "Flash_Prgm.h"
 #include "stdlib.h"
+#include "Led.h"
 
 //--------------------< Const Value Define >--------------------------
 #define     NORMAL_COLOR_MAX           0x1C

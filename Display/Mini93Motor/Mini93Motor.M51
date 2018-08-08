@@ -1,0 +1,292 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/08/2018  17:10:00  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\C51\BIN\BL51.EXE .\Output\STARTUP.obj, .\Output\Config.obj, .\Output\Mini93Motor.obj TO .\Output\Mini93Motor
+>>  PRINT (.\Mini93Motor.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Output\STARTUP.obj (?C_STARTUP)
+  .\Output\Config.obj (CONFIG)
+  .\Output\Mini93Motor.obj (MINI93MOTOR)
+  C:\KEIL\C51\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Output\Mini93Motor (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000BH     UNIT         ?DT?MINI93MOTOR
+            DATA    0013H     0002H     UNIT         _DATA_GROUP_
+                    0015H     000BH                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         ?BI?CONFIG
+                    0020H.1   0000H.7                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0006H     UNIT         ?PR?CLK_INIT?CONFIG
+                    0009H     0002H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     0085H     UNIT         ?PR?TIM0_INTERRUPT_HANDLER?MINI93MOTOR
+            CODE    011FH     001FH     UNIT         ?PR?TIM_INIT?CONFIG
+            CODE    013EH     0013H     UNIT         ?PR?GPIO_INIT?CONFIG
+            CODE    0151H     0013H     UNIT         ?PR?MAIN?MINI93MOTOR
+            CODE    0164H     0010H     UNIT         ?PR?MCU_CONFIG?CONFIG
+            CODE    0174H     000BH     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   .\Output\Mini93Motor (?C_STARTUP)
+
+
+SEGMENT                                          DATA_GROUP 
+  +--> CALLED SEGMENT                          START    LENGTH
+--------------------------------------------------------------
+?C_C51STARTUP                                  -----    -----
+  +--> ?PR?MAIN?MINI93MOTOR
+  +--> ?C_INITSEG
+
+?PR?MAIN?MINI93MOTOR                           -----    -----
+  +--> ?PR?MCU_CONFIG?CONFIG
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2018  17:10:00  PAGE 2
+
+
+?PR?MCU_CONFIG?CONFIG                          -----    -----
+  +--> ?PR?CLK_INIT?CONFIG
+  +--> ?PR?GPIO_INIT?CONFIG
+  +--> ?PR?TIM_INIT?CONFIG
+
+*** NEW ROOT ***************************************************
+
+?PR?TIM0_INTERRUPT_HANDLER?MINI93MOTOR         0013H    0002H
+
+
+
+SYMBOL TABLE OF MODULE:  .\Output\Mini93Motor (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:000EH         SEGMENT       ?C_C51STARTUP
+  I:0021H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0011H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:000EH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:000EH         LINE#         133
+  C:0010H         LINE#         134
+  C:0011H         LINE#         135
+  C:0012H         LINE#         136
+  C:0014H         LINE#         185
+  C:0017H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        CONFIG
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00B3H         PUBLIC        P1M1
+  D:0080H         PUBLIC        P0
+  D:00B4H         PUBLIC        P1M2
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2018  17:10:00  PAGE 3
+
+
+  D:00B0H         PUBLIC        P3
+  D:00D8H         PUBLIC        PWMCON0
+  D:00A8H         PUBLIC        IE
+  D:0096H         PUBLIC        CKSWT
+  D:00C7H         PUBLIC        TA
+  D:00B8H         PUBLIC        IP
+  C:0164H         PUBLIC        MCU_Config
+  C:013EH         SYMBOL        GPIO_Init
+  D:00CBH         PUBLIC        RCMP2H
+  B:0020H.0       PUBLIC        BIT_TMP
+  D:00CAH         PUBLIC        RCMP2L
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:00F8H         PUBLIC        SCON_1
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  C:0003H         SYMBOL        CLK_Init
+  B:0088H.4       PUBLIC        TR0
+  B:00C8H.2       PUBLIC        TR2
+  D:00E8H         PUBLIC        ADCCON0
+  D:00C0H         PUBLIC        I2CON
+  C:011FH         SYMBOL        TIM_Init
+  D:00C9H         PUBLIC        T2MOD
+  D:00C8H         PUBLIC        T2CON
+  D:00A3H         PUBLIC        BODCON0
+  D:008EH         PUBLIC        CKCON
+  D:0095H         PUBLIC        CKDIV
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MCU_CONFIG
+  C:0164H         LINE#         13
+  C:0164H         LINE#         14
+  C:0164H         LINE#         15
+  C:0167H         LINE#         16
+  C:016AH         LINE#         17
+  C:016DH         LINE#         18
+  C:0170H         LINE#         19
+  C:0173H         LINE#         20
+  -------         ENDPROC       MCU_CONFIG
+  -------         PROC          CLK_INIT
+  C:0003H         LINE#         27
+  C:0003H         LINE#         28
+  C:0003H         LINE#         29
+  C:0006H         LINE#         30
+  C:0008H         LINE#         31
+  -------         ENDPROC       CLK_INIT
+  -------         PROC          GPIO_INIT
+  C:013EH         LINE#         36
+  C:013EH         LINE#         37
+  C:013EH         LINE#         39
+  C:0141H         LINE#         40
+  C:0144H         LINE#         41
+  C:0147H         LINE#         45
+  C:014AH         LINE#         46
+  C:014DH         LINE#         47
+  C:0150H         LINE#         48
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2018  17:10:00  PAGE 4
+
+
+  -------         ENDPROC       GPIO_INIT
+  -------         PROC          TIM_INIT
+  C:011FH         LINE#         55
+  C:011FH         LINE#         56
+  C:011FH         LINE#         58
+  C:0122H         LINE#         59
+  C:0125H         LINE#         60
+  C:0128H         LINE#         61
+  C:012BH         LINE#         62
+  C:012DH         LINE#         63
+  C:012FH         LINE#         66
+  C:0132H         LINE#         67
+  C:0135H         LINE#         69
+  C:0138H         LINE#         70
+  C:013BH         LINE#         71
+  C:013DH         LINE#         72
+  -------         ENDPROC       TIM_INIT
+  -------         ENDMOD        CONFIG
+
+  -------         MODULE        MINI93MOTOR
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00D8H         PUBLIC        PWMCON0
+  D:00A8H         PUBLIC        IE
+  D:0008H         PUBLIC        MOTOR_DATA
+  D:00C7H         PUBLIC        TA
+  D:00B8H         PUBLIC        IP
+  D:0010H         PUBLIC        MotorTime
+  C:0151H         PUBLIC        main
+  B:0090H.1       PUBLIC        P11
+  D:0011H         PUBLIC        MotorStep
+  B:0090H.2       PUBLIC        P12
+  B:0090H.3       PUBLIC        P13
+  D:0098H         PUBLIC        SCON
+  B:0090H.4       PUBLIC        P14
+  D:0088H         PUBLIC        TCON
+  D:00F8H         PUBLIC        SCON_1
+  B:0088H.5       PUBLIC        TF0
+  B:00C8H.7       PUBLIC        TF2
+  D:00E8H         PUBLIC        ADCCON0
+  D:00C0H         PUBLIC        I2CON
+  D:0012H         PUBLIC        MotorDutyCnt
+  D:00C8H         PUBLIC        T2CON
+  C:009AH         PUBLIC        TIM0_Interrupt_Handler
+  D:00D0H         PUBLIC        PSW
+  D:00AAH         PUBLIC        WDCON
+  -------         PROC          TIM0_INTERRUPT_HANDLER
+  -------         DO            
+  D:0013H         SYMBOL        buf
+  -------         ENDDO         
+  C:009AH         LINE#         23
+  C:00A7H         LINE#         25
+  C:00ADH         LINE#         27
+  C:00AFH         LINE#         29
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2018  17:10:00  PAGE 5
+
+
+  C:00B1H         LINE#         30
+  C:00B8H         LINE#         31
+  C:00B8H         LINE#         32
+  C:00BBH         LINE#         33
+  C:00BBH         LINE#         35
+  C:00C2H         LINE#         36
+  C:00C2H         LINE#         37
+  C:00CCH         LINE#         38
+  C:00D5H         LINE#         39
+  C:00E6H         LINE#         40
+  C:00F2H         LINE#         41
+  C:00F4H         LINE#         43
+  C:00F4H         LINE#         44
+  C:00F6H         LINE#         45
+  C:00F8H         LINE#         46
+  C:00FAH         LINE#         47
+  C:00FCH         LINE#         48
+  C:00FCH         LINE#         50
+  C:00FEH         LINE#         51
+  C:0105H         LINE#         52
+  C:0105H         LINE#         53
+  C:0108H         LINE#         54
+  C:010AH         LINE#         55
+  C:0111H         LINE#         56
+  C:0111H         LINE#         57
+  C:0114H         LINE#         58
+  C:0114H         LINE#         59
+  C:0114H         LINE#         61
+  -------         ENDPROC       TIM0_INTERRUPT_HANDLER
+  -------         PROC          MAIN
+  C:0151H         LINE#         67
+  C:0151H         LINE#         68
+  C:0151H         LINE#         69
+  C:0154H         LINE#         71
+  C:0154H         LINE#         72
+  C:0154H         LINE#         73
+  C:0157H         LINE#         74
+  C:0157H         LINE#         75
+  C:0159H         LINE#         77
+  C:015CH         LINE#         78
+  C:015FH         LINE#         79
+  C:0162H         LINE#         82
+  C:0162H         LINE#         83
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MINI93MOTOR
+
+Program Size: data=22.1 xdata=0 code=381
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

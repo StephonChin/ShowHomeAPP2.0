@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   USART                                                             07/26/2018 16:16:01 PAGE 1   
+C51 COMPILER V9.52.0.0   USART                                                             08/08/2018 16:05:18 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE USART
@@ -62,18 +62,18 @@ line level    source
   52   1        if (RI_1)
   53   1        {
   54   2          RI_1 = RESET;
-C51 COMPILER V9.52.0.0   USART                                                             07/26/2018 16:16:01 PAGE 2   
+C51 COMPILER V9.52.0.0   USART                                                             08/08/2018 16:05:18 PAGE 2   
 
   55   2          USART1_Rcv_Byte();
   56   2        }
-  57   1        
+  57   1      
   58   1        /* When send interrput flag been set */
   59   1        if (TI_1)
   60   1        {
   61   2          TI_1 = RESET;
   62   2          SndData[1].SndByteDoneFlag = FALSE;
   63   2        }
-  64   1        
+  64   1      
   65   1        return;
   66   1      }
   67          
@@ -92,14 +92,14 @@ line level    source
   80   2          RI = RESET;
   81   2          USART0_Rcv_Byte();
   82   2        }
-  83   1        
+  83   1      
   84   1        /* When send interrput flag been set */
   85   1        if (TI)
   86   1        {
   87   2          TI = RESET;
   88   2          SndData[0].SndByteDoneFlag = FALSE;
   89   2        }
-  90   1        
+  90   1      
   91   1        return;
   92   1      }
   93          
@@ -113,120 +113,120 @@ line level    source
  101          {
  102   1        static _Uint8   Usart1ByteCnt;
  103   1               _Uint8   RcvBufferTemp = 0;
- 104   1        
- 105   1        
- 106   1        // move receive data to RcvBuffer
- 107   1        RcvBufferTemp = SBUF_1;
- 108   1        
- 109   1        RcvSttHoldTime[1] = 0;
- 110   1        
- 111   1        // start to receive data when receive status is idle
- 112   1        if (RcvByteStatus[1] == RCV_IDLE)
- 113   1        {
- 114   2          if (RcvBufferTemp == 0xFD)
- 115   2          {
- 116   3            RcvByteStatus[1]  = RCV_STT;
-C51 COMPILER V9.52.0.0   USART                                                             07/26/2018 16:16:01 PAGE 3   
+ 104   1      
+ 105   1        // move receive data to RcvBuffer
+ 106   1        RcvBufferTemp = SBUF_1;
+ 107   1      
+ 108   1        RcvSttHoldTime[1] = 0;
+ 109   1      
+ 110   1        // start to receive data when receive status is idle
+ 111   1        if (RcvByteStatus[1] == RCV_IDLE)
+ 112   1        {
+ 113   2          if (RcvBufferTemp == 0xFD)
+ 114   2          {
+ 115   3            RcvByteStatus[1]  = RCV_STT;
+ 116   3            Usart1ByteCnt = 0;
+C51 COMPILER V9.52.0.0   USART                                                             08/08/2018 16:05:18 PAGE 3   
 
- 117   3            Usart1ByteCnt = 0;
- 118   3          }
- 119   2        }
- 120   1        
- 121   1        // receive the data 
- 122   1        else if (RcvByteStatus[1] == RCV_STT)
- 123   1        {
- 124   2          if (RcvBufferTemp == 0xFE)            RcvByteStatus[1]                = RCV_END;                  // Rcv End
- 125   2          else if (Usart1ByteCnt >= 6)          RcvByteStatus[1]                = RCV_ERR;                  // Rcv Err  
- 126   2          else                                  RcvBuffer[1][Usart1ByteCnt++]   = RcvBufferTemp;            // Rcving
- 127   2        }
- 128   1      }
+ 117   3          }
+ 118   2        }
+ 119   1      
+ 120   1        // receive the data
+ 121   1        else if (RcvByteStatus[1] == RCV_STT)
+ 122   1        {
+ 123   2          if (RcvBufferTemp == 0xFE)            RcvByteStatus[1]                = RCV_END;                  // Rcv End
+ 124   2          else if (Usart1ByteCnt >= 6)          RcvByteStatus[1]                = RCV_ERR;                  // Rcv Err
+ 125   2          else                                  RcvBuffer[1][Usart1ByteCnt++]   = RcvBufferTemp;            // Rcving
+ 126   2        }
+ 127   1      }
+ 128          
  129          
- 130          
- 131          //----------------------------------------------------------
- 132          // FunctionName USART0_Rcv_Byte
- 133          //----------------------------------------------------------
- 134          static void USART0_Rcv_Byte(void)
- 135          {
- 136   1        _Uint8    RcvBufferTemp = 0;
- 137   1        
- 138   1        
- 139   1        // move receive data to RcvBuffer
- 140   1        RcvBufferTemp = SBUF;
- 141   1        
- 142   1        RcvSttHoldTime[0] = 0;
- 143   1        
- 144   1        // start to receive data when receive status is idle
- 145   1        if (RcvByteStatus[0] == RCV_IDLE)
- 146   1        {
- 147   2          RcvByteStatus[0]  = RCV_STT;
- 148   2          Usart0ByteCnt     = 0;
- 149   2        }
- 150   1        
- 151   1        // receive the data 
- 152   1        if (RcvByteStatus[0] == RCV_STT)
- 153   1        {
- 154   2          RcvBuffer[0][Usart0ByteCnt++] = RcvBufferTemp;
- 155   2          if (Usart0ByteCnt >= RCV_BYTE_MAX)          RcvByteStatus[0] = RCV_IDLE;                // Rcv Err  
- 156   2        }
- 157   1      }
+ 130          //----------------------------------------------------------
+ 131          // FunctionName USART0_Rcv_Byte
+ 132          //----------------------------------------------------------
+ 133          static void USART0_Rcv_Byte(void)
+ 134          {
+ 135   1        _Uint8    RcvBufferTemp = 0;
+ 136   1      
+ 137   1      
+ 138   1        // move receive data to RcvBuffer
+ 139   1        RcvBufferTemp = SBUF;
+ 140   1      
+ 141   1        RcvSttHoldTime[0] = 0;
+ 142   1      
+ 143   1        // start to receive data when receive status is idle
+ 144   1        if (RcvByteStatus[0] == RCV_IDLE)
+ 145   1        {
+ 146   2          RcvByteStatus[0]  = RCV_STT;
+ 147   2          Usart0ByteCnt     = 0;
+ 148   2        }
+ 149   1      
+ 150   1        // receive the data
+ 151   1        if (RcvByteStatus[0] == RCV_STT)
+ 152   1        {
+ 153   2          RcvBuffer[0][Usart0ByteCnt++] = RcvBufferTemp;
+ 154   2          if (Usart0ByteCnt >= RCV_BYTE_MAX)          RcvByteStatus[0] = RCV_IDLE;                // Rcv Err
+ 155   2        }
+ 156   1      }
+ 157          
  158          
  159          
  160          
- 161          
- 162          /************************************************************
- 163            *
- 164            * FunctionName  Csr1010_Rcv_Data
- 165            *
- 166          *************************************************************/
- 167          void Csr1010_Rcv_Data(void)
- 168          {   
- 169   1        _Uint8    TempCnt = 0;
- 170   1        
- 171   1        
- 172   1        /* Exit when receive status is idle or working */
- 173   1        if (RcvByteStatus[1] == RCV_IDLE)
- 174   1        {
- 175   2          RcvSttHoldTime[1] = 0;
- 176   2          return;
- 177   2        }
- 178   1        
-C51 COMPILER V9.52.0.0   USART                                                             07/26/2018 16:16:01 PAGE 4   
+ 161          /************************************************************
+ 162            *
+ 163            * FunctionName  Csr1010_Rcv_Data
+ 164            *
+ 165          *************************************************************/
+ 166          void Csr1010_Rcv_Data(void)
+ 167          {
+ 168   1        _Uint8    TempCnt = 0;
+ 169   1      
+ 170   1      
+ 171   1        /* Exit when receive status is idle or working */
+ 172   1        if (RcvByteStatus[1] == RCV_IDLE)
+ 173   1        {
+ 174   2          RcvSttHoldTime[1] = 0;
+ 175   2          return;
+ 176   2        }
+ 177   1      
+ 178   1      
+C51 COMPILER V9.52.0.0   USART                                                             08/08/2018 16:05:18 PAGE 4   
 
- 179   1        
- 180   1        /* Hold time after received, if timer > 1second, received err, then clear the data */
- 181   1        if (RcvByteStatus[1] == RCV_STT)
- 182   1        {
- 183   2          RcvSttHoldTime[1]++;
- 184   2          if (RcvSttHoldTime[1] > 5)  // 50ms
- 185   2          {
- 186   3            RcvSttHoldTime[1]   = 0;
- 187   3            RcvByteStatus[1]  = RCV_IDLE;
- 188   3          }
- 189   2          return;
- 190   2        }
- 191   1        
- 192   1        
- 193   1        /* received error */
- 194   1        if (RcvByteStatus[1] == RCV_ERR)
- 195   1        {
- 196   2          for (TempCnt = 0; TempCnt < 6; TempCnt++)   RcvBuffer[1][TempCnt] = 0;      // clear the buffer
- 197   2          RcvByteStatus[1] = RCV_IDLE;                                                  // clear the status
- 198   2          return;
- 199   2        }
- 200   1        
- 201   1        
- 202   1        /* received success */
- 203   1        if (RcvByteStatus[1] == RCV_END)
- 204   1        {
- 205   2          RcvFlag[1]  = TRUE;
- 206   2          for (TempCnt = 0; TempCnt < 6; TempCnt++)                 // move the buffer to rcvdata
- 207   2          {
- 208   3            RcvData[1].DataBuf[TempCnt] = RcvBuffer[1][TempCnt];
- 209   3            RcvBuffer[1][TempCnt]       = 0;
- 210   3          }
- 211   2          RcvByteStatus[1] = RCV_IDLE;                                  // clear status
- 212   2        }
- 213   1      }
+ 179   1        /* Hold time after received, if timer > 1second, received err, then clear the data */
+ 180   1        if (RcvByteStatus[1] == RCV_STT)
+ 181   1        {
+ 182   2          RcvSttHoldTime[1]++;
+ 183   2          if (RcvSttHoldTime[1] > 5)  // 50ms
+ 184   2          {
+ 185   3            RcvSttHoldTime[1]   = 0;
+ 186   3            RcvByteStatus[1]  = RCV_IDLE;
+ 187   3          }
+ 188   2          return;
+ 189   2        }
+ 190   1      
+ 191   1      
+ 192   1        /* received error */
+ 193   1        if (RcvByteStatus[1] == RCV_ERR)
+ 194   1        {
+ 195   2          for (TempCnt = 0; TempCnt < 6; TempCnt++)   RcvBuffer[1][TempCnt] = 0;      // clear the buffer
+ 196   2          RcvByteStatus[1] = RCV_IDLE;                                                  // clear the status
+ 197   2          return;
+ 198   2        }
+ 199   1      
+ 200   1      
+ 201   1        /* received success */
+ 202   1        if (RcvByteStatus[1] == RCV_END)
+ 203   1        {
+ 204   2          RcvFlag[1]  = TRUE;
+ 205   2          for (TempCnt = 0; TempCnt < 6; TempCnt++)                 // move the buffer to rcvdata
+ 206   2          {
+ 207   3            RcvData[1].DataBuf[TempCnt] = RcvBuffer[1][TempCnt];
+ 208   3            RcvBuffer[1][TempCnt]       = 0;
+ 209   3          }
+ 210   2          RcvByteStatus[1] = RCV_IDLE;                                  // clear status
+ 211   2        }
+ 212   1      }
+ 213          
  214          
  215          
  216          
@@ -236,119 +236,119 @@ line level    source
  220          
  221          
  222          
- 223          
- 224          /***********************************************************
- 225            *
- 226            * FunctionName  Csr1010_Snd_Data
- 227            *
- 228          ************************************************************/
- 229          void Csr1010_Snd_Data(void)
- 230          {
- 231   1        _Uint8  TempCnt = 0;
- 232   1        
- 233   1        /* when snd data is idle , exit */
- 234   1        if (SndData[1].SndStatus == SND_IDLE)
- 235   1        {
- 236   2          return;
- 237   2        }
- 238   1        
- 239   1        /* type send LA1 */
- 240   1        if (SndData[1].SndStatus == SND_TYPE)
-C51 COMPILER V9.52.0.0   USART                                                             07/26/2018 16:16:01 PAGE 5   
+ 223          /***********************************************************
+ 224            *
+ 225            * FunctionName  Csr1010_Snd_Data
+ 226            *
+ 227          ************************************************************/
+ 228          void Csr1010_Snd_Data(void)
+ 229          {
+ 230   1        _Uint8  TempCnt = 0;
+ 231   1      
+ 232   1        /* when snd data is idle , exit */
+ 233   1        if (SndData[1].SndStatus == SND_IDLE)
+ 234   1        {
+ 235   2          return;
+ 236   2        }
+ 237   1      
+ 238   1        /* type send LA1 */
+ 239   1        if (SndData[1].SndStatus == SND_TYPE)
+ 240   1        {
+C51 COMPILER V9.52.0.0   USART                                                             08/08/2018 16:05:18 PAGE 5   
 
- 241   1        {
- 242   2          // Send type command "LA1"
- 243   2          USART1_Snd_Byte(0xFC);
- 244   2          USART1_Snd_Byte('V');
- 245   2          USART1_Snd_Byte('W');
- 246   2          USART1_Snd_Byte('B');
+ 241   2          // Send type command "LA1"
+ 242   2          USART1_Snd_Byte(0xFC);
+ 243   2          USART1_Snd_Byte('V');
+ 244   2          USART1_Snd_Byte('W');
+ 245   2          USART1_Snd_Byte('B');
+ 246   2          USART1_Snd_Byte('0');
  247   2          USART1_Snd_Byte('0');
  248   2          USART1_Snd_Byte('0');
  249   2          USART1_Snd_Byte('0');
- 250   2          USART1_Snd_Byte('0');
- 251   2          USART1_Snd_Byte(0xFE);
- 252   2          
- 253   2          // Send power on command after type command sent completed
- 254   2          SndData[1].SndStatus = SND_IDLE;  
- 255   2          return;
- 256   2        }
- 257   1        
- 258   1        
- 259   1        /* Send normally */
- 260   1        if (SndData[1].SndStatus == SND_NORMAL)
- 261   1        {
- 262   2          USART1_Snd_Byte(0xFD);
- 263   2          for (TempCnt = 0; TempCnt < 8; TempCnt++)   USART1_Snd_Byte(SndData[1].DataBuf[TempCnt]);
- 264   2          USART1_Snd_Byte(0xFE);
- 265   2          SndData[1].SndStatus = SND_IDLE;
- 266   2          
- 267   2          return;
- 268   2        }
- 269   1        
- 270   1        /* Send Broadcast */
- 271   1        if (SndData[1].SndStatus == SND_BROADCAST)
- 272   1        {
- 273   2          USART1_Snd_Byte(0xF9);
- 274   2          for (TempCnt = 0; TempCnt < 10; TempCnt++)    USART1_Snd_Byte(SndData[1].DataBuf[TempCnt]);
- 275   2          USART1_Snd_Byte(0xFE);
- 276   2          SndData[1].SndStatus = SND_IDLE;
- 277   2          
- 278   2          return;
- 279   2        }
- 280   1      }
+ 250   2          USART1_Snd_Byte(0xFE);
+ 251   2      
+ 252   2          // Send power on command after type command sent completed
+ 253   2          SndData[1].SndStatus = SND_IDLE;
+ 254   2          return;
+ 255   2        }
+ 256   1      
+ 257   1      
+ 258   1        /* Send normally */
+ 259   1        if (SndData[1].SndStatus == SND_NORMAL)
+ 260   1        {
+ 261   2          USART1_Snd_Byte(0xFD);
+ 262   2          for (TempCnt = 0; TempCnt < 8; TempCnt++)   USART1_Snd_Byte(SndData[1].DataBuf[TempCnt]);
+ 263   2          USART1_Snd_Byte(0xFE);
+ 264   2          SndData[1].SndStatus = SND_IDLE;
+ 265   2      
+ 266   2          return;
+ 267   2        }
+ 268   1      
+ 269   1        /* Send Broadcast */
+ 270   1        if (SndData[1].SndStatus == SND_BROADCAST)
+ 271   1        {
+ 272   2          USART1_Snd_Byte(0xF9);
+ 273   2          for (TempCnt = 0; TempCnt < 10; TempCnt++)    USART1_Snd_Byte(SndData[1].DataBuf[TempCnt]);
+ 274   2          USART1_Snd_Byte(0xFE);
+ 275   2          SndData[1].SndStatus = SND_IDLE;
+ 276   2      
+ 277   2          return;
+ 278   2        }
+ 279   1      }
+ 280          
  281          
  282          
  283          
- 284          
- 285          /************************************************************
- 286            *
- 287            * FunctionName  Wifi_Rcv_Data
- 288            *
- 289          *************************************************************/
- 290          void Wifi_Rcv_Data(void)
- 291          {   
- 292   1        _Uint8    TempCnt = 0;
- 293   1        
- 294   1        
- 295   1        /* Exit when receive status is idle or working */
- 296   1        if (RcvByteStatus[0] == RCV_IDLE)
- 297   1        {
- 298   2          RcvSttHoldTime[0] = 0;
- 299   2          return;
- 300   2        }
- 301   1        
- 302   1        
-C51 COMPILER V9.52.0.0   USART                                                             07/26/2018 16:16:01 PAGE 6   
+ 284          /************************************************************
+ 285            *
+ 286            * FunctionName  Wifi_Rcv_Data
+ 287            *
+ 288          *************************************************************/
+ 289          void Wifi_Rcv_Data(void)
+ 290          {
+ 291   1        _Uint8    TempCnt = 0;
+ 292   1      
+ 293   1      
+ 294   1        /* Exit when receive status is idle or working */
+ 295   1        if (RcvByteStatus[0] == RCV_IDLE)
+ 296   1        {
+ 297   2          RcvSttHoldTime[0] = 0;
+ 298   2          return;
+ 299   2        }
+ 300   1      
+ 301   1      
+ 302   1        /* Hold time after received, if timer > 1second, received err, then clear the data */
+C51 COMPILER V9.52.0.0   USART                                                             08/08/2018 16:05:18 PAGE 6   
 
- 303   1        /* Hold time after received, if timer > 1second, received err, then clear the data */
- 304   1        if (RcvByteStatus[0] == RCV_STT)
- 305   1        {
- 306   2          RcvSttHoldTime[0]++;
- 307   2          if (RcvSttHoldTime[0] > 5) // 50ms
- 308   2          {
- 309   3            RcvSttHoldTime[0]   = 0;
- 310   3            
- 311   3            if (RcvBuffer[0][0] == PROTOCOL_VER)
- 312   3            {
- 313   4              RcvByteStatus[0] = RCV_IDLE;
- 314   4              RcvFlag[0]  = TRUE;
- 315   4              for (TempCnt = 0; TempCnt < RCV_BYTE_MAX; TempCnt++)                  // move the buffer to rcvdata
- 316   4              {
- 317   5                RcvData[0].DataBuf[TempCnt] = RcvBuffer[0][TempCnt];
- 318   5                RcvBuffer[0][TempCnt]       = 0;
- 319   5              }
- 320   4            }
- 321   3            else
- 322   3            {
- 323   4              RcvByteStatus[0]  = RCV_IDLE;
- 324   4              for (TempCnt = 0; TempCnt < RCV_BYTE_MAX; TempCnt++)    RcvBuffer[0][TempCnt] = 0;        // clear the 
+ 303   1        if (RcvByteStatus[0] == RCV_STT)
+ 304   1        {
+ 305   2          RcvSttHoldTime[0]++;
+ 306   2          if (RcvSttHoldTime[0] > 5) // 50ms
+ 307   2          {
+ 308   3            RcvSttHoldTime[0]   = 0;
+ 309   3      
+ 310   3            if (RcvBuffer[0][0] == PROTOCOL_VER)
+ 311   3            {
+ 312   4              RcvByteStatus[0] = RCV_IDLE;
+ 313   4              RcvFlag[0]  = TRUE;
+ 314   4              for (TempCnt = 0; TempCnt < RCV_BYTE_MAX; TempCnt++)                  // move the buffer to rcvdata
+ 315   4              {
+ 316   5                RcvData[0].DataBuf[TempCnt] = RcvBuffer[0][TempCnt];
+ 317   5                RcvBuffer[0][TempCnt]       = 0;
+ 318   5              }
+ 319   4            }
+ 320   3            else
+ 321   3            {
+ 322   4              RcvByteStatus[0]  = RCV_IDLE;
+ 323   4              for (TempCnt = 0; TempCnt < RCV_BYTE_MAX; TempCnt++)    RcvBuffer[0][TempCnt] = 0;        // clear the 
              -buffer
- 325   4              RcvByteStatus[0] = RCV_IDLE;                                                  // clear the status
- 326   4            }
- 327   3          }
- 328   2          return;
- 329   2        }
- 330   1      }
+ 324   4              RcvByteStatus[0] = RCV_IDLE;                                                  // clear the status
+ 325   4            }
+ 326   3          }
+ 327   2          return;
+ 328   2        }
+ 329   1      }
+ 330          
  331          
  332          
  333          
@@ -358,69 +358,68 @@ line level    source
  337          
  338          
  339          
- 340          
- 341          /***********************************************************
- 342            *
- 343            * FunctionName  Wifi_Snd_Data
- 344            *
- 345          ************************************************************/
- 346          void Wifi_Snd_Data(void)
- 347          {
- 348   1        _Uint8  TempCnt = 0;
- 349   1        
- 350   1        /* when snd data is idle , exit */
- 351   1        if (SndData[0].SndStatus == SND_IDLE)
- 352   1        {
- 353   2          return;
- 354   2        }
- 355   1        
- 356   1        /* type send LA1 */
- 357   1        if (SndData[0].SndStatus == SND_TYPE)
- 358   1        {
- 359   2          // Send type command "LA1"
- 360   2          USART0_Snd_Byte(0xFC);
- 361   2          USART0_Snd_Byte(0xFE);
- 362   2          
- 363   2          // Send power on command after type command sent completed
-C51 COMPILER V9.52.0.0   USART                                                             07/26/2018 16:16:01 PAGE 7   
+ 340          /***********************************************************
+ 341            *
+ 342            * FunctionName  Wifi_Snd_Data
+ 343            *
+ 344          ************************************************************/
+ 345          void Wifi_Snd_Data(void)
+ 346          {
+ 347   1        _Uint8  TempCnt = 0;
+ 348   1      
+ 349   1        /* when snd data is idle , exit */
+ 350   1        if (SndData[0].SndStatus == SND_IDLE)
+ 351   1        {
+ 352   2          return;
+ 353   2        }
+ 354   1      
+ 355   1        /* type send LA1 */
+ 356   1        if (SndData[0].SndStatus == SND_TYPE)
+ 357   1        {
+ 358   2          // Send type command "LA1"
+ 359   2          USART0_Snd_Byte(0xFC);
+ 360   2          USART0_Snd_Byte(0xFE);
+ 361   2      
+ 362   2          // Send power on command after type command sent completed
+ 363   2          SndData[0].SndStatus = SND_NORMAL;
+C51 COMPILER V9.52.0.0   USART                                                             08/08/2018 16:05:18 PAGE 7   
 
- 364   2          SndData[0].SndStatus = SND_NORMAL;  
- 365   2          return;
- 366   2        }
- 367   1        
- 368   1        
- 369   1        /* Send normally */
- 370   1        if (SndData[0].SndStatus == SND_NORMAL)
- 371   1        {
- 372   2          USART0_Snd_Byte(0xFD);
- 373   2          for (TempCnt = 0; TempCnt < 8; TempCnt++)   USART0_Snd_Byte(SndData[0].DataBuf[TempCnt]);
- 374   2          USART0_Snd_Byte(0xFE);
- 375   2          SndData[0].SndStatus = SND_IDLE;
- 376   2        }
- 377   1      }
+ 364   2          return;
+ 365   2        }
+ 366   1      
+ 367   1      
+ 368   1        /* Send normally */
+ 369   1        if (SndData[0].SndStatus == SND_NORMAL)
+ 370   1        {
+ 371   2          USART0_Snd_Byte(0xFD);
+ 372   2          for (TempCnt = 0; TempCnt < 8; TempCnt++)   USART0_Snd_Byte(SndData[0].DataBuf[TempCnt]);
+ 373   2          USART0_Snd_Byte(0xFE);
+ 374   2          SndData[0].SndStatus = SND_IDLE;
+ 375   2        }
+ 376   1      }
+ 377          
  378          
  379          
- 380          
- 381          //---------------------------------------------------
- 382          // FunctionName USART1_Snd_Byte
- 383          //---------------------------------------------------
- 384          static void USART1_Snd_Byte(_Uint8 SndBuf)
- 385          {
- 386   1        while (SndData[1].SndByteDoneFlag);
- 387   1        SBUF_1 = SndBuf;
- 388   1        SndData[1].SndByteDoneFlag = TRUE;
- 389   1      }
+ 380          //---------------------------------------------------
+ 381          // FunctionName USART1_Snd_Byte
+ 382          //---------------------------------------------------
+ 383          static void USART1_Snd_Byte(_Uint8 SndBuf)
+ 384          {
+ 385   1        while (SndData[1].SndByteDoneFlag);
+ 386   1        SBUF_1 = SndBuf;
+ 387   1        SndData[1].SndByteDoneFlag = TRUE;
+ 388   1      }
+ 389          
  390          
- 391          
- 392          //---------------------------------------------------
- 393          // FunctionName USART0_Snd_Byte
- 394          //---------------------------------------------------
- 395          static void USART0_Snd_Byte(_Uint8 SndBuf)
- 396          {
- 397   1        while (SndData[0].SndByteDoneFlag);
- 398   1        SBUF = SndBuf;
- 399   1        SndData[0].SndByteDoneFlag = TRUE;
- 400   1      }
+ 391          //---------------------------------------------------
+ 392          // FunctionName USART0_Snd_Byte
+ 393          //---------------------------------------------------
+ 394          static void USART0_Snd_Byte(_Uint8 SndBuf)
+ 395          {
+ 396   1        while (SndData[0].SndByteDoneFlag);
+ 397   1        SBUF = SndBuf;
+ 398   1        SndData[0].SndByteDoneFlag = TRUE;
+ 399   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

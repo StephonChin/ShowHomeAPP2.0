@@ -13,7 +13,7 @@
 //---------------------------< Type Define >-----------------------//
 typedef unsigned char       _Uint8,_Flag,_uint8,uint8;
 typedef unsigned int        _Uint16,_uint16,uint16;
-typedef unsigned long       _Uint32,_uint32,uint32;
+typedef unsigned long       _Uint32,_uint32,uint16;
 typedef signed int          _Sint16;
 
 
