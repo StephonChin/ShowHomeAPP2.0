@@ -587,40 +587,40 @@ Image Symbol Table
     i.RCC_SYSCLKConfig                       0x08000b18   Section        0  stm32f10x_rcc.o(i.RCC_SYSCLKConfig)
     i.RCC_WaitForHSEStartUp                  0x08000b2c   Section        0  stm32f10x_rcc.o(i.RCC_WaitForHSEStartUp)
     i.Send_Data_Process                      0x08000b5c   Section        0  led_class.o(i.Send_Data_Process)
-    Send_Data_Process                        0x08000b5d   Thumb Code  1158  led_class.o(i.Send_Data_Process)
-    i.SetSysClock                            0x08000fe8   Section        0  system_stm32f10x.o(i.SetSysClock)
-    SetSysClock                              0x08000fe9   Thumb Code     4  system_stm32f10x.o(i.SetSysClock)
-    i.SetSysClockTo72                        0x08000fec   Section        0  system_stm32f10x.o(i.SetSysClockTo72)
-    SetSysClockTo72                          0x08000fed   Thumb Code   166  system_stm32f10x.o(i.SetSysClockTo72)
-    i.Show_1                                 0x0800109c   Section        0  show_1.o(i.Show_1)
-    i.Show_1_0                               0x0800113c   Section        0  show_1.o(i.Show_1_0)
-    i.Show_1_1                               0x0800121c   Section        0  show_1.o(i.Show_1_1)
-    i.Show_1_2                               0x08002ef0   Section        0  show_1.o(i.Show_1_2)
-    i.Show_1_3                               0x08003e50   Section        0  show_1.o(i.Show_1_3)
-    i.Show_2                                 0x080044fc   Section        0  show_2.o(i.Show_2)
-    i.Show_2_0                               0x080045c0   Section        0  show_2.o(i.Show_2_0)
-    i.Show_2_1                               0x08006228   Section        0  show_2.o(i.Show_2_1)
-    i.Show_2_2                               0x080089e0   Section        0  show_2.o(i.Show_2_2)
-    i.Show_2_3                               0x0800a0cc   Section        0  show_2.o(i.Show_2_3)
-    i.Show_2_4                               0x0800bda8   Section        0  show_2.o(i.Show_2_4)
-    i.Show_3                                 0x0800c574   Section        0  show_3.o(i.Show_3)
-    i.Show_3_0                               0x0800c63c   Section        0  show_3.o(i.Show_3_0)
-    i.Show_3_1                               0x0800f114   Section        0  show_3.o(i.Show_3_1)
-    i.Show_3_2                               0x0801235c   Section        0  show_3.o(i.Show_3_2)
-    i.Show_3_3                               0x08012ad4   Section        0  show_3.o(i.Show_3_3)
-    i.Show_3_4                               0x08013648   Section        0  show_3.o(i.Show_3_4)
-    i.SystemInit                             0x08014410   Section        0  system_stm32f10x.o(i.SystemInit)
-    i.TIM_ClearFlag                          0x08014460   Section        0  stm32f10x_tim.o(i.TIM_ClearFlag)
-    i.TIM_Cmd                                0x08014466   Section        0  stm32f10x_tim.o(i.TIM_Cmd)
-    i.TIM_GetFlagStatus                      0x0801447e   Section        0  stm32f10x_tim.o(i.TIM_GetFlagStatus)
-    i.TIM_Initialize                         0x0801448c   Section        0  config.o(i.TIM_Initialize)
-    TIM_Initialize                           0x0801448d   Thumb Code    54  config.o(i.TIM_Initialize)
-    i.TIM_TimeBaseInit                       0x080144c8   Section        0  stm32f10x_tim.o(i.TIM_TimeBaseInit)
-    i.User_Data_Init                         0x08014564   Section        0  data_process.o(i.User_Data_Init)
-    i.__scatterload_copy                     0x08014574   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x08014582   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x08014584   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i.main                                   0x08014594   Section        0  displayhouse.o(i.main)
+    Send_Data_Process                        0x08000b5d   Thumb Code  1118  led_class.o(i.Send_Data_Process)
+    i.SetSysClock                            0x08000fc0   Section        0  system_stm32f10x.o(i.SetSysClock)
+    SetSysClock                              0x08000fc1   Thumb Code     4  system_stm32f10x.o(i.SetSysClock)
+    i.SetSysClockTo72                        0x08000fc4   Section        0  system_stm32f10x.o(i.SetSysClockTo72)
+    SetSysClockTo72                          0x08000fc5   Thumb Code   166  system_stm32f10x.o(i.SetSysClockTo72)
+    i.Show_1                                 0x08001074   Section        0  show_1.o(i.Show_1)
+    i.Show_1_0                               0x08001114   Section        0  show_1.o(i.Show_1_0)
+    i.Show_1_1                               0x080011f4   Section        0  show_1.o(i.Show_1_1)
+    i.Show_1_2                               0x08002ec8   Section        0  show_1.o(i.Show_1_2)
+    i.Show_1_3                               0x08003e28   Section        0  show_1.o(i.Show_1_3)
+    i.Show_2                                 0x080044d4   Section        0  show_2.o(i.Show_2)
+    i.Show_2_0                               0x08004598   Section        0  show_2.o(i.Show_2_0)
+    i.Show_2_1                               0x08006200   Section        0  show_2.o(i.Show_2_1)
+    i.Show_2_2                               0x080089b8   Section        0  show_2.o(i.Show_2_2)
+    i.Show_2_3                               0x0800a0a4   Section        0  show_2.o(i.Show_2_3)
+    i.Show_2_4                               0x0800bd80   Section        0  show_2.o(i.Show_2_4)
+    i.Show_3                                 0x0800c54c   Section        0  show_3.o(i.Show_3)
+    i.Show_3_0                               0x0800c614   Section        0  show_3.o(i.Show_3_0)
+    i.Show_3_1                               0x0800f0ec   Section        0  show_3.o(i.Show_3_1)
+    i.Show_3_2                               0x08012334   Section        0  show_3.o(i.Show_3_2)
+    i.Show_3_3                               0x08012aac   Section        0  show_3.o(i.Show_3_3)
+    i.Show_3_4                               0x08013620   Section        0  show_3.o(i.Show_3_4)
+    i.SystemInit                             0x080143e8   Section        0  system_stm32f10x.o(i.SystemInit)
+    i.TIM_ClearFlag                          0x08014438   Section        0  stm32f10x_tim.o(i.TIM_ClearFlag)
+    i.TIM_Cmd                                0x0801443e   Section        0  stm32f10x_tim.o(i.TIM_Cmd)
+    i.TIM_GetFlagStatus                      0x08014456   Section        0  stm32f10x_tim.o(i.TIM_GetFlagStatus)
+    i.TIM_Initialize                         0x08014464   Section        0  config.o(i.TIM_Initialize)
+    TIM_Initialize                           0x08014465   Thumb Code    54  config.o(i.TIM_Initialize)
+    i.TIM_TimeBaseInit                       0x080144a0   Section        0  stm32f10x_tim.o(i.TIM_TimeBaseInit)
+    i.User_Data_Init                         0x0801453c   Section        0  data_process.o(i.User_Data_Init)
+    i.__scatterload_copy                     0x0801454c   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x0801455a   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x0801455c   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i.main                                   0x0801456c   Section        0  displayhouse.o(i.main)
     .data                                    0x20000000   Section        3  key.o(.data)
     KeyTime                                  0x20000000   Data           1  key.o(.data)
     .data                                    0x20000004   Section       59  show_1.o(.data)
@@ -773,35 +773,35 @@ Image Symbol Table
     RCC_PLLConfig                            0x08000b05   Thumb Code    16  stm32f10x_rcc.o(i.RCC_PLLConfig)
     RCC_SYSCLKConfig                         0x08000b19   Thumb Code    14  stm32f10x_rcc.o(i.RCC_SYSCLKConfig)
     RCC_WaitForHSEStartUp                    0x08000b2d   Thumb Code    48  stm32f10x_rcc.o(i.RCC_WaitForHSEStartUp)
-    Show_1                                   0x0800109d   Thumb Code   156  show_1.o(i.Show_1)
-    Show_1_0                                 0x0800113d   Thumb Code   214  show_1.o(i.Show_1_0)
-    Show_1_1                                 0x0800121d   Thumb Code  7342  show_1.o(i.Show_1_1)
-    Show_1_2                                 0x08002ef1   Thumb Code  3912  show_1.o(i.Show_1_2)
-    Show_1_3                                 0x08003e51   Thumb Code  1688  show_1.o(i.Show_1_3)
-    Show_2                                   0x080044fd   Thumb Code   178  show_2.o(i.Show_2)
-    Show_2_0                                 0x080045c1   Thumb Code  7250  show_2.o(i.Show_2_0)
-    Show_2_1                                 0x08006229   Thumb Code 10118  show_2.o(i.Show_2_1)
-    Show_2_2                                 0x080089e1   Thumb Code  5828  show_2.o(i.Show_2_2)
-    Show_2_3                                 0x0800a0cd   Thumb Code  7214  show_2.o(i.Show_2_3)
-    Show_2_4                                 0x0800bda9   Thumb Code  1988  show_2.o(i.Show_2_4)
-    Show_3                                   0x0800c575   Thumb Code   182  show_3.o(i.Show_3)
-    Show_3_0                                 0x0800c63d   Thumb Code 10932  show_3.o(i.Show_3_0)
-    Show_3_1                                 0x0800f115   Thumb Code 12826  show_3.o(i.Show_3_1)
-    Show_3_2                                 0x0801235d   Thumb Code  1886  show_3.o(i.Show_3_2)
-    Show_3_3                                 0x08012ad5   Thumb Code  2892  show_3.o(i.Show_3_3)
-    Show_3_4                                 0x08013649   Thumb Code  3460  show_3.o(i.Show_3_4)
-    SystemInit                               0x08014411   Thumb Code    64  system_stm32f10x.o(i.SystemInit)
-    TIM_ClearFlag                            0x08014461   Thumb Code     6  stm32f10x_tim.o(i.TIM_ClearFlag)
-    TIM_Cmd                                  0x08014467   Thumb Code    24  stm32f10x_tim.o(i.TIM_Cmd)
-    TIM_GetFlagStatus                        0x0801447f   Thumb Code    14  stm32f10x_tim.o(i.TIM_GetFlagStatus)
-    TIM_TimeBaseInit                         0x080144c9   Thumb Code   114  stm32f10x_tim.o(i.TIM_TimeBaseInit)
-    User_Data_Init                           0x08014565   Thumb Code    12  data_process.o(i.User_Data_Init)
-    __scatterload_copy                       0x08014575   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x08014583   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x08014585   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    main                                     0x08014595   Thumb Code    44  displayhouse.o(i.main)
-    Region$$Table$$Base                      0x080145c4   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x080145e4   Number         0  anon$$obj.o(Region$$Table)
+    Show_1                                   0x08001075   Thumb Code   156  show_1.o(i.Show_1)
+    Show_1_0                                 0x08001115   Thumb Code   214  show_1.o(i.Show_1_0)
+    Show_1_1                                 0x080011f5   Thumb Code  7342  show_1.o(i.Show_1_1)
+    Show_1_2                                 0x08002ec9   Thumb Code  3912  show_1.o(i.Show_1_2)
+    Show_1_3                                 0x08003e29   Thumb Code  1688  show_1.o(i.Show_1_3)
+    Show_2                                   0x080044d5   Thumb Code   178  show_2.o(i.Show_2)
+    Show_2_0                                 0x08004599   Thumb Code  7250  show_2.o(i.Show_2_0)
+    Show_2_1                                 0x08006201   Thumb Code 10118  show_2.o(i.Show_2_1)
+    Show_2_2                                 0x080089b9   Thumb Code  5828  show_2.o(i.Show_2_2)
+    Show_2_3                                 0x0800a0a5   Thumb Code  7214  show_2.o(i.Show_2_3)
+    Show_2_4                                 0x0800bd81   Thumb Code  1988  show_2.o(i.Show_2_4)
+    Show_3                                   0x0800c54d   Thumb Code   182  show_3.o(i.Show_3)
+    Show_3_0                                 0x0800c615   Thumb Code 10932  show_3.o(i.Show_3_0)
+    Show_3_1                                 0x0800f0ed   Thumb Code 12826  show_3.o(i.Show_3_1)
+    Show_3_2                                 0x08012335   Thumb Code  1886  show_3.o(i.Show_3_2)
+    Show_3_3                                 0x08012aad   Thumb Code  2892  show_3.o(i.Show_3_3)
+    Show_3_4                                 0x08013621   Thumb Code  3460  show_3.o(i.Show_3_4)
+    SystemInit                               0x080143e9   Thumb Code    64  system_stm32f10x.o(i.SystemInit)
+    TIM_ClearFlag                            0x08014439   Thumb Code     6  stm32f10x_tim.o(i.TIM_ClearFlag)
+    TIM_Cmd                                  0x0801443f   Thumb Code    24  stm32f10x_tim.o(i.TIM_Cmd)
+    TIM_GetFlagStatus                        0x08014457   Thumb Code    14  stm32f10x_tim.o(i.TIM_GetFlagStatus)
+    TIM_TimeBaseInit                         0x080144a1   Thumb Code   114  stm32f10x_tim.o(i.TIM_TimeBaseInit)
+    User_Data_Init                           0x0801453d   Thumb Code    12  data_process.o(i.User_Data_Init)
+    __scatterload_copy                       0x0801454d   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x0801455b   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x0801455d   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    main                                     0x0801456d   Thumb Code    44  displayhouse.o(i.main)
+    Region$$Table$$Base                      0x0801459c   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x080145bc   Number         0  anon$$obj.o(Region$$Table)
     KeyStatus                                0x20000001   Data           1  key.o(.data)
     KeyDetFlag                               0x20000002   Data           1  key.o(.data)
     ColorNum                                 0x20000004   Data           1  show_1.o(.data)
@@ -913,9 +913,9 @@ Memory Map of the image
 
   Image Entry point : 0x080000ed
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00014660, Max: 0x00020000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00014638, Max: 0x00020000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Base: 0x08000000, Size: 0x000145e4, Max: 0x00020000, ABSOLUTE)
+    Execution Region ER_IROM1 (Base: 0x08000000, Size: 0x000145bc, Max: 0x00020000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -961,39 +961,39 @@ Memory Map of the image
     0x08000b04   0x00000014   Code   RO          621    i.RCC_PLLConfig     stm32f10x_rcc.o
     0x08000b18   0x00000014   Code   RO          624    i.RCC_SYSCLKConfig  stm32f10x_rcc.o
     0x08000b2c   0x00000030   Code   RO          626    i.RCC_WaitForHSEStartUp  stm32f10x_rcc.o
-    0x08000b5c   0x0000048c   Code   RO          207    i.Send_Data_Process  led_class.o
-    0x08000fe8   0x00000004   Code   RO         1374    i.SetSysClock       system_stm32f10x.o
-    0x08000fec   0x000000b0   Code   RO         1375    i.SetSysClockTo72   system_stm32f10x.o
-    0x0800109c   0x000000a0   Code   RO          245    i.Show_1            show_1.o
-    0x0800113c   0x000000e0   Code   RO          246    i.Show_1_0          show_1.o
-    0x0800121c   0x00001cd4   Code   RO          247    i.Show_1_1          show_1.o
-    0x08002ef0   0x00000f60   Code   RO          248    i.Show_1_2          show_1.o
-    0x08003e50   0x000006ac   Code   RO          249    i.Show_1_3          show_1.o
-    0x080044fc   0x000000c4   Code   RO          361    i.Show_2            show_2.o
-    0x080045c0   0x00001c68   Code   RO          362    i.Show_2_0          show_2.o
-    0x08006228   0x000027b8   Code   RO          363    i.Show_2_1          show_2.o
-    0x080089e0   0x000016ec   Code   RO          364    i.Show_2_2          show_2.o
-    0x0800a0cc   0x00001cdc   Code   RO          365    i.Show_2_3          show_2.o
-    0x0800bda8   0x000007cc   Code   RO          366    i.Show_2_4          show_2.o
-    0x0800c574   0x000000c8   Code   RO          415    i.Show_3            show_3.o
-    0x0800c63c   0x00002ad8   Code   RO          416    i.Show_3_0          show_3.o
-    0x0800f114   0x00003248   Code   RO          417    i.Show_3_1          show_3.o
-    0x0801235c   0x00000778   Code   RO          418    i.Show_3_2          show_3.o
-    0x08012ad4   0x00000b74   Code   RO          419    i.Show_3_3          show_3.o
-    0x08013648   0x00000dc8   Code   RO          420    i.Show_3_4          show_3.o
-    0x08014410   0x00000050   Code   RO         1377    i.SystemInit        system_stm32f10x.o
-    0x08014460   0x00000006   Code   RO          817    i.TIM_ClearFlag     stm32f10x_tim.o
-    0x08014466   0x00000018   Code   RO          823    i.TIM_Cmd           stm32f10x_tim.o
-    0x0801447e   0x0000000e   Code   RO          843    i.TIM_GetFlagStatus  stm32f10x_tim.o
-    0x0801448c   0x0000003c   Code   RO          103    i.TIM_Initialize    config.o
-    0x080144c8   0x0000009c   Code   RO          894    i.TIM_TimeBaseInit  stm32f10x_tim.o
-    0x08014564   0x00000010   Code   RO          144    i.User_Data_Init    data_process.o
-    0x08014574   0x0000000e   Code   RO         1441    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x08014582   0x00000002   Code   RO         1442    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08014584   0x0000000e   Code   RO         1443    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x08014592   0x00000002   PAD
-    0x08014594   0x00000030   Code   RO            4    i.main              displayhouse.o
-    0x080145c4   0x00000020   Data   RO         1439    Region$$Table       anon$$obj.o
+    0x08000b5c   0x00000464   Code   RO          207    i.Send_Data_Process  led_class.o
+    0x08000fc0   0x00000004   Code   RO         1374    i.SetSysClock       system_stm32f10x.o
+    0x08000fc4   0x000000b0   Code   RO         1375    i.SetSysClockTo72   system_stm32f10x.o
+    0x08001074   0x000000a0   Code   RO          245    i.Show_1            show_1.o
+    0x08001114   0x000000e0   Code   RO          246    i.Show_1_0          show_1.o
+    0x080011f4   0x00001cd4   Code   RO          247    i.Show_1_1          show_1.o
+    0x08002ec8   0x00000f60   Code   RO          248    i.Show_1_2          show_1.o
+    0x08003e28   0x000006ac   Code   RO          249    i.Show_1_3          show_1.o
+    0x080044d4   0x000000c4   Code   RO          361    i.Show_2            show_2.o
+    0x08004598   0x00001c68   Code   RO          362    i.Show_2_0          show_2.o
+    0x08006200   0x000027b8   Code   RO          363    i.Show_2_1          show_2.o
+    0x080089b8   0x000016ec   Code   RO          364    i.Show_2_2          show_2.o
+    0x0800a0a4   0x00001cdc   Code   RO          365    i.Show_2_3          show_2.o
+    0x0800bd80   0x000007cc   Code   RO          366    i.Show_2_4          show_2.o
+    0x0800c54c   0x000000c8   Code   RO          415    i.Show_3            show_3.o
+    0x0800c614   0x00002ad8   Code   RO          416    i.Show_3_0          show_3.o
+    0x0800f0ec   0x00003248   Code   RO          417    i.Show_3_1          show_3.o
+    0x08012334   0x00000778   Code   RO          418    i.Show_3_2          show_3.o
+    0x08012aac   0x00000b74   Code   RO          419    i.Show_3_3          show_3.o
+    0x08013620   0x00000dc8   Code   RO          420    i.Show_3_4          show_3.o
+    0x080143e8   0x00000050   Code   RO         1377    i.SystemInit        system_stm32f10x.o
+    0x08014438   0x00000006   Code   RO          817    i.TIM_ClearFlag     stm32f10x_tim.o
+    0x0801443e   0x00000018   Code   RO          823    i.TIM_Cmd           stm32f10x_tim.o
+    0x08014456   0x0000000e   Code   RO          843    i.TIM_GetFlagStatus  stm32f10x_tim.o
+    0x08014464   0x0000003c   Code   RO          103    i.TIM_Initialize    config.o
+    0x080144a0   0x0000009c   Code   RO          894    i.TIM_TimeBaseInit  stm32f10x_tim.o
+    0x0801453c   0x00000010   Code   RO          144    i.User_Data_Init    data_process.o
+    0x0801454c   0x0000000e   Code   RO         1441    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x0801455a   0x00000002   Code   RO         1442    i.__scatterload_null  mc_w.l(handlers.o)
+    0x0801455c   0x0000000e   Code   RO         1443    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x0801456a   0x00000002   PAD
+    0x0801456c   0x00000030   Code   RO            4    i.main              displayhouse.o
+    0x0801459c   0x00000020   Data   RO         1439    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00000e30, Max: 0x00005000, ABSOLUTE)
@@ -1061,7 +1061,7 @@ Image component sizes
        492         34          0          0          0       1596   data_process.o
         48          4          0          0          0     244831   displayhouse.o
         80          8          0          3          0       1158   key.o
-      1864         46          0          0       1647       5002   led_class.o
+      1824         46          0          0       1647       4994   led_class.o
      13884        506          0        116        834      19571   show_1.o
      32888       2558          0          0          0      24960   show_2.o
      32412       2728          0          0          0      24164   show_3.o
@@ -1072,7 +1072,7 @@ Image component sizes
        260         26          0          0          0       1957   system_stm32f10x.o
 
     ----------------------------------------------------------------------
-     83036       6056        268        120       3508     341250   Object Totals
+     82996       6056        268        120       3508     341242   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          6          0          0          1          3          0   (incl. Padding)
 
@@ -1112,15 +1112,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     83160       6082        268        124       3508     339006   Grand Totals
-     83160       6082        268        124       3508     339006   ELF Image Totals
-     83160       6082        268        124          0          0   ROM Totals
+     83120       6082        268        124       3508     338998   Grand Totals
+     83120       6082        268        124       3508     338998   ELF Image Totals
+     83120       6082        268        124          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                83428 (  81.47kB)
+    Total RO  Size (Code + RO Data)                83388 (  81.43kB)
     Total RW  Size (RW Data + ZI Data)              3632 (   3.55kB)
-    Total ROM Size (Code + RO Data + RW Data)      83552 (  81.59kB)
+    Total ROM Size (Code + RO Data + RW Data)      83512 (  81.55kB)
 
 ==============================================================================
 

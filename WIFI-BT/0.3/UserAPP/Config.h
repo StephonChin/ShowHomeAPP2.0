@@ -21,11 +21,12 @@
 #define  BIT6         (1<<6)
 #define  BIT7         (1<<7)
 
+#define     SET_SFRPAGE       BitTemp=EA;EA=0;TA=0xAA;TA=0x55;SFRS|=0x01;EA=BitTemp;
+#define     CLR_SFRPAGE       BitTemp=EA;EA=0;TA=0xAA;TA=0x55;SFRS&=~0x01;EA=BitTemp;
+
 
 //--------------------< PORT Define >------------------------------
-#define PORT_KEY_1      P26
-#define PORT_KEY_2      P07
-#define PORT_COMM       P04
+#define PORT_COMM       P07
 #define PORT_BT_DT      P21
 #define PORT_BT_CE      P23
 #define PORT_TX         P25
@@ -41,7 +42,6 @@ static void CLK_Init(void);
 static void GPIO_Init(void);
 static void TIM_Init(void);
 static void USART_Init(void);
-static void IWDG_Init(void);
 
 
 

@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/08/2018 16:05:18 PAGE 1   
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/11/2018 17:41:13 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE DATA_PROCESS
@@ -62,7 +62,7 @@ line level    source
   52   2        }
   53   1      }
   54          
-C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/08/2018 16:05:18 PAGE 2   
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/11/2018 17:41:13 PAGE 2   
 
   55          
   56          
@@ -126,7 +126,7 @@ line level    source
  114   3          }
  115   2        }
  116   1      
-C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/08/2018 16:05:18 PAGE 3   
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/11/2018 17:41:13 PAGE 3   
 
  117   1        //-----------------------------------------------------------------------
  118   1        // if the device haven't received any command within 300ms,
@@ -190,7 +190,7 @@ line level    source
  176   1        RcvFlag[0] = FALSE;
  177   1      
  178   1        CmdBuffer     = RcvData[0].DataBuf[1];
-C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/08/2018 16:05:18 PAGE 4   
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/11/2018 17:41:13 PAGE 4   
 
  179   1        LengthBuffer  = RcvData[0].DataBuf[3];
  180   1        InfoBuffer    = RcvData[0].DataBuf[4];
@@ -202,217 +202,223 @@ line level    source
  186   3            //About the wifi status
  187   3            case CMD_WIFI_STATUS:{
  188   4              if (InfoBuffer == 0x1){
- 189   5                LedMode   = LED_WIFI_STANDBY;
- 190   5                LedInit   = TRUE;
- 191   5              }
- 192   4              else if (InfoBuffer == 0x2){
- 193   5                LedMode   = LED_WIFI_CONNECTING;
- 194   5                LedInit   = TRUE;
- 195   5              }
- 196   4              else if (InfoBuffer == 0x3){
- 197   5                LedMode   = LED_WIFI_CONNETED;
- 198   5                LedInit   = TRUE;
+ 189   5                if (LedMode != LED_WIFI_STANDBY){
+ 190   6                  LedMode   = LED_WIFI_STANDBY;
+ 191   6                  LedInit   = TRUE;
+ 192   6                }
+ 193   5              }
+ 194   4              else if (InfoBuffer == 0x2){
+ 195   5                if (LedMode != LED_WIFI_DISCONNECT){
+ 196   6                  LedMode   = LED_WIFI_DISCONNECT;
+ 197   6                  LedInit   = TRUE;
+ 198   6                }
  199   5              }
- 200   4            } break;
- 201   3      
- 202   3            //Setting specific color or theme
- 203   3            case CMD_THEME_SET:{
- 204   4              //Error check
- 205   4              if (InfoBuffer > NORMAL_COLOR_MAX){
- 206   5                ErrNum = ERR_COLOR_RANGE;
- 207   5                break;
- 208   5              }
- 209   4      
- 210   4              if (NormalMode > 0x8){
- 211   5                NormalMode = 0x1;
- 212   5              }
- 213   4      
- 214   4              //Change the color
- 215   4              NormalColor = InfoBuffer;
- 216   4      
- 217   4              SndData[1].SndStatus  = SND_BROADCAST;
- 218   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
- 219   4              SndData[1].DataBuf[1] = 0x00;
- 220   4              SndData[1].DataBuf[2] = 0xFF;
- 221   4              SndData[1].DataBuf[3] = 0xFF;
- 222   4              SndData[1].DataBuf[4] = 0x03  | (FlagByte << 4);
- 223   4              SndData[1].DataBuf[5] = NormalMode;
- 224   4              SndData[1].DataBuf[6] = NormalColor;
- 225   4              SndData[1].DataBuf[7] = 0;
- 226   4              SndData[1].DataBuf[8] = 0;
- 227   4              SndData[1].DataBuf[9] = 0;
- 228   4      
- 229   4              FlagChgFlag = TRUE;
- 230   4              FlashSaveFlag = TRUE;
- 231   4              LedMode       = LED_NORMAL;
- 232   4              LedInit       = TRUE;
- 233   4            } break;
- 234   3      
- 235   3      
- 236   3      
- 237   3            //Setting specific mode
- 238   3            case CMD_NORMAL_MODE:{
- 239   4              //Error check
- 240   4              if (InfoBuffer > NORMAL_MODE_MAX){
-C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/08/2018 16:05:18 PAGE 5   
+ 200   4              else if (InfoBuffer == 0x4){
+ 201   5                if (LedMode != LED_WIFI_CONNECTED){
+ 202   6                  LedMode   = LED_WIFI_CONNECTED;
+ 203   6                  LedInit   = TRUE;
+ 204   6                }
+ 205   5              }
+ 206   4            } break;
+ 207   3      
+ 208   3            //Setting specific color or theme
+ 209   3            case CMD_THEME_SET:{
+ 210   4              //Error check
+ 211   4              if (InfoBuffer > NORMAL_COLOR_MAX){
+ 212   5                ErrNum = ERR_COLOR_RANGE;
+ 213   5                break;
+ 214   5              }
+ 215   4      
+ 216   4              if (NormalMode > 0x8){
+ 217   5                NormalMode = 0x1;
+ 218   5              }
+ 219   4      
+ 220   4              //Change the color
+ 221   4              NormalColor = InfoBuffer;
+ 222   4      
+ 223   4              SndData[1].SndStatus  = SND_BROADCAST;
+ 224   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 225   4              SndData[1].DataBuf[1] = 0x00;
+ 226   4              SndData[1].DataBuf[2] = 0xFF;
+ 227   4              SndData[1].DataBuf[3] = 0xFF;
+ 228   4              SndData[1].DataBuf[4] = 0x03  | (FlagByte << 4);
+ 229   4              SndData[1].DataBuf[5] = NormalMode;
+ 230   4              SndData[1].DataBuf[6] = NormalColor;
+ 231   4              SndData[1].DataBuf[7] = 0;
+ 232   4              SndData[1].DataBuf[8] = 0;
+ 233   4              SndData[1].DataBuf[9] = 0;
+ 234   4      
+ 235   4              FlagChgFlag = TRUE;
+ 236   4              FlashSaveFlag = TRUE;
+ 237   4              LedMode       = LED_NORMAL;
+ 238   4              LedInit       = TRUE;
+ 239   4            } break;
+ 240   3      
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/11/2018 17:41:13 PAGE 5   
 
- 241   5                ErrNum = ERR_MODE_RANGE;
- 242   5                break;
- 243   5              }
- 244   4      
- 245   4              //Setting mode
- 246   4              NormalMode = InfoBuffer + 1;
- 247   4      
- 248   4              SndData[1].SndStatus  = SND_BROADCAST;
- 249   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
- 250   4              SndData[1].DataBuf[1] = 0x00;
- 251   4              SndData[1].DataBuf[2] = 0xFF;
- 252   4              SndData[1].DataBuf[3] = 0xFF;
- 253   4              SndData[1].DataBuf[4] = 0x03  | (FlagByte << 4);
- 254   4              SndData[1].DataBuf[5] = NormalMode;
- 255   4              SndData[1].DataBuf[6] = NormalColor;
- 256   4              SndData[1].DataBuf[7] = 0;
- 257   4              SndData[1].DataBuf[8] = 0;
- 258   4              SndData[1].DataBuf[9] = 0;
- 259   4      
- 260   4              FlagChgFlag = TRUE;
- 261   4              FlashSaveFlag = TRUE;
- 262   4              LedMode       = LED_NORMAL;
- 263   4              LedInit       = TRUE;
- 264   4            } break;
- 265   3      
- 266   3      
- 267   3            //Show
- 268   3            case CMD_SHOW_MODE:{
- 269   4              //Error check
- 270   4              if (InfoBuffer > SHOW_COLOR_MAX){
- 271   5                ErrNum = ERR_SHOW_RANGE;
- 272   5                break;
- 273   5              }
- 274   4      
- 275   4              //Random one mode
- 276   4              srand(RndSeed);
- 277   4              ShowMode = ((_Uint8)rand()) % 3 + 1;
- 278   4      
- 279   4              //Setting show mode
- 280   4              ShowColor = InfoBuffer;
- 281   4      
- 282   4              SndData[1].SndStatus  = SND_BROADCAST;
- 283   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
- 284   4              SndData[1].DataBuf[1] = 0x00;
- 285   4              SndData[1].DataBuf[2] = 0xFF;
- 286   4              SndData[1].DataBuf[3] = 0xFF;
- 287   4              SndData[1].DataBuf[4] = 0x0A  | (FlagByte << 4);
- 288   4              SndData[1].DataBuf[5] = ShowMode;
- 289   4              SndData[1].DataBuf[6] = ShowColor;
- 290   4              SndData[1].DataBuf[7] = 0;
- 291   4              SndData[1].DataBuf[8] = 0;
- 292   4              SndData[1].DataBuf[9] = 0;
- 293   4      
- 294   4              FlagChgFlag = TRUE;
- 295   4              FlashSaveFlag = TRUE;
- 296   4              LedMode       = LED_NORMAL;
- 297   4              LedInit       = TRUE;
- 298   4            } break;
- 299   3      
- 300   3      
- 301   3            // Setting timer
- 302   3            case CMD_TIMER_SET:{
-C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/08/2018 16:05:18 PAGE 6   
+ 241   3      
+ 242   3      
+ 243   3            //Setting specific mode
+ 244   3            case CMD_NORMAL_MODE:{
+ 245   4              //Error check
+ 246   4              if (InfoBuffer > NORMAL_MODE_MAX){
+ 247   5                ErrNum = ERR_MODE_RANGE;
+ 248   5                break;
+ 249   5              }
+ 250   4      
+ 251   4              //Setting mode
+ 252   4              NormalMode = InfoBuffer + 1;
+ 253   4      
+ 254   4              SndData[1].SndStatus  = SND_BROADCAST;
+ 255   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 256   4              SndData[1].DataBuf[1] = 0x00;
+ 257   4              SndData[1].DataBuf[2] = 0xFF;
+ 258   4              SndData[1].DataBuf[3] = 0xFF;
+ 259   4              SndData[1].DataBuf[4] = 0x03  | (FlagByte << 4);
+ 260   4              SndData[1].DataBuf[5] = NormalMode;
+ 261   4              SndData[1].DataBuf[6] = NormalColor;
+ 262   4              SndData[1].DataBuf[7] = 0;
+ 263   4              SndData[1].DataBuf[8] = 0;
+ 264   4              SndData[1].DataBuf[9] = 0;
+ 265   4      
+ 266   4              FlagChgFlag = TRUE;
+ 267   4              FlashSaveFlag = TRUE;
+ 268   4              LedMode       = LED_NORMAL;
+ 269   4              LedInit       = TRUE;
+ 270   4            } break;
+ 271   3      
+ 272   3      
+ 273   3            //Show
+ 274   3            case CMD_SHOW_MODE:{
+ 275   4              //Error check
+ 276   4              if (InfoBuffer > SHOW_COLOR_MAX){
+ 277   5                ErrNum = ERR_SHOW_RANGE;
+ 278   5                break;
+ 279   5              }
+ 280   4      
+ 281   4              //Random one mode
+ 282   4              srand(RndSeed);
+ 283   4              ShowMode = ((_Uint8)rand()) % 3 + 1;
+ 284   4      
+ 285   4              //Setting show mode
+ 286   4              ShowColor = InfoBuffer;
+ 287   4      
+ 288   4              SndData[1].SndStatus  = SND_BROADCAST;
+ 289   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 290   4              SndData[1].DataBuf[1] = 0x00;
+ 291   4              SndData[1].DataBuf[2] = 0xFF;
+ 292   4              SndData[1].DataBuf[3] = 0xFF;
+ 293   4              SndData[1].DataBuf[4] = 0x0A  | (FlagByte << 4);
+ 294   4              SndData[1].DataBuf[5] = ShowMode;
+ 295   4              SndData[1].DataBuf[6] = ShowColor;
+ 296   4              SndData[1].DataBuf[7] = 0;
+ 297   4              SndData[1].DataBuf[8] = 0;
+ 298   4              SndData[1].DataBuf[9] = 0;
+ 299   4      
+ 300   4              FlagChgFlag = TRUE;
+ 301   4              FlashSaveFlag = TRUE;
+ 302   4              LedMode       = LED_NORMAL;
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/11/2018 17:41:13 PAGE 6   
 
- 303   4              //Err check
- 304   4      //        if (InfoBuffer > 8 || (InfoBuffer % 2 == 1)){
- 305   4      //          ErrNum = ERR_TIMER_INVALID;
- 306   4      //          break;
- 307   4      //        }
- 308   4      
- 309   4              SndData[1].SndStatus  = SND_BROADCAST;
- 310   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
- 311   4              SndData[1].DataBuf[1] = 0x00;
- 312   4              SndData[1].DataBuf[2] = 0xFF;
- 313   4              SndData[1].DataBuf[3] = 0xFF;
- 314   4              SndData[1].DataBuf[4] = 0x05 | (FlagByte << 4);
- 315   4              SndData[1].DataBuf[5] = InfoBuffer;
- 316   4              SndData[1].DataBuf[6] = 0x0;
- 317   4              SndData[1].DataBuf[7] = 0;
- 318   4              SndData[1].DataBuf[8] = 0;
- 319   4              SndData[1].DataBuf[9] = 0;
- 320   4      
- 321   4              FlagChgFlag = TRUE;
- 322   4              FlashSaveFlag = TRUE;
- 323   4              LedMode       = LED_NORMAL;
- 324   4              LedInit       = TRUE;
- 325   4            } break;
- 326   3      
- 327   3            // Error
- 328   3            default:
- 329   3            {
- 330   4              ErrFlag = TRUE;
+ 303   4              LedInit       = TRUE;
+ 304   4            } break;
+ 305   3      
+ 306   3      
+ 307   3            // Setting timer
+ 308   3            case CMD_TIMER_SET:{
+ 309   4              //Err check
+ 310   4      //        if (InfoBuffer > 8 || (InfoBuffer % 2 == 1)){
+ 311   4      //          ErrNum = ERR_TIMER_INVALID;
+ 312   4      //          break;
+ 313   4      //        }
+ 314   4      
+ 315   4              SndData[1].SndStatus  = SND_BROADCAST;
+ 316   4              SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 317   4              SndData[1].DataBuf[1] = 0x00;
+ 318   4              SndData[1].DataBuf[2] = 0xFF;
+ 319   4              SndData[1].DataBuf[3] = 0xFF;
+ 320   4              SndData[1].DataBuf[4] = 0x05 | (FlagByte << 4);
+ 321   4              SndData[1].DataBuf[5] = InfoBuffer;
+ 322   4              SndData[1].DataBuf[6] = 0x0;
+ 323   4              SndData[1].DataBuf[7] = 0;
+ 324   4              SndData[1].DataBuf[8] = 0;
+ 325   4              SndData[1].DataBuf[9] = 0;
+ 326   4      
+ 327   4              FlagChgFlag = TRUE;
+ 328   4              FlashSaveFlag = TRUE;
+ 329   4              LedMode       = LED_NORMAL;
+ 330   4              LedInit       = TRUE;
  331   4            } break;
- 332   3          }
- 333   2        }
- 334   1      
- 335   1        else
- 336   1        {
- 337   2          // Turn Off
- 338   2          if (CmdBuffer == CMD_SOCKET_OFF){
- 339   3            SndData[1].SndStatus  = SND_BROADCAST;
- 340   3            SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
- 341   3            SndData[1].DataBuf[1] = 0x00;
- 342   3            SndData[1].DataBuf[2] = 0xFF;
- 343   3            SndData[1].DataBuf[3] = 0xFF;
- 344   3            SndData[1].DataBuf[4] = 0x03 | (FlagByte << 4);
- 345   3            SndData[1].DataBuf[5] = 0x0;
- 346   3            SndData[1].DataBuf[6] = 0x0;
- 347   3            SndData[1].DataBuf[7] = 0;
- 348   3            SndData[1].DataBuf[8] = 0;
- 349   3            SndData[1].DataBuf[9] = 0;
- 350   3      
- 351   3            FlagChgFlag = TRUE;
- 352   3            LedMode       = LED_NORMAL;
- 353   3            LedInit       = TRUE;
- 354   3          }
- 355   2      
- 356   2          // Turn On
- 357   2          else if (CmdBuffer == CMD_SOCKET_ON){
- 358   3            SndData[1].SndStatus  = SND_BROADCAST;
- 359   3            SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
- 360   3            SndData[1].DataBuf[1] = 0x00;
- 361   3            SndData[1].DataBuf[2] = 0xFF;
- 362   3            SndData[1].DataBuf[3] = 0xFF;
- 363   3            SndData[1].DataBuf[4] = 0x03 | (FlagByte << 4);
- 364   3            SndData[1].DataBuf[5] = 0xFF;
-C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/08/2018 16:05:18 PAGE 7   
+ 332   3      
+ 333   3            // Error
+ 334   3            default:
+ 335   3            {
+ 336   4              ErrFlag = TRUE;
+ 337   4            } break;
+ 338   3          }
+ 339   2        }
+ 340   1      
+ 341   1        else
+ 342   1        {
+ 343   2          // Turn Off
+ 344   2          if (CmdBuffer == CMD_SOCKET_OFF){
+ 345   3            SndData[1].SndStatus  = SND_BROADCAST;
+ 346   3            SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 347   3            SndData[1].DataBuf[1] = 0x00;
+ 348   3            SndData[1].DataBuf[2] = 0xFF;
+ 349   3            SndData[1].DataBuf[3] = 0xFF;
+ 350   3            SndData[1].DataBuf[4] = 0x03 | (FlagByte << 4);
+ 351   3            SndData[1].DataBuf[5] = 0x0;
+ 352   3            SndData[1].DataBuf[6] = 0x0;
+ 353   3            SndData[1].DataBuf[7] = 0;
+ 354   3            SndData[1].DataBuf[8] = 0;
+ 355   3            SndData[1].DataBuf[9] = 0;
+ 356   3      
+ 357   3            FlagChgFlag = TRUE;
+ 358   3            LedMode       = LED_NORMAL;
+ 359   3            LedInit       = TRUE;
+ 360   3          }
+ 361   2      
+ 362   2          // Turn On
+ 363   2          else if (CmdBuffer == CMD_SOCKET_ON){
+ 364   3            SndData[1].SndStatus  = SND_BROADCAST;
+C51 COMPILER V9.52.0.0   DATA_PROCESS                                                      08/11/2018 17:41:13 PAGE 7   
 
- 365   3            SndData[1].DataBuf[6] = 0x0;
- 366   3            SndData[1].DataBuf[7] = 0;
- 367   3            SndData[1].DataBuf[8] = 0;
- 368   3            SndData[1].DataBuf[9] = 0;
- 369   3      
- 370   3            FlagChgFlag = TRUE;
- 371   3            LedMode       = LED_NORMAL;
- 372   3            LedInit       = TRUE;
- 373   3          }
- 374   2      
- 375   2          // Error
- 376   2          else
- 377   2          {
- 378   3            ErrNum = ERR_CMD_INVALID;
+ 365   3            SndData[1].DataBuf[0] = 0x3  | (FlagByte << 4);
+ 366   3            SndData[1].DataBuf[1] = 0x00;
+ 367   3            SndData[1].DataBuf[2] = 0xFF;
+ 368   3            SndData[1].DataBuf[3] = 0xFF;
+ 369   3            SndData[1].DataBuf[4] = 0x03 | (FlagByte << 4);
+ 370   3            SndData[1].DataBuf[5] = 0xFF;
+ 371   3            SndData[1].DataBuf[6] = 0x0;
+ 372   3            SndData[1].DataBuf[7] = 0;
+ 373   3            SndData[1].DataBuf[8] = 0;
+ 374   3            SndData[1].DataBuf[9] = 0;
+ 375   3      
+ 376   3            FlagChgFlag = TRUE;
+ 377   3            LedMode       = LED_NORMAL;
+ 378   3            LedInit       = TRUE;
  379   3          }
- 380   2        }
- 381   1      
- 382   1      
- 383   1        // Error occur
- 384   1        if (FlagChgFlag)
- 385   1        {
- 386   2          FlagByte++;
- 387   2          if (FlagByte > 16)  FlagByte = 1;
- 388   2        }
- 389   1      }
+ 380   2      
+ 381   2          // Error
+ 382   2          else
+ 383   2          {
+ 384   3            ErrNum = ERR_CMD_INVALID;
+ 385   3          }
+ 386   2        }
+ 387   1      
+ 388   1      
+ 389   1        // Error occur
+ 390   1        if (FlagChgFlag)
+ 391   1        {
+ 392   2          FlagByte++;
+ 393   2          if (FlagByte > 16)  FlagByte = 1;
+ 394   2        }
+ 395   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    601    ----
+   CODE SIZE        =    628    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

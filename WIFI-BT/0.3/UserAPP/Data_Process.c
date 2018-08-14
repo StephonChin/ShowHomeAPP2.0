@@ -186,16 +186,22 @@ static void Wifi_Process(void)
       //About the wifi status
       case CMD_WIFI_STATUS:{
         if (InfoBuffer == 0x1){
-          LedMode   = LED_WIFI_STANDBY;
-          LedInit   = TRUE;
+          if (LedMode != LED_WIFI_STANDBY){
+            LedMode   = LED_WIFI_STANDBY;
+            LedInit   = TRUE;
+          }
         }
         else if (InfoBuffer == 0x2){
-          LedMode   = LED_WIFI_CONNECTING;
-          LedInit   = TRUE;
+          if (LedMode != LED_WIFI_DISCONNECT){
+            LedMode   = LED_WIFI_DISCONNECT;
+            LedInit   = TRUE;
+          }
         }
-        else if (InfoBuffer == 0x3){
-          LedMode   = LED_WIFI_CONNETED;
-          LedInit   = TRUE;
+        else if (InfoBuffer == 0x4){
+          if (LedMode != LED_WIFI_CONNECTED){
+            LedMode   = LED_WIFI_CONNECTED;
+            LedInit   = TRUE;
+          }
         }
       } break;
 

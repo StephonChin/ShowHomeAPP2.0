@@ -32,7 +32,7 @@
 #define		BYTE_MIX_R				150
 
 #define		GPR_MIX_L					37
-#define		BYTE_MIX_L				105
+#define		BYTE_MIX_L				111
 
 #define		GRP_TREE					10
 #define		BYTE_TREE					30

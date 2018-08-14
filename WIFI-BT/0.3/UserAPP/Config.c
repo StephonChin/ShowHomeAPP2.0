@@ -5,6 +5,10 @@
 *********************************************************************/
 #include "Config.h"
 
+
+//Arguments
+bit BitTemp;
+
 /********************************************************************
   *
   * FunctioName    MCU_Config()
@@ -23,7 +27,6 @@ void MCU_Config(void)
   
   USART_Init();
   
-  IWDG_Init();
   
   // Enable Interrupt
 	IE |= BIT7;
@@ -47,19 +50,22 @@ static void CLK_Init(void)
 //-----------------------------------------------------------------
 static void GPIO_Init(void)
 {
-  //P26 - Key1, P21 - PIO11
-  P2M1  |= (BIT1 | BIT6);
-  P2M2  &= ~(BIT1 | BIT6);
+  // P21 - PIO11
+  P2M1  |= (BIT1);
+  P2M2  &= ~(BIT1);
   
   //P23 - VDD_CE
   P2M1 &= ~BIT3;
   P2M2 |= BIT3;
   
-  //P04 - R, P05 - G, P06 - B
-  P0M1 &= ~(BIT4 | BIT5 | BIT6);
-  P0M2 |= (BIT4 | BIT5 | BIT6);
-  P0 &= ~(BIT4 | BIT5 | BIT6);
+  //P07 - Comm
+  P0M1 &= ~BIT7;
+  P0M2 |= BIT7;
+  P0 &= ~BIT7;
   
+  SET_SFRPAGE;
+  P0SR |= BIT7;
+  CLR_SFRPAGE;
   
   
   PORT_BT_CE = SET;
@@ -127,14 +133,4 @@ static void USART_Init(void)
 	EIE1  |= BIT0;
 }
 
-
-//-----------------------------------------------------------------
-// FunctionName   IWDG_Init
-//-----------------------------------------------------------------
-static void IWDG_Init(void)
-{
-  TA			= 0xAA;
-  TA			= 0x55;
-  WDCON   = 0xC3;     // 102.4ms
-}
 
